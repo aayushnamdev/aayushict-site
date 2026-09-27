@@ -1,0 +1,36 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AffiliateCard from '../components/AffiliateCard.astro';
+import { getPartner } from '../data/partners';
+
+const mrkt = getPartner('mrkt')!;
+---
+
+<BaseLayout title="Tools · Aayush ICT" description="Software I actually use before a macro event.">
+  <section class="container measure header-section">
+    <h1>Tools</h1>
+    <p>Software I actually use before a macro event.</p>
+  </section>
+
+  <section class="container measure section">
+    <AffiliateCard partner={mrkt} />
+  </section>
+
+  <section class="container measure section">
+    <div class="card coming-soon">
+      <p>More tools coming as I test them.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .header-section {
+    padding: 3rem 0 0;
+  }
+  .section {
+    padding: 1.5rem 0;
+  }
+  .coming-soon {
+    color: var(--text-muted);
+  }
+</style>

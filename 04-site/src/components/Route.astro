@@ -1,0 +1,33 @@
+---
+interface Props {
+  steps: string[];
+}
+const { steps } = Astro.props;
+---
+
+<div class="route surface-muted">
+  {steps.map((step, i) => (
+    <>
+      <span class="step">{step}</span>
+      {i < steps.length - 1 && <span class="arrow">→</span>}
+    </>
+  ))}
+</div>
+
+<style>
+  .route {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.9rem 1.1rem;
+    margin: 0 0 1.75rem;
+    font-size: 0.95rem;
+  }
+  .step {
+    font-weight: 600;
+  }
+  .arrow {
+    color: var(--text-muted);
+  }
+</style>

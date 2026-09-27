@@ -1,0 +1,15 @@
+# Secrets, never commit
+.env
+.env.*
+
+# Node
+node_modules/
+npm-debug.log*
+
+# Astro build output
+04-site/dist/
+04-site/.astro/
+04-site/.vercel/
+
+# OS
+.DS_Store

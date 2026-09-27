@@ -1,0 +1,86 @@
+---
+title: ""
+subtitle: ""
+date: ""
+track: "notes"
+tags: []
+# Optional structured data that <EventStrip> and <DataCallout> can render from,
+# instead of the numbers being typed into prose by hand (see content-model.md).
+relatedEvents: []
+---
+
+{/*
+  MACRO NOTE TEMPLATE
+  Target shape: essay, not reference material. See 00-strategy/content-model.md
+  and 02-brand/voice-guide.md before writing.
+
+  HARD RULES (voice-guide.md):
+  - 1 heading per 250-350 words. A 1,400-word note is 4-5 H2s, not 15-19.
+  - Average sentence length 9-13 words. No em dashes as connectors.
+  - Keep real-time uncertainty in the text where it was real
+    ("I could not tell you", "my read was 50/50"). Do not resolve it into
+    false hindsight confidence.
+  - Never change a number, ticker, price level, or date.
+  - Disclaimer stays as the final line.
+
+  This template has 5 sections as a starting shape. Merge or drop sections
+  freely to hit the heading-density target for the actual piece you're writing
+  - the section list below is a shape to write toward, not a form to fill in.
+*/}
+
+## What happened
+
+Open with the scene. Where you were, what you were watching, what happened first.
+This is the "7:30 PM, two screens" beat — ground the reader in the moment before
+any analysis starts.
+
+<AnnotatedChart
+  slug=""
+  annotations={[
+    // { time: "", label: "", note: "" }
+  ]}
+/>
+
+## What I thought at the time
+
+The real-time read, including the parts that were confusing or contradictory.
+This is where "I could not tell you" belongs if it's true. Do not skip to the
+answer — the value of a macro note over a news recap is showing the reasoning
+live, uncertainty included.
+
+<DataCallout metric="" before="" after="" />
+
+## The trade (if there was one)
+
+<TradeCard
+  instrument=""
+  direction=""
+  entry=""
+  exit=""
+  size=""
+  reasoning=""
+  outcome=""
+/>
+
+Explain the two things separately, if both apply: why you entered, and why you
+closed when you did. These are often different reasons (a level reached vs. a
+read on further upside) — keep them distinct rather than merging into one
+justification.
+
+## What became clear afterward
+
+The hindsight view, dated and labeled as hindsight. *"I am telling you that on
+Saturday, with the candle finished on my screen. I could not have told you that
+at 8 PM on Friday."* This section only works if the previous section was honest
+about not knowing yet.
+
+## What this means going forward
+
+<EventStrip events={[]} />
+
+Close with the practical takeaway for the reader's own trading, not a market
+prediction dressed as certainty. End with the disclaimer line.
+
+---
+
+Not financial advice. Trade with a stop loss.

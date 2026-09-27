@@ -1,0 +1,27 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description } = Astro.props;
+---
+
+<BaseLayout title={title} description={description}>
+  <article class="container measure article-body">
+    <slot />
+  </article>
+</BaseLayout>
+
+<style is:global>
+  .article-body h2 {
+    margin-top: 2.25rem;
+  }
+  .article-body table {
+    width: 100%;
+  }
+  .article-body {
+    padding: 2.5rem 0 4rem;
+  }
+</style>

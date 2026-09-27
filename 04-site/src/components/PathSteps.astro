@@ -1,0 +1,55 @@
+---
+import { pathSteps } from '../data/site';
+---
+
+<div class="path-steps">
+  {pathSteps.map((step) => (
+    <a href={step.href} class="path-step card">
+      <span class="step-num mono">{step.n}</span>
+      <span class="step-title">{step.title}</span>
+      <span class="step-body">{step.body}</span>
+    </a>
+  ))}
+</div>
+
+<style>
+  .path-steps {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1rem;
+    margin: 0 0 2.5rem;
+  }
+  .path-step {
+    text-decoration: none;
+    color: var(--text);
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    transition: border-color 0.15s;
+  }
+  .path-step:hover {
+    border-color: var(--accent);
+  }
+  .step-num {
+    color: var(--accent);
+    font-weight: 700;
+    font-size: 0.9rem;
+  }
+  .step-title {
+    font-weight: 700;
+  }
+  .step-body {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+  @media (max-width: 860px) {
+    .path-steps {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+  @media (max-width: 520px) {
+    .path-steps {
+      grid-template-columns: 1fr;
+    }
+  }
+</style>

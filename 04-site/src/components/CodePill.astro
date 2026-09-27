@@ -1,0 +1,55 @@
+---
+interface Props {
+  code: string;
+}
+const { code } = Astro.props;
+---
+
+<button class="code-pill mono" data-code={code} type="button">
+  <span class="code-text">{code}</span>
+  <span class="copy-label">Copy</span>
+</button>
+
+<style>
+  .code-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    background: var(--surface);
+    border: 1px dashed var(--cta);
+    border-radius: 999px;
+    padding: 0.3rem 0.5rem 0.3rem 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    color: var(--text);
+  }
+  .copy-label {
+    background: var(--cta);
+    color: var(--cta-text);
+    border-radius: 999px;
+    padding: 0.15rem 0.6rem;
+    font-size: 0.75rem;
+    font-family: var(--font-body);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('.code-pill').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const code = btn.dataset.code ?? '';
+      try {
+        await navigator.clipboard.writeText(code);
+        const label = btn.querySelector('.copy-label');
+        if (label) {
+          const original = label.textContent;
+          label.textContent = 'Copied';
+          setTimeout(() => {
+            label.textContent = original;
+          }, 1500);
+        }
+      } catch {
+        // clipboard API unavailable, fail silently
+      }
+    });
+  });
+</script>

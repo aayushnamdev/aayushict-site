@@ -1,0 +1,55 @@
+---
+interface Props {
+  label: string;
+  path: number[];
+}
+const { label, path } = Astro.props;
+const current = path[path.length - 1];
+---
+
+<div class="priced-in-meter surface-muted">
+  <p class="meter-label">{label}</p>
+  <div class="meter-track">
+    <div class="meter-fill" style={`width: ${current}%`}></div>
+  </div>
+  <p class="meter-path mono">
+    {path.map((v, i) => (
+      <>
+        <span>{v}%</span>
+        {i < path.length - 1 && <span class="arrow"> → </span>}
+      </>
+    ))}
+  </p>
+</div>
+
+<style>
+  .priced-in-meter {
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius);
+    margin: 0 0 1.75rem;
+  }
+  .meter-label {
+    font-weight: 600;
+    margin: 0 0 0.6rem;
+  }
+  .meter-track {
+    height: 10px;
+    border-radius: 999px;
+    background: var(--border);
+    overflow: hidden;
+    margin-bottom: 0.6rem;
+  }
+  .meter-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 999px;
+  }
+  .meter-path {
+    margin: 0;
+    color: var(--text-muted);
+    font-size: 0.95rem;
+  }
+  .arrow {
+    color: var(--text-muted);
+  }
+</style>

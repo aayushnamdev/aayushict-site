@@ -1,0 +1,17 @@
+body {
+  margin: 0;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #FAFAF7;
+  color: #1A1A18;
+  font-family: 'Inter', system-ui, sans-serif;
+}
+.go-wrap {
+  text-align: center;
+  padding: 2rem;
+}
+a {
+  color: #1F4FD1;
+}

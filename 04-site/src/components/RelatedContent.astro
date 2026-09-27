@@ -1,0 +1,37 @@
+---
+interface Item {
+  title: string;
+  href: string;
+}
+interface Props {
+  items: Item[];
+}
+const { items } = Astro.props;
+---
+
+{items.length > 0 && (
+  <div class="related-content">
+    <p class="related-heading">Related</p>
+    <ul>
+      {items.map((item) => (
+        <li><a href={item.href}>{item.title}</a></li>
+      ))}
+    </ul>
+  </div>
+)}
+
+<style>
+  .related-content {
+    border-top: 1px solid var(--border);
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+  }
+  .related-heading {
+    font-weight: 700;
+    margin: 0 0 0.6rem;
+  }
+  .related-content ul {
+    margin: 0;
+    padding-left: 1.1rem;
+  }
+</style>

@@ -1,0 +1,82 @@
+---
+import ArticleLayout from '../../../layouts/ArticleLayout.astro';
+import Breadcrumbs from '../../../components/Breadcrumbs.astro';
+import MetaRow from '../../../components/MetaRow.astro';
+import Route from '../../../components/Route.astro';
+import KeyPointCallout from '../../../components/KeyPointCallout.astro';
+import RelatedContent from '../../../components/RelatedContent.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const guides = await getCollection('learn');
+  return guides.map((entry) => {
+    const slug = entry.id.split('/').pop();
+    return {
+      params: { category: entry.data.category, slug },
+      props: { entry },
+    };
+  });
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+const categoryLabels: Record<string, string> = {
+  'macro-events': 'Macro events',
+  'ict-with-macro': 'ICT with macro',
+  'prop-firms': 'Prop firms',
+  payouts: 'Payouts (India)',
+  tools: 'Tools and platforms',
+  psychology: 'Psychology',
+};
+
+let anchorEntry = null;
+if (data.anchorBriefing) {
+  anchorEntry = await getEntry('macro', data.anchorBriefing).catch(() => null);
+}
+
+const relatedItems = (
+  await Promise.all(
+    data.related.map(async (relId) => {
+      const rel = await getEntry('learn', relId).catch(() => null);
+      if (!rel) return null;
+      return { title: rel.data.title, href: `/learn/${rel.data.category}/${rel.id.split('/').pop()}` };
+    })
+  )
+).filter((x): x is { title: string; href: string } => x !== null);
+---
+
+<ArticleLayout title={`${data.title} · Aayush ICT`} description={data.subtitle}>
+  <Breadcrumbs
+    crumbs={[
+      { label: 'Learn', href: '/learn' },
+      { label: categoryLabels[data.category] ?? data.category, href: '/learn' },
+      { label: data.title },
+    ]}
+  />
+  <h1>{data.title}</h1>
+  <p class="subtitle">{data.subtitle}</p>
+  <MetaRow updated={data.updated} readTime={data.readTime} />
+
+  {data.route && data.route.length > 0 && <Route steps={data.route} />}
+
+  {anchorEntry && (
+    <KeyPointCallout label="From a real briefing">
+      <p><a href={`/macro/${anchorEntry.data.slug}`}>{anchorEntry.data.title} →</a></p>
+    </KeyPointCallout>
+  )}
+
+  <div class="prose">
+    <Content />
+  </div>
+
+  <RelatedContent items={relatedItems} />
+</ArticleLayout>
+
+<style>
+  .subtitle {
+    font-size: 1.15rem;
+    color: var(--text-muted);
+  }
+</style>

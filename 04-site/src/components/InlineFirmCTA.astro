@@ -1,0 +1,37 @@
+---
+import { getPartner } from '../data/partners';
+
+interface Props {
+  slug: string;
+  lead?: string;
+}
+const { slug, lead = 'To trade this without risking your own capital, here is the firm I use.' } = Astro.props;
+const partner = getPartner(slug);
+---
+
+{partner && (
+  <div class="inline-firm-cta surface-muted">
+    <p class="lead">{lead}</p>
+    <a href={`/go/${partner.slug}`} class="btn btn-cta" rel="sponsored nofollow noopener">
+      {partner.name}{partner.code ? ` · code ${partner.code}` : ''}
+    </a>
+    <p class="disclosure-line">Affiliate link, code gives a discount, I get a commission. It does not change what I write.</p>
+  </div>
+)}
+
+<style>
+  .inline-firm-cta {
+    padding: 1.1rem 1.25rem;
+    border-radius: var(--radius);
+    margin: 1.75rem 0;
+  }
+  .lead {
+    margin: 0 0 0.75rem;
+    font-weight: 600;
+  }
+  .disclosure-line {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin: 0.6rem 0 0;
+  }
+</style>

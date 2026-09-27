@@ -1,0 +1,46 @@
+---
+interface Props {
+  condition: string;
+  meaning: string;
+  gold: 'up' | 'down' | 'flat';
+  nq: 'up' | 'down' | 'flat';
+  dxy: 'up' | 'down' | 'flat';
+}
+const { condition, meaning, gold, nq, dxy } = Astro.props;
+
+const arrow = (dir: string) => (dir === 'up' ? '↑' : dir === 'down' ? '↓' : '→');
+const word = (dir: string) => (dir === 'up' ? 'Up' : dir === 'down' ? 'Down' : 'Flat');
+const cls = (dir: string) => (dir === 'up' ? 'up' : dir === 'down' ? 'down' : 'neutral');
+---
+
+<div class="scenario-card card">
+  <p class="condition">{condition}</p>
+  <p class="meaning">{meaning}</p>
+  <div class="reactions">
+    <span class={cls(gold)}>Gold {arrow(gold)} {word(gold)}</span>
+    <span class={cls(nq)}>NQ {arrow(nq)} {word(nq)}</span>
+    <span class={cls(dxy)}>Dollar {arrow(dxy)} {word(dxy)}</span>
+  </div>
+</div>
+
+<style>
+  .scenario-card {
+    margin-bottom: 1rem;
+  }
+  .condition {
+    font-weight: 700;
+    margin-bottom: 0.35rem;
+  }
+  .meaning {
+    color: var(--text-muted);
+    margin-bottom: 0.9rem;
+  }
+  .reactions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    font-family: var(--font-num);
+    font-weight: 600;
+    font-size: 0.95rem;
+  }
+</style>

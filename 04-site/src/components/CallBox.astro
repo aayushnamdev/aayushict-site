@@ -1,0 +1,59 @@
+---
+interface Props {
+  asset: string;
+  direction: 'up' | 'down';
+  target: number;
+  invalidation: string;
+  status?: 'hit' | 'invalidated' | 'open' | 'dropped';
+}
+const { asset, direction, target, invalidation, status = 'open' } = Astro.props;
+const arrow = direction === 'up' ? '↑' : '↓';
+const dirWord = direction === 'up' ? 'Up' : 'Down';
+const dirClass = direction === 'up' ? 'up' : 'down';
+
+const statusLabel: Record<string, string> = {
+  hit: 'Hit',
+  invalidated: 'Invalidated',
+  open: 'Open',
+  dropped: 'Dropped',
+};
+---
+
+<div class="call-box card">
+  <p class="call-heading">
+    My call: <span class={dirClass}>{asset} {arrow} {dirWord}</span>
+    <span class="badge status">{statusLabel[status]}</span>
+  </p>
+  <dl>
+    <dt>Target</dt>
+    <dd class="mono">{target}</dd>
+    <dt>Invalidation</dt>
+    <dd class="mono">{invalidation}</dd>
+  </dl>
+</div>
+
+<style>
+  .call-box {
+    margin: 0 0 1.75rem;
+  }
+  .call-heading {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-weight: 600;
+    margin: 0 0 0.9rem;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.4rem 1rem;
+    margin: 0;
+  }
+  dt {
+    color: var(--text-muted);
+  }
+  dd {
+    margin: 0;
+    font-weight: 600;
+  }
+</style>

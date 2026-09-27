@@ -1,0 +1,46 @@
+---
+// Affiliate redirect. See build-plan-v2.md §8.2: every partner link routes through here.
+// True HTTP 302s need a server (Vercel adapter or vercel.json rewrite). For the static v1
+// launch this uses an instant meta-refresh + JS redirect, which is functionally the same for
+// a visitor and keeps outbound rel attributes off the crawlable page.
+import { partners } from '../../data/partners';
+
+export async function getStaticPaths() {
+  return partners.map((p) => ({ params: { slug: p.slug }, props: { partner: p } }));
+}
+
+const { partner } = Astro.props;
+const hasRealUrl = partner.url.startsWith('http');
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{hasRealUrl ? `Going to ${partner.name}…` : `${partner.name} · coming soon`}</title>
+    <meta name="robots" content="noindex" />
+    {hasRealUrl && <meta http-equiv="refresh" content={`0;url=${partner.url}`} />}
+    <link rel="stylesheet" href="/_go.css" />
+  </head>
+  <body>
+    <div class="go-wrap">
+      {hasRealUrl ? (
+        <>
+          <p>Taking you to {partner.name}...</p>
+          <p><a id="go-link" href={partner.url} rel="sponsored nofollow noopener">Click here if you're not redirected</a></p>
+        </>
+      ) : (
+        <>
+          <p>The {partner.name} link isn't live yet.</p>
+          <p><a href="/start-here">Back to Start here</a></p>
+        </>
+      )}
+    </div>
+    {hasRealUrl && (
+      <script define:vars={{ url: partner.url }}>
+        window.location.replace(url);
+      </script>
+    )}
+  </body>
+</html>

@@ -1,0 +1,83 @@
+---
+title: ""
+subtitle: ""
+date: ""
+lastUpdated: ""      # REQUIRED - see monetization.md on why staleness kills trust here
+track: "reviews"
+product: ""           # keys into data/firms.json - single source of truth for specs
+affiliateLink: ""      # keys into lib/affiliates.ts, never hardcoded inline
+affiliateCode: ""
+rating: null
+tags: []
+---
+
+{/*
+  MONEY PAGE TEMPLATE
+  Target shape: NerdWallet shape, not essay shape. See benchmarks.md for why
+  these two shapes must never blend on one page, and content-model.md for
+  the full component list.
+
+  NON-NEGOTIABLE, before this page can go live:
+  1. <Disclosure> renders at the top, above the fold. This is the exact gap
+     found in vedictrades.blog's review pages (disclosure exists on his
+     homepage but not on the pages where persuasion actually happens).
+  2. lastUpdated is real and gets updated whenever terms change.
+  3. Every individual affiliate link also carries an inline "(affiliate link)"
+     tag, per FTC 16 CFR 255 guidance in monetization.md.
+  4. Numbers (price, profit split, drawdown limits) come from firms.json,
+     not typed inline - one source of truth, one place to update when terms
+     change.
+
+  This shape is allowed to be denser than a macro note: comparison tables,
+  more headings, more images are all appropriate here. The voice rules from
+  voice-guide.md (short sentences, no em dashes, honest framing) still apply
+  to the surrounding prose - a money page is still not permission to write
+  in guru-certainty voice.
+*/}
+
+<Disclosure partner="" />
+
+## What is [product]?
+
+Direct, factual description. What it is, who runs it, what problem it solves
+for a trader.
+
+## Pricing
+
+<FirmTable product="" />
+
+## How it works
+
+Walk through the actual structure - evaluation phase, funded phase, whatever
+applies. Specific numbers pulled from firms.json, not restated by hand.
+
+## Pros
+
+Concrete, not generic. If a pro is true of every competitor too, it's not
+worth listing here.
+
+## Cons
+
+Real cons. A review with no cons reads as an ad, and undermines the trust the
+whole positioning depends on (see 00-strategy/positioning.md).
+
+## Who should use this
+
+Be specific about who it's *not* for, not just who it's for.
+
+## My honest verdict
+
+This is where the actual experience goes, if you have it - a real result, a
+real timeline, a real number. If you don't have direct experience with this
+specific product, say so plainly rather than implying you do.
+
+## Common questions
+
+FAQ-shaped Q&A pairs here also feed FAQPage schema (see content-model.md SEO
+section) - write them as real questions a reader would actually ask, not
+keyword-stuffed variations of the title.
+
+---
+
+Not financial advice. [Product] terms can change - see lastUpdated above for
+when this was last verified.

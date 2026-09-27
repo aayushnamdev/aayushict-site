@@ -1,0 +1,69 @@
+---
+import { site } from '../data/site';
+---
+
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <div class="footer-col">
+      <p class="footer-brand">{site.name}</p>
+      <p class="footer-disclaimer">
+        Not financial advice. I write down what I watch and what I trade. It is my opinion,
+        not a recommendation. Trade your own plan.
+      </p>
+      <p><a href="/disclosure">Disclosure</a> · <a href="/disclaimer">Disclaimer</a> · <a href="/privacy">Privacy</a></p>
+    </div>
+    <div class="footer-col">
+      <p class="footer-heading">Follow</p>
+      <p>
+        <a href={site.instagram} rel="noopener" target="_blank">Instagram</a><br />
+        <a href={site.substack} rel="noopener" target="_blank">Substack</a><br />
+        <a href={site.youtube} rel="noopener" target="_blank">YouTube</a>
+      </p>
+    </div>
+  </div>
+  <div class="container">
+    <p class="copyright">&copy; {new Date().getFullYear()} {site.name}. All rights reserved.</p>
+  </div>
+</footer>
+
+<style>
+  .site-footer {
+    border-top: 1px solid var(--border);
+    background: var(--surface-muted);
+    margin-top: 4rem;
+    padding: 2.5rem 0 1.5rem;
+  }
+
+  .footer-inner {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem;
+    justify-content: space-between;
+  }
+
+  .footer-col {
+    max-width: 420px;
+  }
+
+  .footer-brand {
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+  }
+
+  .footer-disclaimer {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+  }
+
+  .footer-heading {
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .copyright {
+    color: var(--text-muted);
+    font-size: 0.85rem;
+    margin-top: 2rem;
+    margin-bottom: 0;
+  }
+</style>

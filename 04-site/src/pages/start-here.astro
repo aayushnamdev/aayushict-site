@@ -1,0 +1,77 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AffiliateCard from '../components/AffiliateCard.astro';
+import { partners, getPartner } from '../data/partners';
+
+const fundednext = getPartner('fundednext')!;
+const apex = getPartner('apex')!;
+const mrkt = getPartner('mrkt')!;
+---
+
+<BaseLayout title="Start here · Aayush ICT" description="Firms, codes, and tools. Honest pros and cons, disclosed up front.">
+  <section class="container measure header-section">
+    <h1>Start here</h1>
+
+    <div class="disclosure card">
+      <p>
+        Some links on this page are affiliate links. A code may get you a discount, and I get a
+        commission if you sign up. It does not change what I write. I only list firms I have
+        actually used or would use myself.
+      </p>
+    </div>
+
+    <h2>Which one is for you</h2>
+    <p>I trade gold or forex on MT5 → look at the CFD firms below.</p>
+    <p>I trade NQ or futures → look at the futures firms below.</p>
+  </section>
+
+  <section class="container measure section">
+    <h2>Gold and forex, MT5</h2>
+    <AffiliateCard partner={fundednext} />
+  </section>
+
+  <section class="container measure section">
+    <h2>NQ and futures</h2>
+    {apex.active ? (
+      <AffiliateCard partner={apex} />
+    ) : (
+      <div class="card coming-soon">
+        <p>I'm funded with Apex Trader Funding. A code is coming once I have one to share.</p>
+      </div>
+    )}
+  </section>
+
+  <section class="container measure section">
+    <h2>Tools</h2>
+    <AffiliateCard partner={mrkt} compact />
+  </section>
+
+  <section class="container measure section faq">
+    <h2>FAQ</h2>
+    <h3>What is an evaluation?</h3>
+    <p>It is a test account. You trade it under the firm's rules. Pass it, and you get funded.</p>
+    <h3>Does the code cost me more?</h3>
+    <p>No. It is usually a discount for you. I get a commission from the firm, not from you.</p>
+    <h3>Why do you list cons?</h3>
+    <p>Because a firm that fits me might not fit you. I would rather you know the real trade-offs.</p>
+  </section>
+</BaseLayout>
+
+<style>
+  .header-section {
+    padding: 3rem 0 0;
+  }
+  .disclosure {
+    background: var(--surface-muted);
+    margin: 1.5rem 0 2rem;
+  }
+  .section {
+    padding: 1rem 0 2.5rem;
+  }
+  .coming-soon {
+    color: var(--text-muted);
+  }
+  .faq h3 {
+    margin-top: 1.5rem;
+  }
+</style>

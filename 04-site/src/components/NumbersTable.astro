@@ -1,0 +1,53 @@
+---
+interface Row {
+  label: string;
+  expected: string | null;
+  previous: string | null;
+  actual: string | null;
+}
+interface Props {
+  numbers: Row[];
+}
+const { numbers } = Astro.props;
+---
+
+<table class="numbers-table">
+  <thead>
+    <tr>
+      <th>Number</th>
+      <th>Previous</th>
+      <th>Expected</th>
+      <th>Actual</th>
+    </tr>
+  </thead>
+  <tbody>
+    {numbers.map((row) => (
+      <tr>
+        <td>{row.label}</td>
+        <td class="mono">{row.previous ?? '—'}</td>
+        <td class="mono">{row.expected ?? '—'}</td>
+        <td class="mono">{row.actual ?? 'Not out yet'}</td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
+<style>
+  .numbers-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 0 0 1.75rem;
+    font-size: 0.95rem;
+  }
+  .numbers-table th,
+  .numbers-table td {
+    text-align: left;
+    padding: 0.6rem 0.75rem;
+    border-bottom: 1px solid var(--border);
+  }
+  .numbers-table th {
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.85rem;
+  }
+</style>
