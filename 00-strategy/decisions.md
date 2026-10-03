@@ -29,3 +29,4 @@ Dated record of locked calls. Add to this, don't rewrite history.
 - Apex is a plain non-affiliate link: no code, no `/go/apex` redirect.
 
 - Reading pages (Start here, and later Macro, Learn, Journal posts) use a 760px column and 18px body text (17px phone), tighter paragraph gaps and smaller headings. Aayush compared them with the Claude chat and found the brand-schema size (900px, 21px) too big. Home page keeps the brand sizes. The header lines up with the text column on reading pages.
+- Audit fixes (3 Oct): small text on black uses --rose-text #BF6581, white focus rings on wine, skip link, live region, noindex plus sitemap filter for shell pages (`pending` list in site.ts), share image, JSON-LD, robots.txt, llms.txt, favicon.ico, RSS autodiscovery, lang en-IN. `.claude/skills/` is git-ignored.

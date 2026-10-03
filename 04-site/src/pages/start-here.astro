@@ -16,6 +16,20 @@ import executionShot from '../assets/proof/tradovate-execution-2026-08-07.png';
 
 // The long read. Copy comes from 03-content/drafts/start-from-zero.md, pieces 3 to 7, plus the
 // three FAQs from the reference design. Lines marked PLACEHOLDER are not in Aayush's words yet.
+import { site, person } from '../config/site';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: 'Start here',
+  description: 'One real Friday night, why it was rare, and how I trade US futures from India.',
+  author: person,
+  publisher: person,
+  dateModified: '2026-10-03',
+  inLanguage: 'en-IN',
+  mainEntityOfPage: `${site.url}/start-here/`,
+  image: `${site.url}/og-default.png`,
+};
 const fundednext = getFirm('fundednext')!;
 const apex = getFirm('apex')!;
 ---
@@ -25,6 +39,8 @@ const apex = getFirm('apex')!;
   route={['Weak ADP', 'Hike odds fall', 'NFP misses', 'NQ and gold up']}
   meta="Aayush Namdev · Updated 3 Oct 2026 · 7 min read"
   progress
+  type="article"
+  jsonLd={jsonLd}
 >
   <!-- PLACEHOLDER: subtitle and meta line are not in Aayush's words yet -->
 

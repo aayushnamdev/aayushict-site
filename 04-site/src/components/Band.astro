@@ -15,5 +15,6 @@ const { variant = 'black' } = Astro.props;
   .wine { background: var(--wine); color: var(--text-on-wine); }
   .wine :global(h1), .wine :global(h2) { color: var(--white); }
   .wine :global(.label) { color: var(--rose-on-wine); }
+  .wine :global(:focus-visible) { outline-color: var(--white); } /* rose ring is only 2.25:1 on wine */
   @media (max-width: 860px) { .band { padding: 64px 0; } }
 </style>

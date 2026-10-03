@@ -68,6 +68,7 @@
   --overlay: rgba(10, 8, 9, 0.8);
   --header-bg: rgba(20, 16, 17, 0.94);
   /* Reading pages. Aayush's call on 3 Oct: smaller than brand-schema (900px column, 21px body). */
+  --rose-text: #BF6581;      /* rose for small text on black: 4.5:1 on page, card and footer. --rose stays for logo, underline, bars */
   --read-width: 760px;
   --read-body: 18px;
   --read-body-phone: 17px;

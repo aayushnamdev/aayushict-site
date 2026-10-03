@@ -21,6 +21,7 @@ const { showSignup = true } = Astro.props;
     display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
     font-family: var(--font-number); font-size: 13px; color: var(--text-muted); line-height: 1.6;
   }
-  .fine a { color: var(--text-muted); text-decoration: none; }
+  .fine a { display: inline-flex; align-items: center; min-height: 24px; color: var(--text-muted); text-decoration: none; }
+  @media (max-width: 860px) { .fine a { min-height: 44px; } }
   .fine a:hover { color: var(--text-heading); }
 </style>

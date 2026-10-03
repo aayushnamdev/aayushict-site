@@ -2,10 +2,10 @@
 // Learn guides. Same frame as PostLayout without the market sign off. Guides are teaching, not calls.
 import BaseLayout from './BaseLayout.astro';
 import EmailSignup from '../components/EmailSignup.astro';
-interface Props { title: string; subtitle?: string; route?: string[]; updated?: Date }
-const { title, subtitle, route = [], updated } = Astro.props;
+interface Props { type?: 'website' | 'article'; jsonLd?: Record<string, unknown>; title: string; subtitle?: string; route?: string[]; updated?: Date }
+const { type = 'website', jsonLd, title, subtitle, route = [], updated } = Astro.props;
 ---
-<BaseLayout title={title} description={subtitle} narrow>
+<BaseLayout title={title} description={subtitle} narrow type={type} jsonLd={jsonLd}>
   <article class="article col">
     {route.length > 0 && (
       <ol class="route" aria-label="Route">{route.map((r) => <li>{r}</li>)}</ol>

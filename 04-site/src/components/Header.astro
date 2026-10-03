@@ -11,16 +11,16 @@ const isOn = (href: string) => path === href || path.startsWith(href + '/');
     <a class="logo" href="/" aria-label="aayushict home"><Wordmark /></a>
     <nav class="nav" aria-label="Main">
       {site.nav.map((l) => <a href={l.href} class:list={[{ on: isOn(l.href) }]} aria-current={isOn(l.href) ? 'page' : undefined}>{l.label}</a>)}
-      <a class="btn" href={site.cta.href}>{site.cta.label}</a>
+      <a class="btn" href={site.cta.href} aria-current={isOn(site.cta.href) ? 'page' : undefined}>{site.cta.label}</a>
     </nav>
     <div class="right">
-      <a class="btn sm" href={site.cta.href}>{site.cta.label}</a>
-      <button class="menu" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
+      <a class="btn sm" href={site.cta.href} aria-current={isOn(site.cta.href) ? 'page' : undefined}>{site.cta.label}</a>
+      <button class="menu" id="menuBtn" type="button" aria-label="Menu" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
     </div>
   </div>
   <nav class="drawer" id="drawer" aria-label="Mobile">
     {site.nav.map((l) => <a href={l.href}>{l.label}</a>)}
-    <a class="btn" href={site.cta.href}>{site.cta.label}</a>
+    <a class="btn" href={site.cta.href} aria-current={isOn(site.cta.href) ? 'page' : undefined}>{site.cta.label}</a>
   </nav>
 </header>
 
@@ -30,7 +30,6 @@ const isOn = (href: string) => path === href || path.startsWith(href + '/');
   btn?.addEventListener('click', () => {
     const open = drawer?.classList.toggle('open') ?? false;
     btn.setAttribute('aria-expanded', String(open));
-    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   });
 </script>
 

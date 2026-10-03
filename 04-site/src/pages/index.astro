@@ -10,12 +10,18 @@ import GapMeter from '../components/GapMeter.astro';
 import ValueTiles from '../components/ValueTiles.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import payout from '../assets/proof/apex-payout-2026-08-12.png';
+import { site, person } from '../config/site';
+
+const jsonLd = [
+  { '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: site.url, description: site.tagline, inLanguage: 'en-IN', publisher: person },
+  { '@context': 'https://schema.org', ...person, description: 'Trades Nasdaq futures from India and writes about what the market has already priced in.' },
+];
 
 // The home page stays short. The long read is /start-here.
 // Copy comes from 03-content/drafts/start-from-zero.md. Lines marked PLACEHOLDER are not in
 // Aayush's words yet and are listed in 03-content/front-page/placeholders.md.
 ---
-<BaseLayout showFooterSignup={false}>
+<BaseLayout showFooterSignup={false} jsonLd={jsonLd}>
   <!-- 1. First screen -->
   <Band>
     <div class="hero">

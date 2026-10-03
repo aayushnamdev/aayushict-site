@@ -1,24 +1,49 @@
 ---
-// Dotted rose underline. Tap opens a short box. Slot = the word, `title` = box heading, `text` = box body.
+// Dotted rose underline. Tap opens a short note. Slot = the word, `title` = note heading, `text` = note body.
+// The note is its own element, so the button's name stays just the word.
 interface Props { title: string; text: string }
 const { title, text } = Astro.props;
+const id = `tip-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
 ---
-<button class="tip" type="button" aria-expanded="false" data-tip><slot /><span class="tipbox" role="note"><b>{title}</b>{text}</span></button>
+<span class="tipwrap">
+  <button class="tip" type="button" aria-expanded="false" aria-controls={id} data-tip><slot /></button>
+  <span class="tipbox" id={id} role="note" hidden><b>{title}</b>{text}</span>
+</span>
 
 <script>
   const tips = () => document.querySelectorAll<HTMLButtonElement>('[data-tip]');
-  const close = (except?: Element) => tips().forEach((t) => { if (t !== except) { t.classList.remove('open'); t.setAttribute('aria-expanded', 'false'); } });
+  const box = (t: Element) => document.getElementById(t.getAttribute('aria-controls') ?? '') as HTMLElement | null;
+  const close = (except?: Element) => tips().forEach((t) => {
+    if (t === except) return;
+    t.setAttribute('aria-expanded', 'false');
+    const b = box(t); if (b) b.hidden = true;
+  });
+  // Keep the note inside the screen, whatever side of the line the word falls on.
+  const place = (b: HTMLElement) => {
+    b.style.left = '0px';
+    const r = b.getBoundingClientRect(), pad = 22;
+    if (r.right > innerWidth - pad) b.style.left = `${innerWidth - pad - r.right}px`;
+    else if (r.left < pad) b.style.left = `${pad - r.left}px`;
+  };
   document.addEventListener('click', (e) => {
     const tip = (e.target as Element).closest<HTMLButtonElement>('[data-tip]');
-    close(tip ?? undefined);
-    if (!tip) return;
-    const open = tip.classList.toggle('open');
+    if (!tip) { if (!(e.target as Element).closest('.tipbox')) close(); return; }
+    close(tip);
+    const b = box(tip); if (!b) return;
+    const open = tip.getAttribute('aria-expanded') !== 'true';
     tip.setAttribute('aria-expanded', String(open));
+    b.hidden = !open;
+    if (open) place(b);
   });
-  document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(); });
+  document.addEventListener('keydown', (e) => {
+    if (e.key !== 'Escape') return;
+    const openTip = [...tips()].find((t) => t.getAttribute('aria-expanded') === 'true');
+    if (openTip) { close(); openTip.focus(); }
+  });
 </script>
 
 <style>
+  .tipwrap { position: relative; }
   .tip {
     position: relative; padding: 0; font: inherit; color: var(--text-heading); background: none; cursor: pointer;
     border: none; border-bottom: 2px dotted var(--rose);
@@ -26,11 +51,11 @@ const { title, text } = Astro.props;
   /* Invisible padding so the tap area reaches 44px while the text stays inline. */
   .tip::after { content: ''; position: absolute; inset: -9px -6px; }
   .tipbox {
-    display: none; position: absolute; left: 0; top: calc(100% + 10px); z-index: 10; width: 300px; max-width: calc(100vw - 2 * var(--phone-padding));
+    position: absolute; left: 0; top: calc(100% + 10px); z-index: 10; width: 300px; max-width: calc(100vw - 2 * var(--phone-padding));
     background: var(--surface); border: 1px solid var(--line-strong); border-radius: 12px; padding: 14px 16px;
     text-align: left; font-family: var(--font-body); font-weight: 400; font-size: 16px; line-height: 1.55; letter-spacing: 0;
     color: var(--text-body); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
   }
-  .tipbox b { display: block; font-family: var(--font-ui); font-size: 13px; color: var(--rose); margin-bottom: 4px; }
-  .tip.open .tipbox { display: block; }
+  .tipbox[hidden] { display: none; }
+  .tipbox b { display: block; font-family: var(--font-ui); font-size: 13px; color: var(--rose-text); margin-bottom: 4px; }
 </style>

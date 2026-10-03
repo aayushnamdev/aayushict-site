@@ -16,7 +16,10 @@ Match `reference-site.html` exactly for layout, colour and type.
 7. Every market post ends with "Not advice. Stop loss on." (PostLayout renders it. Do not repeat it in MDX.)
 8. Interactive controls are at least 44px tall and work by keyboard and touch.
 9. Reading pages use a 760px column and 18px body (`--read-width`, `--read-body` in tokens.css), not the 900px and 21px in brand-schema. Aayush's call. Do not change without asking.
-10. Do not put two widgets in a row. About one widget per 120 to 180 words. Depth goes in tap boxes.
+10. Small text on black uses `--rose-text`, not `--rose` (rose is 3.8:1 there, under the 4.5:1 minimum). Focus rings on wine bands are white.
+11. New pages start in `pending` in `src/config/site.ts` (noindex, out of the sitemap). Remove the path when the real page is built.
+12. Keep the skip link, the `#live` region (announce confirmations through it) and one h1 per page. Headings never skip a level.
+13. Do not put two widgets in a row. About one widget per 120 to 180 words. Depth goes in tap boxes.
 
 ### Affiliates
 - Firms live in `src/config/firms.ts` only. `/go/<slug>` redirects are built from it in `astro.config.mjs`.

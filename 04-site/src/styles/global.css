@@ -30,9 +30,10 @@ body {
   -webkit-font-smoothing: antialiased;
 }
 img { max-width: 100%; }
-a { color: var(--rose); text-underline-offset: 4px; }
+a { color: var(--rose-text); text-underline-offset: 4px; }
 a:hover { color: var(--text-heading); }
 button { font-family: var(--font-ui); cursor: pointer; }
+main:focus { outline: none; } /* skip link target, not a control */
 :focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; border-radius: 6px; }
 h1, h2, h3, h4 {
   font-family: var(--font-heading);
@@ -50,7 +51,7 @@ p { margin: 0; }
   font-size: 13px;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--rose);
+  color: var(--rose-text);
   line-height: 1.4;
 }
 .ui { font-family: var(--font-ui); }
@@ -58,6 +59,12 @@ p { margin: 0; }
 .wrap { max-width: 1280px; margin: 0 auto; padding: 0 var(--pad); }
 .col { max-width: var(--reading-width); margin: 0 auto; padding: 0 24px; }
 .read { max-width: var(--reading-width); margin: 0 auto; }
+.skip {
+  position: absolute; left: 16px; top: -64px; z-index: 100;
+  padding: 12px 18px; border-radius: var(--radius-button);
+  background: var(--wine); color: var(--white); font-family: var(--font-ui); font-weight: 500; text-decoration: none;
+}
+.skip:focus { top: 12px; color: var(--white); }
 .sr {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap;

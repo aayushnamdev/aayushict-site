@@ -29,6 +29,8 @@ const text = variant === 'footer' ? email.footerPrompt : email.prompt;
       msg.setAttribute('role', 'status');
       msg.textContent = form.dataset.thanks ?? '';
       form.replaceWith(msg);
+      const live = document.getElementById('live');
+      if (live) live.textContent = form.dataset.thanks ?? '';
     });
   });
 </script>
@@ -41,7 +43,7 @@ const text = variant === 'footer' ? email.footerPrompt : email.prompt;
   .sform { display: flex; gap: 10px; flex: 1; min-width: 280px; max-width: 460px; }
   .sform input {
     flex: 1; min-width: 0; min-height: 48px; padding: 0 14px;
-    border-radius: var(--radius-button); border: 1px solid var(--line-strong);
+    border-radius: var(--radius-button); border: 1px solid var(--text-muted);
     background: var(--page); color: var(--text-heading);
     font-family: var(--font-ui); font-size: 16px;
   }

@@ -5,8 +5,8 @@ interface Props { src: ImageMetadata; alt: string; caption: string; id: string; 
 const { src, alt, caption, id, tall = false } = Astro.props;
 ---
 <figure class:list={['shot', { tall }]}>
-  <button class="frame" type="button" data-shot-open={id} aria-label={`Enlarge image: ${alt}`}>
-    <Image src={src} alt={alt} widths={[480, 960]} sizes="(max-width: 860px) 100vw, 900px" />
+  <button class="frame" type="button" data-shot-open={id} aria-label={`Enlarge: ${caption.split('.')[0]}`}>
+    <Image src={src} alt={alt} widths={[480, 960]} sizes="(max-width: 860px) 100vw, 760px" />
     <span class="hint ui">Tap to enlarge</span>
   </button>
   <figcaption class="cap ui">{caption}</figcaption>

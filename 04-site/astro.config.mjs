@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 import vercel from '@astrojs/vercel';
 import { firms } from './src/config/firms.ts';
+import { site } from './src/config/site.ts';
 
 // /go/<slug> redirects come from the firms config. Inactive firms get none.
 // 302 on purpose: partner links change, and a 301 would be cached by browsers.
@@ -19,7 +20,15 @@ export default defineConfig({
   site: 'https://aayushict.space',
   output: 'static',
   adapter: vercel(),
-  integrations: [mdx(), sitemap()],
+  integrations: [
+    mdx(),
+    sitemap({
+      filter: (page) => {
+        const path = new URL(page).pathname.replace(/\/$/, '') || '/';
+        return !site.pending.includes(path) && path !== '/404';
+      },
+    }),
+  ],
   redirects: goRedirects,
   fonts: [
     {

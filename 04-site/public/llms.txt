@@ -1,0 +1,16 @@
+# aayushict
+
+> Know what's priced in. Trade what changes. Macro events (NFP, CPI, the Fed) linked to real Nasdaq futures trades, written by Aayush Namdev, who trades NQ and MNQ on funded accounts from India. Not a signal service. Not advice.
+
+## Pages
+
+- [Home](https://aayushict.space/): who I am, how I trade, and the gap this site fills.
+- [Start here](https://aayushict.space/start-here/): one real NFP night on 7 August 2026 with the numbers and screenshots, why it was rare, and how to trade US futures from India through prop firms.
+
+## Feed
+
+- [RSS](https://aayushict.space/rss.xml)
+
+## Disclosure
+
+Some links are affiliate links. Each one is labelled where it appears. Apex Trader Funding is a plain link and not an affiliate.
