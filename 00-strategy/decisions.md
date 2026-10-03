@@ -25,3 +25,5 @@ Dated record of locked calls. Add to this, don't rewrite history.
 - Fresh Astro 7 + MDX project in `04-site/` with Vercel adapter, self-hosted Google fonts via the Astro Fonts API, content collections per BUILD-PLAN section 3. Pages are empty shells. Widgets and real pages come piece by piece.
 - `/tools` page dropped. Tools live inside Start here.
 - Affiliate redirects are built from `src/config/firms.ts`. Apex stays off until a code and link exist.
+- Home page stays short (reference design). `/start-here` is the long reading page: the 7 Aug night, the firm picker with FundedNext, Apex and MRKT, and a short FAQ. There is no separate firms page and no `/tools` page.
+- Apex is a plain non-affiliate link: no code, no `/go/apex` redirect.

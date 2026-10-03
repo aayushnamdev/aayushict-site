@@ -3,7 +3,7 @@
 Single place to resume work on the aayushict.space front page. Written 2 Oct 2026 at the end of the first planning session.
 
 ## Status
-Direction approved by Aayush. Copy and widget spec are drafted. **Updated 3 Oct 2026:** all 7 pieces are built in `04-site/src/pages/index.astro` on the new dark brand, with every screenshot and widget. The firm picker is on the home page (Aayush's call, 3 Oct). Unrewritten lines are listed in `placeholders.md`. Apex is now a plain non-affiliate link. Branding and colours are still being worked on separately, so all styling here is placeholder.
+Direction approved by Aayush. Copy and widget spec are drafted. **Updated 3 Oct 2026:** the home page is short, like the original reference design (hero, the gap, a short night band, the honest part, what you get, email). The long read is `/start-here`: the 7 Aug night with all screenshots and widgets, the firm picker, MRKT and a short FAQ. Both are in `04-site/src/pages/`. Unrewritten lines are listed in `placeholders.md`. Apex is a plain non-affiliate link.
 
 | What | Where |
 |---|---|
