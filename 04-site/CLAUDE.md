@@ -1,1 +1,35 @@
-AGENTS.md
+## Project rules (aayushict.space)
+
+Astro + MDX on Vercel. Build plan: `../00-strategy/BUILD-PLAN.md`. Approved design: `../01-brand/reference-site.html`.
+Brand rules in text: `../01-brand/brand-schema.md`. Tokens: `src/styles/tokens.css` (copy of `../01-brand/tokens.css` plus a few extras at the bottom).
+v1 (27 Sep light theme build) is archived in `../_archive/2026-09-v1/`. Do not build from it.
+
+Match `reference-site.html` exactly for layout, colour and type.
+
+### Ground rules
+1. Tokens only. No raw hex in components or pages. The one exception is the `theme-color` meta tag.
+2. Never use em dashes or hyphens as connectors in any copy.
+3. Direction is always an arrow plus a word. Never colour alone.
+4. Check every page at 375px and 1280px.
+5. Goal is audience, not sales. Affiliates only. No popups.
+6. Sentences about 9 to 13 words. First person. Never "hawkish" or "dovish". Real numbers only.
+7. Every market post ends with "Not advice. Stop loss on." (PostLayout renders it. Do not repeat it in MDX.)
+8. Interactive controls are at least 44px tall and work by keyboard and touch.
+9. Do not put two widgets in a row. About one widget per 120 to 180 words. Depth goes in tap boxes.
+
+### Affiliates
+- Firms live in `src/config/firms.ts` only. `/go/<slug>` redirects are built from it in `astro.config.mjs`.
+- Never hardcode a partner URL in a page or MDX file.
+- Every code shows the disclosure line and a last verified date beside it.
+- No code above the first useful paragraph. At most one inline call to action per article.
+- A firm with `active: false` gets no redirect and no card.
+
+### Email
+Provider not chosen. `src/config/email.ts` holds the form action. While it is null the form shows a thank you and stores nothing.
+
+### Content
+Collections: `macro`, `learn`, `journal` in `src/content/`. Schemas in `src/content.config.ts` follow BUILD-PLAN section 3.
+Learn guides live at `src/content/learn/<category>/<slug>.mdx`.
+
+### Commands
+`npm run dev` (run in background), `npm run build`, `npm run check`. Deploy from this folder with `vercel --prod`.

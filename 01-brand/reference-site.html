@@ -1,0 +1,1126 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>aayushict · Know what's priced in. Trade what changes.</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Figtree:wght@600;700;800&family=Instrument+Sans:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --page:#141011;--page-deep:#0E0B0C;--surface:#1E1719;--raised:#2A2124;--line:#2B2325;--line-strong:#3A2A2F;
+  --heading:#F6F1EE;--body:#E9E3E0;--soft:#C9BEC1;--muted:#8C7F82;--num:#FFFFFF;
+  --wine:#6E1A33;--wine-deep:#5A1429;--wine-track:#3F0E1E;--rose:#B44C6C;--rose-on-wine:#F7C9D1;--on-wine:#F5E6EA;
+  --white:#FFFFFF;--tint:#F7F2F3;--wline:#EADDE0;--track:#F3ECEE;--ink:#1A1416;--ink-body:#3A3134;--ink-muted:#5E5457;
+  --up:#5FD39A;--down:#FFB27A;--up-w:#117A45;--down-w:#9A5B00;
+  --f-head:Aptos,"Figtree","Segoe UI",sans-serif;--f-body:"Source Serif 4",Georgia,serif;--f-ui:"Instrument Sans",system-ui,sans-serif;--f-num:"JetBrains Mono",ui-monospace,monospace;
+  --read:900px;--pad:100px;
+  color-scheme:dark;
+}
+/* The brand is dark first. Same values in every theme so the look never flips. */
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){--page:#141011}}
+:root[data-theme="dark"]{--page:#141011}
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);background:var(--page)}
+html{scroll-padding-top:calc(env(safe-area-inset-top,0px) + 80px)}
+*,*::before,*::after{box-sizing:border-box}
+body{margin:0;background:var(--page);color:var(--body);font-family:var(--f-body);font-size:21px;line-height:1.8;-webkit-font-smoothing:antialiased}
+img{max-width:100%}
+a{color:var(--rose);text-underline-offset:4px}
+a:hover{color:var(--heading)}
+button{font-family:var(--f-ui);cursor:pointer}
+:focus-visible{outline:2px solid var(--rose);outline-offset:3px;border-radius:6px}
+h1,h2,h3,h4{font-family:var(--f-head);font-weight:600;color:var(--heading);margin:0;line-height:1.15}
+p{margin:0}
+.n{font-family:var(--f-num);font-size:.82em;color:var(--num)}
+.label{font-family:var(--f-num);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--rose);line-height:1.4}
+.ui{font-family:var(--f-ui)}
+.mono{font-family:var(--f-num)}
+.wrap{max-width:1280px;margin:0 auto;padding:0 var(--pad)}
+.col{max-width:var(--read);margin:0 auto;padding:0 24px}
+.stack{display:flex;flex-direction:column}
+.up{color:var(--up)} .down{color:var(--down)}
+
+/* Header */
+.top{position:sticky;top:0;z-index:20;background:rgba(20,16,17,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding-top:env(safe-area-inset-top,0px)}
+.top .wrap{display:flex;justify-content:space-between;align-items:center;height:68px}
+.logo{font-family:var(--f-head);font-weight:700;font-size:22px;letter-spacing:-.01em;color:var(--heading);text-decoration:none;line-height:1}
+.logo i{font-style:normal;color:var(--rose)}
+.nav{display:flex;align-items:center;gap:30px;font-family:var(--f-ui);font-size:15px}
+.nav a{color:var(--body);text-decoration:none;padding:6px 0;border-bottom:2px solid transparent}
+.nav a:hover{color:var(--heading)}
+.nav a.btn{padding:12px 18px;color:#fff}
+.nav a.on{color:var(--heading);border-bottom-color:var(--wine)}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:44px;background:var(--wine);color:#fff !important;font-family:var(--f-ui);font-weight:500;font-size:15px;padding:12px 18px;border-radius:10px;text-decoration:none;border:none;border-bottom:none !important}
+.btn:hover{background:#7E2140}
+.btn.white{background:#fff;color:var(--wine) !important;font-weight:600}
+.menu{display:none;width:44px;height:44px;background:none;border:none;flex-direction:column;justify-content:center;align-items:center;gap:5px}
+.menu span{width:22px;height:2px;background:var(--body)}
+.drawer{display:none}
+.right{display:none}
+.btn.sm{min-height:40px;padding:9px 14px;font-size:14px}
+
+/* Bands */
+.band{padding:110px 0}
+.band.white{background:#fff;color:var(--ink-body)}
+.band.white h2,.band.white h3{color:var(--ink)}
+.band.white .label{color:var(--wine)}
+.band.wine{background:var(--wine);color:var(--on-wine)}
+.band.wine h2{color:#fff}
+.band.wine .label{color:var(--rose-on-wine)}
+.h-hero{font-size:68px;line-height:1.05;letter-spacing:-.01em}
+.h-sec{font-size:44px}
+.lead{font-size:20px;line-height:1.7}
+
+.tip{color:var(--heading);border-bottom:2px dotted var(--rose);cursor:pointer;position:relative;background:none;border-top:none;border-left:none;border-right:none;padding:0;font:inherit}
+.tipbox{display:none;position:absolute;left:0;top:calc(100% + 10px);z-index:10;width:300px;background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:14px 16px;text-align:left;font-family:var(--f-body);font-size:16px;line-height:1.55;color:var(--body);box-shadow:0 12px 30px rgba(0,0,0,.45)}
+.tipbox b{display:block;font-family:var(--f-ui);font-size:13px;color:var(--rose);margin-bottom:4px}
+.tip.open .tipbox{display:block}
+
+.chips{display:flex;gap:10px;flex-wrap:wrap}
+.chip{font-family:var(--f-num);font-size:14px;padding:9px 14px;border-radius:10px;background:var(--surface);border:1px solid var(--line);color:var(--heading);text-decoration:none;line-height:1.3}
+button.chip{border-color:var(--wine)}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:24px}
+.card h3{font-size:22px;margin-bottom:8px}
+.card p{font-size:17px;line-height:1.6;color:var(--soft)}
+a.card{display:block;text-decoration:none;color:inherit;transition:border-color .2s}
+a.card:hover{border-color:var(--wine)}
+.band.white .card{background:var(--tint);border-color:var(--wline)}
+.band.white .card p{color:var(--ink-muted)}
+.card.hl{background:var(--wine) !important;border-color:var(--wine) !important}
+.card.hl h3{color:#fff !important}.card.hl p{color:var(--on-wine) !important}
+.g2{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.g3{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}
+.g4{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+
+/* Hero */
+.hero{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr);gap:64px;align-items:start}
+
+/* Numbers card */
+.numcard{background:#fff;border-radius:16px;padding:28px;color:var(--ink-body)}
+.numcard .label{color:var(--wine)}
+.big{font-family:var(--f-num);font-size:72px;font-weight:500;line-height:1;color:var(--wine);padding:20px 0 6px}
+.nrow{display:flex;justify-content:space-between;padding:12px 0;border-bottom:1px solid #EDE6E8;font-size:16px}
+.nrow:last-child{border-bottom:none}
+.nrow span:first-child{color:var(--ink-muted)}
+.nrow span:last-child{font-family:var(--f-num);font-size:17px;color:var(--ink)}
+.dirs{display:flex;flex-direction:column;gap:8px;padding-top:14px;border-top:1px solid #EDE6E8;font-family:var(--f-num);font-size:15px}
+.dirs div{display:flex;justify-content:space-between}
+.uw{color:var(--up-w)}.dw{color:var(--down-w)}
+
+.shot{background:var(--raised);border:1px solid var(--line);border-radius:12px;height:320px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;font-family:var(--f-num);font-size:13px;color:var(--muted);cursor:zoom-in;width:100%}
+.cap{font-family:var(--f-ui);font-size:14px;color:var(--muted);margin-top:10px;line-height:1.5}
+
+.bar{height:14px;border-radius:7px;background:var(--wine-track)}
+.bar div{height:100%;border-radius:7px}
+
+/* White interactive cards */
+.wc{background:#fff;border-radius:20px;padding:32px 36px;color:var(--ink-body);display:flex;flex-direction:column;gap:22px;margin:16px 0}
+.wc .label{color:var(--wine)}
+.wc h3{color:var(--ink);font-size:26px}
+.wc .note{font-size:18px;line-height:1.65;color:var(--ink-body)}
+.seg{display:flex;background:var(--track);border-radius:12px;padding:4px;gap:4px}
+.seg button{border:none;background:transparent;color:var(--ink-muted);font-size:14px;font-weight:600;padding:10px 16px;min-height:42px;border-radius:9px}
+.seg button[aria-pressed="true"]{background:var(--wine);color:#fff}
+.tiles{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.tile{background:var(--tint);border-radius:14px;padding:16px 18px;display:flex;flex-direction:column;gap:6px}
+.tile span:first-child{font-family:var(--f-ui);font-size:13px;color:var(--ink-muted)}
+.tile b{font-family:var(--f-num);font-weight:500;font-size:20px}
+.meter{position:relative;height:10px;border-radius:5px;background:linear-gradient(90deg,#EADDE0,#B44C6C,#6E1A33)}
+.meter i{position:absolute;top:-7px;width:24px;height:24px;border-radius:12px;background:#fff;border:3px solid var(--ink);transition:left .35s}
+.ends{display:flex;justify-content:space-between;font-family:var(--f-ui);font-size:13px;color:var(--ink-muted);margin-bottom:8px}
+input[type=range]{width:100%;accent-color:#6E1A33;height:28px}
+.quiz{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.quiz button{border-radius:12px;padding:16px;min-height:54px;font-size:16px;font-weight:600;background:var(--tint);color:var(--ink);border:1px solid var(--wline)}
+.quiz button.right{background:#E7F4EC;color:var(--up-w);border:2px solid var(--up-w)}
+.quiz button.wrong{background:#FBEFE3;color:var(--down-w);border:2px solid var(--down-w)}
+
+/* Reading pages */
+.article{padding:64px 0 110px}
+.article .col>*+*{margin-top:24px}
+.crumb{font-family:var(--f-ui);font-size:14px;color:var(--muted)}
+.crumb a{color:var(--muted);text-decoration:none}
+.title{font-size:54px;line-height:1.08;letter-spacing:-.01em}
+.sub{font-size:24px;line-height:1.55;color:var(--soft)}
+.meta{display:flex;flex-wrap:wrap;gap:8px 18px;font-family:var(--f-ui);font-size:14px;color:var(--muted);padding-bottom:26px;border-bottom:1px solid var(--line)}
+.article h2{font-size:34px;line-height:1.2;padding-top:32px}
+.article h3{font-size:24px;padding-top:12px}
+.route{display:flex;flex-wrap:wrap;gap:8px;align-items:center;font-family:var(--f-ui);font-size:14px}
+.route span{background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:7px 13px;color:var(--soft)}
+.route em{font-style:normal;color:var(--rose)}
+blockquote{margin:0;padding:4px 0 4px 26px;border-left:3px solid var(--wine);font-style:italic;font-size:27px;line-height:1.5;color:var(--heading)}
+details.more{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:20px 24px}
+details.more summary{cursor:pointer;list-style:none;font-family:var(--f-ui);font-size:15px;font-weight:600;color:var(--heading);display:flex;justify-content:space-between;align-items:center;gap:12px}
+details.more summary::-webkit-details-marker{display:none}
+details.more summary::after{content:"+";font-family:var(--f-num);color:var(--rose);font-size:20px}
+details.more[open] summary::after{content:"−"}
+details.more p{margin-top:12px;font-size:18px;line-height:1.7}
+.steps{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:14px}
+.steps li{display:flex;gap:16px}
+.steps li::before{content:attr(data-n);font-family:var(--f-num);font-size:15px;color:var(--rose);padding-top:5px;min-width:22px}
+.note-box{background:var(--surface);border-left:3px solid var(--rose);border-radius:0 14px 14px 0;padding:20px 24px;font-size:18px;line-height:1.7}
+.note-box .label{display:block;margin-bottom:6px}
+.callbox{background:var(--wine);border-radius:16px;padding:30px 32px;display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:40px !important}
+.callbox h3{color:#fff;font-size:24px;padding:0}
+.callbox p{color:var(--on-wine);font-size:17px;margin-top:6px}
+.signoff{font-family:var(--f-num);font-size:14px;color:var(--muted);padding-top:18px;border-top:1px solid var(--line);margin-top:40px !important}
+.disc{font-family:var(--f-ui);font-size:13px;line-height:1.55;color:var(--muted)}
+
+/* Event header */
+.event{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.badge{font-family:var(--f-ui);font-size:13px;font-weight:600;padding:6px 12px;border-radius:999px}
+.badge.done{background:var(--surface);color:var(--soft);border:1px solid var(--line)}
+.badge.high{background:var(--wine);color:#fff}
+
+/* Lists */
+.list{display:flex;flex-direction:column;gap:12px}
+.item{display:grid;grid-template-columns:150px 1fr auto;gap:24px;align-items:center;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:22px 24px;text-decoration:none;color:inherit}
+.item:hover{border-color:var(--wine)}
+.item .d{font-family:var(--f-num);font-size:14px;color:var(--muted);line-height:1.5}
+.item h3{font-size:22px}
+.item p{font-size:16px;color:var(--soft);line-height:1.55;margin-top:4px}
+.item .go{font-family:var(--f-ui);font-size:14px;color:var(--rose)}
+.item.soon{opacity:.6;pointer-events:none}
+
+table.calls{width:100%;border-collapse:collapse;font-family:var(--f-ui);font-size:15px}
+table.calls th{text-align:left;font-weight:600;color:var(--muted);font-size:13px;padding:12px 10px;border-bottom:1px solid var(--line)}
+table.calls td{padding:16px 10px;border-bottom:1px solid var(--line);color:var(--body)}
+table.calls td.m{font-family:var(--f-num);font-size:14px}
+.scroll{overflow-x:auto}
+.status{font-family:var(--f-ui);font-size:13px;font-weight:600;padding:5px 10px;border-radius:999px;white-space:nowrap}
+.status.hit{background:#163527;color:var(--up)}
+.status.open{background:var(--surface);color:var(--soft);border:1px solid var(--line)}
+
+/* Firms */
+.firm{background:#fff;color:var(--ink-body);border-radius:20px;padding:28px;display:flex;flex-direction:column;gap:16px}
+.firm h3{color:var(--ink);font-size:24px}
+.firm .fit{font-family:var(--f-ui);font-size:14px;color:var(--wine);font-weight:600}
+.firm ul{margin:0;padding-left:20px;font-size:16px;line-height:1.6}
+.pc{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.pc b{display:block;font-family:var(--f-ui);font-size:13px;color:var(--ink-muted);margin-bottom:4px}
+.codepill{display:flex;align-items:center;justify-content:space-between;gap:12px;background:var(--tint);border:1px dashed #C9AEB6;border-radius:12px;padding:10px 10px 10px 16px}
+.codepill code{font-family:var(--f-num);font-size:18px;color:var(--ink);letter-spacing:.06em}
+.codepill button{background:var(--wine);color:#fff;border:none;border-radius:9px;padding:10px 14px;min-height:42px;font-size:14px;font-weight:600}
+.verified{font-family:var(--f-ui);font-size:13px;color:var(--ink-muted)}
+.firm .disc{color:var(--ink-muted)}
+.path{display:block;text-decoration:none;color:inherit;border-radius:16px;padding:26px;background:var(--surface);border:1px solid var(--line)}
+.path:hover{border-color:var(--wine)}
+.path h3{font-size:24px}
+.path p{color:var(--soft);font-size:17px;line-height:1.6;margin-top:8px}
+
+/* Five tiles, signup, kinds */
+.g5{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:20px}
+.tilelink{text-decoration:none;border-top:2px solid var(--wine);padding-top:18px;display:block}
+.tilelink h3{font-size:20px}
+.tilelink p{font-size:16px;line-height:1.6;color:var(--ink-muted);margin-top:6px}
+.signup{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:44px;display:flex;justify-content:space-between;align-items:center;gap:40px;flex-wrap:wrap}
+.sform{display:flex;gap:10px;flex:1;min-width:280px;max-width:460px}
+.sform input{flex:1;min-width:0;min-height:48px;border-radius:10px;border:1px solid var(--line-strong);background:var(--page);color:var(--heading);font-family:var(--f-ui);font-size:16px;padding:0 14px}
+.sform input::placeholder{color:var(--muted)}
+.sform.onwine input{background:#fff;color:var(--ink);border-color:#fff}
+.sform.onwine input::placeholder{color:var(--ink-muted)}
+.sform .btn{min-height:48px;white-space:nowrap}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.kind{display:inline-block;font-family:var(--f-num);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--rose);margin-bottom:6px}
+.callbox .sform{max-width:420px}
+body[data-route="home"] .fsign{display:none !important}
+/* Footer */
+footer{border-top:1px solid var(--line);padding:40px 0 48px;background:var(--page-deep)}
+footer .wrap{display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-family:var(--f-num);font-size:13px;color:var(--muted);line-height:1.6}
+footer a{color:var(--muted);text-decoration:none}
+footer a:hover{color:var(--heading)}
+
+/* Modal */
+.modal{position:fixed;inset:0;z-index:50;background:rgba(10,8,9,.8);display:none;align-items:center;justify-content:center;padding:24px}
+.modal.open{display:flex}
+.modal .box{background:var(--surface);border:1px solid var(--line-strong);border-radius:18px;padding:28px;max-width:520px;width:100%}
+.modal .box h3{font-size:24px;margin-bottom:10px}
+.modal .box p{font-size:17px;line-height:1.65;color:var(--soft)}
+.modal .x{margin-top:20px;background:var(--wine);color:#fff;border:none;border-radius:10px;padding:12px 18px;min-height:44px;font-size:15px}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:var(--heading);color:var(--ink);font-family:var(--f-ui);font-size:14px;font-weight:600;padding:12px 18px;border-radius:10px;opacity:0;transition:opacity .2s;pointer-events:none;z-index:60}
+.toast.show{opacity:1}
+
+[data-page]{display:none}
+[data-page].on{display:block}
+
+@media (max-width:1100px){:root{--pad:40px}.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g5{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media (max-width:860px){
+  :root{--pad:22px}
+  body{font-size:18px;line-height:1.75}
+  .nav{display:none}.menu{display:flex}
+  .top .wrap{height:64px}
+  .top .right{display:flex;align-items:center;gap:10px}
+  .drawer.open{display:flex;flex-direction:column;gap:4px;padding:8px 22px 20px;border-top:1px solid var(--line)}
+  .drawer a{font-family:var(--f-ui);font-size:17px;color:var(--body);text-decoration:none;padding:12px 0;border-bottom:1px solid var(--line)}
+  .band{padding:64px 0}
+  .h-hero{font-size:40px;line-height:1.08}
+  .h-sec{font-size:30px}
+  .hero,.g2,.g3,.g4,.g5,.split{grid-template-columns:1fr !important}
+  .signup{padding:26px 20px}
+  .sform{flex-direction:column;min-width:0;max-width:none;width:100%}
+  .callbox .sform{max-width:none}
+  .hero{gap:28px}
+  .big{font-size:56px}
+  .title{font-size:36px;line-height:1.1}
+  .sub{font-size:20px}
+  .article{padding:40px 0 72px}
+  .article h2{font-size:27px;padding-top:16px}
+  .article h3{font-size:21px}
+  .col{padding:0 22px}
+  .wc{padding:22px 18px;border-radius:18px;gap:18px}
+  .wc h3{font-size:21px;line-height:1.25}
+  .wc .note{font-size:16px}
+  .seg{display:grid;grid-template-columns:1fr 1.5fr 1fr}
+  #modes .seg,#wk .seg{grid-template-columns:1fr 1fr;min-width:0 !important;width:100%}
+  .steps li::before{min-width:26px}
+  .seg button{padding:10px 6px;font-size:13px;min-height:44px}
+  .tiles{grid-template-columns:1fr}
+  .tile{flex-direction:row;justify-content:space-between;align-items:center}
+  .tile b{font-size:17px}
+  .quiz{grid-template-columns:1fr}
+  .shot{height:220px}
+  blockquote{font-size:22px}
+  .callbox{flex-direction:column;align-items:stretch;padding:24px 20px}
+  .item{grid-template-columns:1fr;gap:8px}
+  .pc{grid-template-columns:1fr}
+  .numcard{padding:22px}
+  .head-row{flex-direction:column;align-items:flex-start !important}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none !important}}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="wrap">
+    <a class="logo" href="#/" aria-label="aayushict home">aayush<i>ict</i></a>
+    <nav class="nav" aria-label="Main">
+      <a href="#/macro" data-nav="macro">Macro</a>
+      <a href="#/learn" data-nav="learn">Learn</a>
+      <a href="#/journal" data-nav="journal">Journal</a>
+      <a href="#/watch" data-nav="watch">Watch</a>
+      <a href="#/about" data-nav="about">About</a>
+      <a class="btn" href="#/start-here">Start here</a>
+    </nav>
+    <div class="right"><a class="btn sm" href="#/start-here">Start here</a>
+    <button class="menu" aria-label="Open menu" aria-expanded="false" id="menuBtn"><span></span><span></span><span></span></button></div>
+  </div>
+  <nav class="drawer" id="drawer" aria-label="Mobile">
+    <a href="#/macro">Macro</a><a href="#/learn">Learn</a><a href="#/journal">Journal</a><a href="#/watch">Watch</a><a href="#/about">About</a>
+    <a class="btn" href="#/start-here" style="margin-top:12px;border:none">Start here</a>
+  </nav>
+</header>
+
+<main>
+
+<!-- ============ HOME ============ -->
+<section data-page="home">
+  <div class="band" style="padding-top:96px">
+    <div class="wrap hero">
+      <div class="stack" style="gap:24px">
+        <div class="label">Macro · Futures · From India</div>
+        <h1 class="h-hero">Know what's <button class="tip" type="button" aria-expanded="false">priced in<span class="tipbox" role="note"><b>Priced in</b>What the market already expects. Price moved for it before the news came out.</span></button>. Trade what changes.</h1>
+        <p class="lead" style="max-width:560px">I read NFP, CPI and the Fed before they print. Then I trade Nasdaq futures from India, on funded accounts.</p>
+        <div class="chips">
+          <span class="chip">102 points</span>
+          <span class="chip">4 MNQ</span>
+          <button class="chip" type="button" data-modal="payout">Apex payout $1,446 ↗</button>
+        </div>
+      </div>
+      <div class="stack" style="gap:16px;padding-top:30px">
+        <a class="card" href="#/macro/week-ahead">
+          <div class="label" style="margin-bottom:8px">Macro</div>
+          <h3>Before the news</h3>
+          <p>What's expected, what would change it, and three scenarios I write before every release.</p>
+        </a>
+        <a class="card" href="#/macro/jackson-hole">
+          <div class="label" style="margin-bottom:8px">Futures</div>
+          <h3>After the candle</h3>
+          <p>Did it continue, reverse or chop? My review later, what I saw and felt.</p>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div class="band white">
+    <div class="wrap stack" style="gap:36px">
+      <div class="stack" style="gap:14px;max-width:680px">
+        <div class="label">The gap</div>
+        <h2 class="h-sec">You learned the chart. Nobody taught you the news.</h2>
+        <p class="lead">A big candle prints at 6 PM. Reverse, continue or chop? You're guessing.</p>
+      </div>
+      <div class="g4">
+        <div class="card"><h3>Chart only</h3><p>You see the candle. You don't know why it came.</p></div>
+        <div class="card"><h3>News only</h3><p>You know the number. You don't know if the move will last.</p></div>
+        <div class="card"><h3>Late night trader</h3><p>The news lands late at night. Tired eyes, fast decisions.</p></div>
+        <div class="card hl"><h3>Here</h3><p>The news gives you direction. Your chart gives you the entry.</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="band">
+    <div class="wrap split" style="display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:64px;align-items:start">
+      <div class="stack" style="gap:20px">
+        <div class="label">One real night</div>
+        <h2 class="h-sec">Friday 7 August, 6 PM India time.</h2>
+        <p>Before the print, ADP came in at <span class="n">44,000</span> against <span class="n">65,000</span>. September hike odds fell from two hikes to one. Gold was up <span class="n">6%</span> on the week.</p>
+        <p>I had three scenarios written down. A beat, a number near forecast, and a miss. The miss came, and it came big.</p>
+        <div><div class="shot" role="img" aria-label="Chart placeholder">[Chart: NQ 1 minute, 6:04 PM entry]<span class="ui" style="font-size:13px">Tap to enlarge</span></div></div>
+        <p>I entered at <span class="n">6:04 PM</span> in a bullish 1 minute fair value gap, stop below it. Four MNQ. One came off early. Three ran the full <span class="n">102</span> points, about <span class="n">$500 to 600</span>. I don't remember the exact stop size, so I won't make one up.</p>
+      </div>
+      <div class="numcard" style="margin-top:72px">
+        <div class="label">NFP · The numbers</div>
+        <div class="big" data-flip>85K</div>
+        <div style="font-size:16px;color:var(--ink-muted);padding-bottom:14px;border-bottom:1px solid #EDE6E8">Actual jobs added</div>
+        <div class="nrow"><span>Forecast</span><span>85K</span></div>
+        <div class="nrow"><span>Previous</span><span>20K</span></div>
+        <div class="nrow" style="margin-bottom:6px"><span>Unemployment</span><span>4.1%</span></div>
+        <div class="dirs">
+          <div><span>NQ</span><span class="uw">▲ Up</span></div>
+          <div><span>Gold</span><span class="uw">▲ Up</span></div>
+          <div><span>Dollar</span><span class="dw">▼ Down</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="band wine">
+    <div class="wrap g2" style="gap:64px;align-items:center">
+      <div class="stack" style="gap:18px">
+        <div class="label">The honest part</div>
+        <h2 class="h-sec">This night was rare.</h2>
+        <p>Most releases land near forecast. Price chops both ways and nothing runs.</p>
+        <p>Even this night, a lot was already priced in. The room left to run was smaller than usual. Knowing that is half the trade.</p>
+      </div>
+      <div style="background:var(--wine-deep);border:1px solid #8A2A45;border-radius:14px;padding:28px" class="stack">
+        <div class="label" style="margin-bottom:20px">Room left</div>
+        <div class="stack" style="gap:8px;margin-bottom:22px">
+          <div style="display:flex;justify-content:space-between;font-size:16px"><span>Usual NFP move</span><span class="mono" style="color:#fff">~300 pts</span></div>
+          <div class="bar"><div style="width:100%;background:#C9A3AE"></div></div>
+        </div>
+        <div class="stack" style="gap:8px">
+          <div style="display:flex;justify-content:space-between;font-size:16px"><span>Room left this night</span><span class="mono" style="color:#fff">~100 to 150</span></div>
+          <div class="bar"><div style="width:42%;background:#fff"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="band white">
+    <div class="wrap stack" style="gap:30px">
+      <div class="label">What you get here</div>
+      <h2 class="h-sec" style="margin-top:-12px">Built for the night before the news.</h2>
+      <div class="g5">
+        <a class="tilelink" href="#/macro/week-ahead"><h3>Week ahead</h3><p>Every weekend, what's priced in for NQ, gold and the dollar.</p></a>
+        <a class="tilelink" href="#/macro"><h3>Briefings</h3><p>What's happened, what's priced in, and three scenarios for the release.</p></a>
+        <a class="tilelink" href="#/journal"><h3>Journal</h3><p>My review after the news. Losing days stay visible.</p></a>
+        <a class="tilelink" href="#/learn"><h3>Guides</h3><p>How macro moves price, taught through real nights.</p></a>
+        <a class="tilelink" href="#/start-here"><h3>Prop firms</h3><p>Firms by fit, honest pros and cons, payouts explained.</p></a>
+      </div>
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;padding-top:10px" class="head-row">
+        <a class="btn" href="#/macro">Open the Macro Desk</a>
+        <span style="font-size:18px;color:var(--ink-muted)">The next briefing goes up before the release.</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="band">
+    <div class="wrap">
+      <div class="signup">
+        <div class="stack" style="gap:10px;max-width:520px">
+          <div class="label">Every Sunday</div>
+          <h2 class="h-sec">Get the week ahead in your inbox.</h2>
+          <p class="lead" style="color:var(--soft)">One email every Sunday, plus big release briefings. No signals.</p>
+        </div>
+        <form class="sform" data-signup><label class="sr" for="em1">Email</label><input id="em1" type="email" placeholder="you@email.com" required autocomplete="email"><button class="btn" type="submit">Sign me up</button></form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ MACRO DESK ============ -->
+<section data-page="macro">
+  <div class="article"><div class="col">
+    <div class="label">Macro Desk</div>
+    <h1 class="title">Every big release, before and after.</h1>
+    <p class="sub">Week ahead on the weekend. Briefings before a release. Reviews after. Newest first.</p>
+    <div class="list" style="margin-top:36px">
+      <a class="item" href="#/macro/week-ahead">
+        <div class="d">Sun 30 Aug<br>Week ahead</div>
+        <div><span class="kind">Week ahead</span><h3>The week the jobs number has no cushion</h3><p>NQ, gold and the dollar going into the 4 September jobs report.</p></div>
+        <span class="go">Read</span>
+      </a>
+      <a class="item" href="#/macro/jackson-hole">
+        <div class="d">Friday<br>Jackson Hole</div>
+        <div><span class="kind">Review</span><h3>The speech that said nothing but moved everything</h3><p>No guidance, a 38 handle long, and September hike odds from 35% to 61%.</p></div>
+        <span class="go">Read</span>
+      </a>
+      <a class="item" href="#/macro/nfp-aug-2026">
+        <div class="d">Fri 7 Aug 2026<br>6 PM IST</div>
+        <div><span class="kind">Briefing</span><h3>NFP: a big miss, and how much was priced in</h3><p>−23K against 85K. Gold, NQ and the dollar, with three scenarios written before.</p></div>
+        <span class="go">Read</span>
+      </a>
+      <div class="item soon">
+        <div class="d">Next release</div>
+        <div><span class="kind">Briefing</span><h3>CPI preview</h3><p>Goes up before the print.</p></div>
+        <span class="go">Soon</span>
+      </div>
+      <div class="item soon">
+        <div class="d">Next meeting</div>
+        <div><span class="kind">Briefing</span><h3>Fed decision preview</h3><p>Goes up before the statement.</p></div>
+        <span class="go">Soon</span>
+      </div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ BRIEFING ============ -->
+<section data-page="macro/nfp-aug-2026">
+  <article class="article"><div class="col">
+    <div class="crumb"><a href="#/macro">Macro Desk</a> / NFP</div>
+    <div class="event"><span class="badge high">High impact</span><span class="badge done">Released</span><span class="ui" style="font-size:14px;color:var(--muted)">Fri 7 Aug 2026 · 8:30 AM ET · 6 PM IST</span></div>
+    <h1 class="title">NFP, August: a big miss</h1>
+    <div class="route"><span>Weak ADP</span><em>→</em><span>Hike odds fall</span><em>→</em><span>NFP misses</span><em>→</em><span>NQ and gold up, dollar down</span></div>
+    <p>The week started with the market already leaning weak. ADP printed <span class="n">44,000</span> against <span class="n">65,000</span> expected. September hike odds dropped from two hikes to one. Gold climbed <span class="n">6%</span> on the week, near <span class="n">$4,316</span>.</p>
+    <p>So the question for Friday was simple. Would jobs confirm the weakness, or surprise everyone?</p>
+
+    <div class="numcard">
+      <div class="label">NFP · 7 Aug 2026 · 6 PM IST</div>
+      <div class="g4" style="gap:0;margin-top:14px;border-top:1px solid #EDE6E8">
+        <div style="padding:14px 0"><div class="ui" style="font-size:13px;color:var(--ink-muted)">Actual</div><div class="mono" style="font-size:26px;color:var(--wine)">−23K</div></div>
+        <div style="padding:14px 0"><div class="ui" style="font-size:13px;color:var(--ink-muted)">Forecast</div><div class="mono" style="font-size:26px;color:var(--ink)">85K</div></div>
+        <div style="padding:14px 0"><div class="ui" style="font-size:13px;color:var(--ink-muted)">Previous</div><div class="mono" style="font-size:26px;color:var(--ink)">20K</div></div>
+        <div style="padding:14px 0"><div class="ui" style="font-size:13px;color:var(--ink-muted)">Unemployment</div><div class="mono" style="font-size:26px;color:var(--ink)">4.1%</div></div>
+      </div>
+    </div>
+
+    <h2>The three scenarios I wrote</h2>
+    <p>Written before the print. Each one says what it would mean, then what gold, NQ and the dollar should do.</p>
+    <div class="g3">
+      <div class="card"><div class="ui" style="font-size:13px;color:var(--muted)">Beat, above 120K</div><p style="margin:8px 0 12px">Hike odds go back up.</p><div class="mono" style="font-size:14px;line-height:1.9"><div>Gold <span class="down">▼ Down</span></div><div>NQ <span class="down">▼ Down</span></div><div>Dollar <span class="up">▲ Up</span></div></div></div>
+      <div class="card"><div class="ui" style="font-size:13px;color:var(--muted)">Near forecast</div><p style="margin:8px 0 12px">Already priced in. I sit out.</p><div class="mono" style="font-size:14px;line-height:1.9;color:var(--soft)"><div>Gold ◆ Flat</div><div>NQ ◆ Chop</div><div>Dollar ◆ Flat</div></div></div>
+      <div class="card" style="border-color:var(--wine)"><div class="ui" style="font-size:13px;color:var(--rose)">Miss, below 40K · happened</div><p style="margin:8px 0 12px">Cut talk starts.</p><div class="mono" style="font-size:14px;line-height:1.9"><div>Gold <span class="up">▲ Up</span></div><div>NQ <span class="up">▲ Up</span></div><div>Dollar <span class="down">▼ Down</span></div></div></div>
+    </div>
+
+    <h2>What most people miss</h2>
+    <p>A miss this big sounds like a huge move. But ADP had already warned everyone. Part of the miss was priced in before 6 PM. The move was real, but smaller than the headline suggested.</p>
+    <div class="note-box"><span class="label">My direction</span>I leaned long NQ on a miss. I waited for the first 1 minute fair value gap after the print and entered at <span class="n">6:04 PM</span>.</div>
+    <div><div class="shot" role="img" aria-label="Reel placeholder">[Reel: the NFP night, 60 seconds]<span class="ui" style="font-size:13px">Tap to play</span></div></div>
+    <p>Want the idea behind this? <a href="#/learn/priced-in">Read: What priced in really means</a>.</p>
+    <div class="callbox">
+      <div><h3>Get the week ahead every Sunday.</h3><p>One email, plus big release briefings.</p></div>
+      <form class="sform onwine" data-signup><label class="sr" for="emx3">Email</label><input id="emx3" type="email" placeholder="you@email.com" required autocomplete="email"><button class="btn white" type="submit">Sign me up</button></form>
+    </div>
+    <p class="disc">Trading this from India? I trade funded with Apex. <a href="#/start-here">See prop firms by fit</a>. Affiliate links on that page. You may get a discount, I may earn a commission. It does not change what I write.</p>
+    <div class="signoff">Not advice. Stop loss on.</div>
+  </div></article>
+</section>
+
+<!-- ============ POST: WEEK AHEAD ============ -->
+<section data-page="macro/week-ahead">
+  <article class="article"><div class="col">
+    <div class="crumb"><a href="#/macro">Macro Desk</a> / Week ahead</div>
+    <div class="note-box" style="border-left-color:var(--wine)"><span class="label">Sample layout</span>The dates and Friday's numbers come from your Jackson Hole post. The leans and plans are placeholders for your own read.</div>
+    <div class="event"><span class="badge high">Week ahead</span><span class="ui" style="font-size:14px;color:var(--muted)">31 Aug to 4 Sep · posted Sunday</span></div>
+    <h1 class="title">The week the jobs number has no cushion</h1>
+    <p class="sub">What's priced in for NQ, gold and the dollar, and the one night that matters.</p>
+    <div class="meta"><span>Aayush Namdev</span><span>4 min read</span></div>
+    <div class="note-box"><span class="label">How I use this</span>I only trade NQ, scalping the 1 minute chart on prop firm accounts. Gold and the dollar are my daily chart context, for correlation, not trades.</div>
+    <div class="route"><span>Daily picture</span><em>→</em><span>What it means for NQ</span><em>→</em><span>This week's events</span><em>→</em><span>What would change it</span><em>→</em><span>How I'll approach it</span></div>
+
+    <h2>The daily picture</h2>
+    <p>Jackson Hole pushed the market to the other side in one session. September hike odds went from <span class="n">35%</span> to <span class="n">61%</span>. The dollar index went to around <span class="n">99.50</span>. Gold fell from <span class="n">4,640</span> to <span class="n">4,474</span>.</p>
+
+    <div class="wc">
+      <div class="stack" style="gap:8px"><div class="label">Daily chart · going into the week</div><h3>Where each one stands</h3></div>
+      <div class="tiles">
+        <div class="tile" style="flex-direction:column;align-items:flex-start"><span>Dollar · context</span><b class="uw">▲ Up</b><span style="font-family:var(--f-body);font-size:15px;color:var(--ink-body)">Around 99.50 after the speech.</span></div>
+        <div class="tile" style="flex-direction:column;align-items:flex-start"><span>Gold · context</span><b class="dw">▼ Down</b><span style="font-family:var(--f-body);font-size:15px;color:var(--ink-body)">4,640 to 4,474 on Friday.</span></div>
+        <div class="tile" style="background:var(--wine);flex-direction:column;align-items:flex-start"><span style="color:var(--on-wine)">NQ · I trade this</span><b style="color:#fff">◆ Your lean</b><span style="font-family:var(--f-body);font-size:15px;color:var(--on-wine)">Placeholder for your daily read.</span></div>
+      </div>
+      <div>
+        <div class="ends"><span>September hike odds</span><span>CME FedWatch</span></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:grid;grid-template-columns:90px 1fr 54px;gap:12px;align-items:center"><span class="ui" style="font-size:14px;color:var(--ink-muted)">Thursday</span><div style="height:12px;border-radius:6px;background:var(--track)"><div style="width:35%;height:100%;border-radius:6px;background:#C9A3AE"></div></div><span class="mono" style="font-size:15px;color:var(--ink)">35%</span></div>
+          <div style="display:grid;grid-template-columns:90px 1fr 54px;gap:12px;align-items:center"><span class="ui" style="font-size:14px;color:var(--ink-muted)">Friday</span><div style="height:12px;border-radius:6px;background:var(--track)"><div style="width:61%;height:100%;border-radius:6px;background:var(--wine)"></div></div><span class="mono" style="font-size:15px;color:var(--wine)">61%</span></div>
+        </div>
+      </div>
+    </div>
+
+    <h2>What it means for NQ</h2>
+    <p>Placeholder for your read. Higher hike odds and a stronger dollar usually weigh on Nasdaq. The question for the week is how much of that is already in the price.</p>
+
+    <h2>This week's events</h2>
+    <div class="list">
+      <div class="item" style="grid-template-columns:150px 1fr auto;border-color:var(--wine)"><div class="d">Fri 4 Sep<br>6 PM IST · 8:30 AM ET</div><div><h3>August jobs report</h3><p>The first real number after a speech with no guidance.</p></div><span class="badge high">The one</span></div>
+      <div class="item" style="grid-template-columns:150px 1fr auto;opacity:.7"><div class="d">Add date</div><div><h3>Other releases this week</h3><p>Add any smaller events here.</p></div><span class="badge done">Lower</span></div>
+    </div>
+
+    <h2>What would change it</h2>
+    <p>Pick a result to see how the picture would shift.</p>
+    <div class="wc" id="wk">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px" class="head-row">
+        <div class="stack" style="gap:8px"><div class="label">Friday · if the number is</div><h3>Strong or weak jobs?</h3></div>
+        <div class="seg" role="group" aria-label="Jobs result" style="min-width:260px">
+          <button type="button" data-w="strong" aria-pressed="true">Strong jobs</button>
+          <button type="button" data-w="weak" aria-pressed="false">Weak jobs</button>
+        </div>
+      </div>
+      <div class="tiles">
+        <div class="tile"><span>NQ</span><b id="wNq"></b></div>
+        <div class="tile"><span>Gold</span><b id="wGold"></b></div>
+        <div class="tile"><span>Dollar</span><b id="wUsd"></b></div>
+      </div>
+      <p class="note" id="wNote"></p>
+    </div>
+
+    <h2>How I'll approach it</h2>
+    <ol class="steps">
+      <li data-n="Mo"><span>Monday to Wednesday, the market prices in the forecast. I stay small.</span></li>
+      <li data-n="Th"><span>Thursday chops and the London session chops. Everybody is waiting.</span></li>
+      <li data-n="Fr"><span>Friday at 6 PM, I watch the number and decide which mode I'm in.</span></li>
+    </ol>
+    <p>The review goes in the journal after Friday, what I saw and what I felt.</p>
+    <div class="callbox">
+      <div><h3>Get the week ahead every Sunday.</h3><p>One email, plus big release briefings.</p></div>
+      <form class="sform onwine" data-signup><label class="sr" for="emx1">Email</label><input id="emx1" type="email" placeholder="you@email.com" required autocomplete="email"><button class="btn white" type="submit">Sign me up</button></form>
+    </div>
+        <div class="signoff">Not financial advice. Trade with a stop loss.</div>
+  </div></article>
+</section>
+
+<!-- ============ POST: JACKSON HOLE REVIEW ============ -->
+<section data-page="macro/jackson-hole">
+  <article class="article"><div class="col">
+    <div class="crumb"><a href="#/macro">Macro Desk</a> / Review</div>
+    <div class="event"><span class="badge high">Fed speech</span><span class="badge done">Review</span><span class="ui" style="font-size:14px;color:var(--muted)">Friday · Jackson Hole · 7:30 PM IST</span></div>
+    <h1 class="title">The Speech That Said Nothing but Moved Everything</h1>
+    <p class="sub">Friday's Jackson Hole speech, the trade I took, and why I closed it early</p>
+    <div class="meta"><span>Aayush Namdev</span><span>8 min read</span></div>
+    <div class="route"><span>Speech starts</span><em>→</em><span>Price drops</span><em>→</em><span>Two opposite lines</span><em>→</em><span>Long, closed at 38</span><em>→</em><span>Market reprices September</span></div>
+
+    <h2>7:30 PM, two screens</h2>
+    <p>Friday. One Chrome tab playing the speech from Jackson Hole. Nasdaq on the one minute chart next to it.</p>
+    <p>The second he started talking, price dropped.</p>
+    <p>Nothing had been said yet. He was still doing the opening.</p>
+    <p>That is the first thing worth noticing. Nobody was reacting to information. Everybody was reacting to the fact that information was coming.</p>
+
+    <h2>Then he said two opposite things</h2>
+    <p>He said the economy is doing fine. Consumer spending healthy. Labour market stable, not something he is worried about.</p>
+    <p>If you have been trading the last three weeks, that sounds like good news. The whole reason the market stopped expecting a rate hike was the jobs report on August 7 that came at minus <span class="n">23,000</span>.</p>
+    <p>But then he said inflation has not meaningfully improved. That this summer's better numbers do not tell him the underlying trend has changed.</p>
+    <p>So which one is it.</p>
+
+    <h2>I could not tell you</h2>
+    <p>I sat there and I did not know where he was tilting.</p>
+    <p>I want to be honest about that, because people are going to write about Friday like the message was obvious. It was not. I was watching it live, in a market I trade every day, and my read was <span class="n">50/50</span>.</p>
+
+    <h2>What took the market an hour to work out</h2>
+    <p>Those two statements are not opposites. They combine.</p>
+    <p>A stable labour market is exactly what removes the excuse not to raise rates.</p>
+    <p>When jobs are collapsing, the Fed has a reason to sit still even with inflation high. When jobs are fine and inflation is still stuck above <span class="n">3</span>, there is no reason left to wait.</p>
+    <p>He never said the word September. He did not have to.</p>
+
+    <h2>I had the area marked two days earlier</h2>
+    <p>A <button class="tip" type="button" aria-expanded="false">fair value gap<span class="tipbox" role="note"><b>Fair value gap</b>An area where price moved so fast it left a gap behind. Price tends to come back to it.</span></button> on the daily chart. An area where price moved so fast it left a gap behind, and price tends to come back to it.</p>
+    <p>I had no idea what would happen when it got there. I only knew it wanted to go there.</p>
+
+    <h2>These are two different things</h2>
+    <p>Where price goes is something I can plan.</p>
+    <p>What happens when it arrives is something I have to watch.</p>
+    <p>People mix these up constantly.</p>
+
+    <h2>The trade</h2>
+    <p>The initial drop finished. Price turned up. I took it long.</p>
+    <p>Nasdaq ran into the area and I closed at <span class="n">38</span> handles.</p>
+    <p>Small. Nothing special. But why I closed there is the point of this whole article.</p>
+    <div><div class="shot" role="img" aria-label="Chart placeholder">[Chart: NQ 1 minute, long into the daily FVG, closed at 38 handles]<span class="ui" style="font-size:13px">Tap to enlarge</span></div></div>
+
+    <h2>Reason one, the rule</h2>
+    <p>Price had already come up around <span class="n">150</span> handles off the low.</p>
+    <p>By the time I was in profit we were in the expensive part of that range, not the cheap part. That is a rule. My framework tells me that and I do not argue with it.</p>
+
+    <h2>Reason two, the one that mattered</h2>
+    <p>I could not read the speech.</p>
+    <p>If I cannot tell you which way the man is tilting, it is a coin flip. You do not size up on a coin flip.</p>
+    <p>Price could have run to the Asian high. It could have sat there doing nothing for three hours. Both were live.</p>
+    <p>So I took the money and I got up.</p>
+
+    <h2>Then I came back</h2>
+    <p>About an hour later.</p>
+    <p>Nasdaq had dumped. Not drifted. Dumped. Gold was down around <span class="n">3%</span> on the day, <span class="n">4,640</span> to <span class="n">4,474</span>.</p>
+    <p>Everything that went up went down harder.</p>
+    <div class="note-box"><span class="label">One thing I should say</span>I watch gold on the daily chart, not intraday. Same with the dollar. So for Friday all I have on gold is where it started and where it ended. I did not see the shape of the fall. That is why this article is detailed on Nasdaq and not on gold.</div>
+
+    <h2>Looking at it now</h2>
+    <p>That push into the gap was manipulation. In ICT terms, a <button class="tip" type="button" aria-expanded="false">Judas<span class="tipbox" role="note"><b>Judas swing</b>A fake move that takes liquidity from traders on the wrong side, before price goes the real way.</span></button>. Price goes up, takes liquidity from everyone who bought the bounce, then goes where it was always going.</p>
+    <p>But I am telling you that on Saturday, with the candle finished on my screen.</p>
+    <p>I could not have told you that at 8 PM on Friday. Nobody could.</p>
+    <p>Anyone showing you that chart today and saying it was obvious is showing you a chart that already ended.</p>
+
+    <h2>What happened in that hour</h2>
+    <p>The market changed its mind about September.</p>
+    <p>On Thursday, the odds of a rate hike at the September meeting were <span class="n">35%</span>. By Friday afternoon they were <span class="n">61%</span>. That is on CME FedWatch, and you can go look at it yourself.</p>
+    <p>The two year yield hit its highest level in a month. The dollar index went up to around <span class="n">99.50</span>.</p>
+    <p>The whole market moved to the other side in one session.</p>
+
+    <div class="numcard">
+      <div class="label">One session · Thursday to Friday</div>
+      <div style="display:flex;align-items:baseline;gap:16px;flex-wrap:wrap;padding:16px 0 6px">
+        <span class="mono" style="font-size:40px;color:var(--ink-muted)">35%</span>
+        <span class="mono" style="font-size:28px;color:var(--wine)">→</span>
+        <span class="mono" style="font-size:56px;font-weight:500;color:var(--wine);line-height:1">61%</span>
+      </div>
+      <div style="font-size:16px;color:var(--ink-muted);padding-bottom:14px;border-bottom:1px solid #EDE6E8">Odds of a September hike, CME FedWatch</div>
+      <div class="nrow"><span>Two year yield</span><span class="uw">▲ Month high</span></div>
+      <div class="nrow"><span>Dollar index</span><span class="uw">▲ ~99.50</span></div>
+      <div class="nrow"><span>Gold</span><span class="dw">▼ 4,640 to 4,474</span></div>
+      <div class="nrow"><span>Nasdaq</span><span class="dw">▼ Dumped</span></div>
+    </div>
+
+    <h2>Now here is the part I want you to sit with</h2>
+    <p>He gave no guidance.</p>
+    <p>He did not say September. He did not say what number would make him raise rates. He did not give any condition at all.</p>
+    <p>And the market still repriced that meeting by <span class="n">26</span> points in a day.</p>
+    <p>Think about what that means. The market was not reacting to information, because there was no new information about September in that speech.</p>
+    <p>The market was guessing.</p>
+
+    <h2>This is not an accident</h2>
+    <p>Warsh has been doing this since he took the job in May.</p>
+    <p>He has cut back on forward guidance. He has made the Fed statement much shorter. He has given vague answers at both of his press conferences.</p>
+    <p>At Jackson Hole he said forward guidance has overstayed its welcome. He said markets should not be looking to the Fed for their next trade.</p>
+    <p>He is not being unclear by mistake. He thinks the Fed telling you the answer in advance is the problem, because then everyone trades the Fed instead of trading the data.</p>
+
+    <h2>Why that matters for you</h2>
+    <p>For more than twenty years, the Fed chair used this same Jackson Hole stage to tell the market which way rates were going. Last year Powell hinted at cuts from that stage and set off a rally.</p>
+    <p>The pattern was, the Fed tells you first, then the data comes and confirms it.</p>
+    <p>That is over.</p>
+    <p>Now the data comes first and you find out what it meant on the day it lands.</p>
+    <p>Every jobs number and every inflation number from here has to do the work that guidance used to do for it.</p>
+
+    <h2>How this actually shows up in my trading</h2>
+    <p>I trade Nasdaq. Mostly scalping. And I have two modes.</p>
+    <p>About <span class="n">90%</span> of the time, I cannot tell you the direction. I can make the argument for both sides. On those days I take my <span class="n">1 to 1</span> and I go home. That is what Friday was.</p>
+    <p>About <span class="n">10%</span> of the time, it is clear. The August 7 jobs report was one of those. The number came at minus <span class="n">23,000</span> against <span class="n">85,000</span> expected, which was a huge miss, and from my scenarios I already knew what a miss like that meant for Nasdaq. I held that one for <span class="n">102</span> handles and it was smooth the whole way.</p>
+    <p>The difference between <span class="n">38</span> handles and <span class="n">102</span> handles was not my chart reading. It was whether the fundamental picture was readable.</p>
+
+    <div class="wc" id="modes">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px" class="head-row">
+        <div class="stack" style="gap:8px"><div class="label">My two modes</div><h3>Can I read the picture today?</h3></div>
+        <div class="seg" role="group" aria-label="Mode" style="min-width:280px">
+          <button type="button" data-m="90" aria-pressed="true">90% · Unclear</button>
+          <button type="button" data-m="10" aria-pressed="false">10% · Clear</button>
+        </div>
+      </div>
+      <div class="tiles">
+        <div class="tile"><span>Direction</span><b id="mDir" style="color:var(--ink)"></b></div>
+        <div class="tile"><span>What I do</span><b id="mDo" style="color:var(--ink);font-size:16px"></b></div>
+        <div class="tile"><span>Example</span><b id="mEx" style="color:var(--wine)"></b></div>
+      </div>
+      <p class="note" id="mNote"></p>
+    </div>
+
+    <h2>So what changes</h2>
+    <p>Less guidance means fewer readable days.</p>
+    <p>Fewer readable days means more days in the <span class="n">90%</span> mode and fewer in the <span class="n">10%</span> mode.</p>
+    <p>That is not a prediction about the economy. That is just what happens to a trader when the input gets less clear.</p>
+    <p>And if you are newer to this, please hear the useful part of that. Getting smaller when you cannot read the situation is not being scared. It is the skill.</p>
+
+    <h2>What I expect from here</h2>
+    <p>Before a big number, the market goes quiet. It prices in the forecast over the days before, then Thursday chops, the London session chops, everybody is waiting.</p>
+    <p>Then the number drops and it gets violent.</p>
+    <p>That has always been true. I am not telling you that is new.</p>
+    <p>What I expect is that the violent part gets bigger. Because there is no guidance cushioning the surprise anymore, the surprise has to be absorbed entirely by price.</p>
+    <p>I want to be clear that this is my expectation, not a proven fact. Analysts who study this say the same thing, that price discovery moves onto the market when the committee says less. But nobody has enough data yet to confirm it. Ask me again in six months.</p>
+
+    <h2>The next test</h2>
+    <p>Friday, September 4, 6 PM India time. The August jobs report.</p>
+    <p>Then inflation data on September 11. Then the Fed decides on September 16.</p>
+    <div class="list">
+      <div class="item" style="grid-template-columns:150px 1fr"><div class="d">Fri 4 Sep<br>6 PM IST</div><div><h3>August jobs report</h3><p>The first real number after a speech with no guidance.</p></div></div>
+      <div class="item" style="grid-template-columns:150px 1fr"><div class="d">11 Sep</div><div><h3>Inflation data</h3><p>Is it still stuck above 3?</p></div></div>
+      <div class="item" style="grid-template-columns:150px 1fr;border-color:var(--wine)"><div class="d">16 Sep</div><div><h3>The Fed decides</h3><p>Right now, a coin flip.</p></div></div>
+    </div>
+    <p>Right now the September meeting is a coin flip. Nobody has an edge at <span class="n">50/50</span>.</p>
+    <p>So watch that Friday. If a speech with no guidance in it moved the meeting by <span class="n">26</span> points, ask yourself what an actual number is going to do.</p>
+    <p>I will be at the screen. Probably in <span class="n">90%</span> mode.</p>
+    <div class="callbox">
+      <div><h3>Get the week ahead every Sunday.</h3><p>One email, plus big release briefings.</p></div>
+      <form class="sform onwine" data-signup><label class="sr" for="emx2">Email</label><input id="emx2" type="email" placeholder="you@email.com" required autocomplete="email"><button class="btn white" type="submit">Sign me up</button></form>
+    </div>
+        <div class="signoff">Not financial advice. Trade with a stop loss.</div>
+  </div></article>
+</section>
+
+<!-- ============ LEARN ============ -->
+<section data-page="learn">
+  <div class="article"><div class="col">
+    <div class="label">Learn</div>
+    <h1 class="title">Guides, by what you need.</h1>
+    <p class="sub">Each guide starts with one real event, then explains the terms.</p>
+    <div class="g2" style="margin-top:36px">
+      <a class="card" href="#/learn/priced-in"><div class="label" style="margin-bottom:8px">Macro events</div><h3>What priced in really means</h3><p>Why a bad number doesn't always move price. Told through the 7 August NFP.</p></a>
+      <div class="card" style="opacity:.6"><div class="label" style="margin-bottom:8px">ICT with macro</div><h3>The first candle after news</h3><p>Coming soon.</p></div>
+      <div class="card" style="opacity:.6"><div class="label" style="margin-bottom:8px">Prop firms</div><h3>Choosing a firm from India</h3><p>Coming soon.</p></div>
+      <div class="card" style="opacity:.6"><div class="label" style="margin-bottom:8px">India payouts</div><h3>Getting paid in rupees</h3><p>Coming soon.</p></div>
+      <div class="card" style="opacity:.6"><div class="label" style="margin-bottom:8px">Tools</div><h3>The macro tools I use</h3><p>Coming soon.</p></div>
+      <div class="card" style="opacity:.6"><div class="label" style="margin-bottom:8px">Psychology</div><h3>Sitting out a near forecast print</h3><p>Coming soon.</p></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ GUIDE ============ -->
+<section data-page="learn/priced-in">
+  <article class="article"><div class="col">
+    <div class="crumb"><a href="#/learn">Learn</a> / Macro basics</div>
+    <div class="label">Guide · Macro basics</div>
+    <h1 class="title">What priced in really means</h1>
+    <p class="sub">A bad number doesn't always move price. Here is why, using one real Friday night.</p>
+    <div class="meta"><span>Aayush Namdev</span><span>Updated 8 Aug 2026</span><span>6 min read</span></div>
+    <div class="route"><span>What was expected</span><em>→</em><span>What printed</span><em>→</em><span>How much was left</span><em>→</em><span>The trade</span></div>
+    <p>On Friday 7 August, the jobs number came in at <span class="n">−23K</span>. The forecast was <span class="n">85K</span>. That is a big miss.</p>
+    <p>Most people expect a big miss to cause a big move. It did move. But less than you would think, because a lot was already <button class="tip" type="button" aria-expanded="false">priced in<span class="tipbox" role="note"><b>Priced in</b>What the market already expects. Price moved for it before the news came out.</span></button>.</p>
+
+    <div class="wc" id="scen">
+      <div style="display:flex;justify-content:space-between;align-items:flex-end;gap:20px" class="head-row">
+        <div class="stack" style="gap:8px"><div class="label">Try it · Scenarios</div><h3>Pick the result. See what moves.</h3></div>
+        <div class="seg" role="group" aria-label="Scenario">
+          <button type="button" data-s="beat" aria-pressed="false">Beat</button>
+          <button type="button" data-s="near" aria-pressed="false">Near forecast</button>
+          <button type="button" data-s="miss" aria-pressed="true">Miss</button>
+        </div>
+      </div>
+      <div class="tiles">
+        <div class="tile"><span>Nasdaq futures</span><b id="sNq"></b></div>
+        <div class="tile"><span>Gold</span><b id="sGold"></b></div>
+        <div class="tile"><span>September odds</span><b id="sOdds" style="color:var(--ink);font-size:16px"></b></div>
+      </div>
+      <div><div class="ends"><span>Hike</span><span>Hold</span><span>Cut</span></div><div class="meter"><i id="sMark"></i></div></div>
+      <p class="note" id="sNote"></p>
+    </div>
+
+    <h2>How much room was left</h2>
+    <p>ADP had already come in weak, <span class="n">44,000</span> against <span class="n">65,000</span> expected. Gold was up <span class="n">6%</span> on the week. So the market had half guessed the miss before it printed.</p>
+
+    <div class="wc">
+      <div class="stack" style="gap:8px"><div class="label">Try it · Priced in meter</div><h3>Slide how much was already expected.</h3></div>
+      <div>
+        <input type="range" id="pr" min="0" max="3" step="1" value="2" aria-label="How much was priced in">
+        <div class="ends" style="margin-top:4px"><span>20%</span><span>40%</span><span>60%</span><span>80%</span></div>
+      </div>
+      <div class="g2" style="gap:12px">
+        <div class="tile"><span>Usual NFP move</span><b style="font-size:24px;color:var(--ink)">~300 pts</b></div>
+        <div class="tile" style="background:var(--wine)"><span style="color:var(--on-wine)">Room left to run</span><b style="font-size:24px;color:#fff" id="room">~120 pts</b></div>
+      </div>
+      <p class="note" id="roomNote"></p>
+    </div>
+
+    <p>I entered at <span class="n">6:04 PM</span> in a bullish 1 minute fair value gap. Four MNQ. Three ran the full <span class="n">102</span> points. That fits the room that was left.</p>
+    <div><div class="shot" role="img" aria-label="Chart placeholder">[Chart: NQ 1 minute, 6:04 PM entry]<span class="ui" style="font-size:13px">Tap to enlarge</span></div><p class="cap">Bullish 1 minute FVG after the print. Stop below it.</p></div>
+
+    <h3>How to read the next release</h3>
+    <ol class="steps">
+      <li data-n="01"><span>Check the forecast and the previous number.</span></li>
+      <li data-n="02"><span>Look at what moved in the week before.</span></li>
+      <li data-n="03"><span>Ask how much room is left to run.</span></li>
+    </ol>
+
+    <blockquote>The news is not the trade. The surprise is the trade.</blockquote>
+
+    <details class="more"><summary>Go deeper: why the dollar fell</summary><p>Unemployment held at <span class="n">4.1%</span>, but job growth turned negative. That pulls rate cuts closer. Cuts make the dollar less attractive, so it slid while gold and Nasdaq rose.</p></details>
+
+    <div class="wc">
+      <div class="stack" style="gap:8px"><div class="label">Check yourself</div><h3>Forecast 85K. Actual −23K. Where does NQ go first?</h3></div>
+      <div class="quiz" id="quiz">
+        <button type="button" data-a="up">▲ Up</button>
+        <button type="button" data-a="down">▼ Down</button>
+        <button type="button" data-a="chop">◆ Chop</button>
+      </div>
+      <p class="note" id="quizNote" hidden></p>
+    </div>
+
+    <div class="note-box"><span class="label">Personal note</span>I don't remember my exact stop size on this trade. I'd rather leave it blank than guess.</div>
+    <p class="disc">Caveat: one night is one example. Most releases land near forecast and chop. Treat this as a way to think, not a pattern to copy.</p>
+
+    <div class="callbox">
+      <div><h3>Get the week ahead every Sunday.</h3><p>One email, plus big release briefings.</p></div>
+      <form class="sform onwine" data-signup><label class="sr" for="em2">Email</label><input id="em2" type="email" placeholder="you@email.com" required autocomplete="email"><button class="btn white" type="submit">Sign me up</button></form>
+    </div>
+    <div class="signoff">Not advice. Stop loss on.</div>
+  </div></article>
+</section>
+
+<!-- ============ JOURNAL ============ -->
+<section data-page="journal">
+  <div class="article"><div class="col">
+    <div class="label">Journal</div>
+    <h1 class="title">Every call, dated. Losing ones stay.</h1>
+    <p class="sub">What I called, how I traded, and what it felt like.</p>
+    <div class="g3" style="margin-top:28px">
+      <div class="card"><div class="ui" style="font-size:13px;color:var(--muted)">Calls logged</div><div class="mono" style="font-size:34px;color:var(--heading)">1</div></div>
+      <div class="card"><div class="ui" style="font-size:13px;color:var(--muted)">Hit</div><div class="mono" style="font-size:34px;color:var(--up)">1</div></div>
+      <div class="card"><div class="ui" style="font-size:13px;color:var(--muted)">Invalidated</div><div class="mono" style="font-size:34px;color:var(--heading)">0</div></div>
+    </div>
+    <p class="disc">Layout preview with the one real call from August. Your full log goes here.</p>
+    <div class="scroll" style="margin-top:16px">
+      <table class="calls">
+        <thead><tr><th>Date</th><th>Asset</th><th>Direction</th><th>Target</th><th>Invalidation</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td class="m">7 Aug 2026</td><td>NQ</td><td><span class="up mono">▲ Long</span></td><td class="m">+102 pts</td><td>Below the 1m FVG</td><td><span class="status hit">Hit</span></td></tr>
+          <tr><td class="m">Next</td><td>NQ</td><td class="mono" style="color:var(--muted)">Waiting</td><td class="m">·</td><td>·</td><td><span class="status open">Open</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Trading days and stories</h2>
+    <div class="list" style="margin-top:8px">
+      <a class="item" href="#/macro/jackson-hole"><div class="d">Friday<br>Jackson Hole</div><div><span class="kind">Trading day</span><h3>Long into the daily gap, closed at 38</h3><p>A speech I could not read. Small size, then I got up.</p></div><span class="go">Review</span></a>
+      <a class="item" href="#/macro/nfp-aug-2026"><div class="d">Fri 7 Aug 2026</div><div><span class="kind">Trading day</span><h3>NFP night: 4 MNQ, 102 points</h3><p>One partial early, three ran. About $500 to 600.</p></div><span class="go">Review</span></a>
+      <div class="item soon" style="opacity:.75"><div class="d">Placeholder</div><div><span class="kind">Story</span><h3>The first payout email</h3><p>Your own story goes here, in your words.</p></div><span class="go">Soon</span></div>
+    </div>
+  </div></div>
+</section>
+
+<!-- ============ WATCH ============ -->
+<section data-page="watch">
+  <div class="article"><div class="col">
+    <div class="label">Watch</div>
+    <h1 class="title">Reels, in the right order.</h1>
+    <p class="sub">Playlists that work like a short course. Coming soon.</p>
+    <div class="g3" style="margin-top:32px">
+      <div class="card"><div class="shot" style="height:200px">[Playlist cover]</div><h3 style="margin-top:16px">Macro in 60 seconds</h3><p>NFP, CPI and the Fed, one reel each.</p></div>
+      <div class="card"><div class="shot" style="height:200px">[Playlist cover]</div><h3 style="margin-top:16px">ICT after news</h3><p>The first candle, the FVG, the stop.</p></div>
+      <div class="card"><div class="shot" style="height:200px">[Playlist cover]</div><h3 style="margin-top:16px">Prop firms from India</h3><p>Rules, payouts, mistakes.</p></div>
+    </div>
+    <p style="margin-top:28px">Until then, the reels live on Instagram at <a href="https://instagram.com/aayush_ict" target="_blank" rel="noopener">@aayush_ict</a>.</p>
+  </div></div>
+</section>
+
+<!-- ============ START HERE ============ -->
+<section data-page="start-here">
+  <div class="article"><div class="col">
+    <div class="label">Start here</div>
+    <h1 class="title">Firms, codes and tools, by fit.</h1>
+    <div class="note-box" style="margin-top:24px"><span class="label">Disclosure</span>Some links here are affiliate links. You may get a discount. I may earn a commission. It never changes which firm I say fits whom.</div>
+    <h2>Which one are you?</h2>
+    <div class="g2">
+      <a class="path" href="#fundednext"><div class="label" style="margin-bottom:8px">Path 1</div><h3>I trade gold on MT5</h3><p>You want CFDs and a softer start. Look at FundedNext first.</p></a>
+      <a class="path" href="#apex"><div class="label" style="margin-bottom:8px">Path 2</div><h3>I trade NQ or futures</h3><p>You want futures and know your rules. Look at Apex.</p></a>
+    </div>
+    <h2>Prop firms</h2>
+    <div class="stack" style="gap:16px">
+      <div class="firm" id="fundednext">
+        <div class="fit">Fits beginners · CFD and futures</div>
+        <h3>FundedNext</h3>
+        <div class="codepill"><code>AAYUSH</code><button type="button" data-copy="AAYUSH">Copy code</button></div>
+        <div class="ui" style="font-size:15px;color:var(--ink)">10% off with the code.</div>
+        <div class="pc"><div><b>Good</b><ul><li>Gentler start for new traders</li><li>Gold on MT5 and futures</li></ul></div><div><b>Watch out</b><ul><li>Read the rules for each account type</li><li>Check payout terms before you buy</li></ul></div></div>
+        <div class="verified">Last verified: add date</div>
+        <p class="disc">Affiliate link. You get a discount, I earn a commission. It does not change what I write.</p>
+      </div>
+      <div class="firm" id="apex">
+        <div class="fit">Fits experienced futures traders</div>
+        <h3>Apex Trader Funding</h3>
+        <div class="ui" style="font-size:15px;color:var(--ink)">I trade funded here. My payout of <span class="mono">$1,446</span> was approved on 12 Aug 2026.</div>
+        <div class="pc"><div><b>Good</b><ul><li>Futures, NQ and MNQ</li><li>Where my own payouts come from</li></ul></div><div><b>Watch out</b><ul><li>Rules need care, read them fully</li><li>Better once you have a plan</li></ul></div></div>
+        <div class="verified">Plain link, no code · Last verified: add date</div>
+      </div>
+    </div>
+    <h2>Tools</h2>
+    <div class="card"><div class="label" style="margin-bottom:8px">Macro tool</div><h3>MRKT</h3><p>The macro tool I use to read what's priced in before a release. Affiliate link.</p></div>
+    <h2>Questions</h2>
+    <details class="more"><summary>Can I trade US futures from India?</summary><p>Yes, through prop firms. You trade their capital and they pay out a share of profits.</p></details>
+    <details class="more" style="margin-top:12px"><summary>Is this a signal service?</summary><p>No. I share how I read events and how I traded them. You make your own calls.</p></details>
+    <details class="more" style="margin-top:12px"><summary>Which firm is best?</summary><p>There is no best. There is what fits you. Use the two paths above.</p></details>
+    <div class="signoff">Not advice. Stop loss on.</div>
+  </div></div>
+</section>
+
+<!-- ============ ABOUT ============ -->
+<section data-page="about">
+  <div class="article"><div class="col">
+    <div class="label">About</div>
+    <div style="display:flex;gap:28px;align-items:center;flex-wrap:wrap;margin-top:12px">
+      <div style="width:120px;height:120px;border-radius:60px;background:var(--surface);border:2px solid var(--wine);display:flex;align-items:center;justify-content:center;font-family:var(--f-head);font-weight:800;font-size:56px;line-height:1;flex:none"><span style="color:var(--heading)">a</span><span style="color:var(--rose)">i</span></div>
+      <h1 class="title" style="flex:1;min-width:260px">I'm Aayush. I trade Nasdaq futures from India.</h1>
+    </div>
+    <p>I trade NQ and MNQ only, on funded prop accounts with Apex. I watch gold and the dollar for context, but I don't trade them.</p>
+    <p>I've spent six years in markets. My method is ICT. My background is psychology, which is why I care about how traders decide, not just what they see.</p>
+    <h2>How this works</h2>
+    <ol class="steps">
+      <li data-n="01"><span>Before a big release, I write what's expected and three scenarios.</span></li>
+      <li data-n="02"><span>After it prints, I post what happened and how I traded it.</span></li>
+      <li data-n="03"><span>Every call goes in the journal, including the ones that fail.</span></li>
+    </ol>
+    <div class="note-box"><span class="label">Not a signal service</span>I don't tell you what to buy. I show how I think, so you can build your own read.</div>
+    <h2>Where to find me</h2>
+    <p>Instagram: <a href="https://instagram.com/aayush_ict" target="_blank" rel="noopener">@aayush_ict</a></p>
+  </div></div>
+</section>
+
+<!-- ============ LEGAL ============ -->
+<section data-page="legal">
+  <div class="article"><div class="col">
+    <div class="label">Disclosure · Disclaimer · Privacy</div>
+    <h1 class="title">The fine print, in plain words.</h1>
+    <h2>Disclosure</h2>
+    <p>Some links are affiliate links. You may get a discount. I may earn a commission. It never changes what I write or which firm I say fits whom.</p>
+    <h2>Disclaimer</h2>
+    <p>Nothing here is financial advice. Futures trading carries real risk of loss. Past trades don't promise future results.</p>
+    <h2>Privacy</h2>
+    <p>Placeholder. Add how emails and analytics are handled before launch.</p>
+  </div></div>
+</section>
+
+</main>
+
+<footer>
+  <div class="wrap fsign" style="margin-bottom:28px;padding-bottom:28px;border-bottom:1px solid var(--line);align-items:center">
+    <span class="ui" style="font-size:15px;color:var(--soft)">The week ahead, every Sunday.</span>
+    <form class="sform" data-signup style="max-width:420px;flex:1"><label class="sr" for="emf">Email</label><input id="emf" type="email" placeholder="you@email.com" required autocomplete="email"><button class="btn" type="submit">Sign me up</button></form>
+  </div>
+  <div class="wrap">
+    <span>Not a signal service. Not advice. Stop loss on.</span>
+    <span><a href="#/legal">Disclosure</a> · <a href="#/legal">Disclaimer</a> · <a href="#/legal">Privacy</a></span>
+  </div>
+</footer>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
+  <div class="box">
+    <h3 id="mTitle">Apex payout, $1,446</h3>
+    <p>Approved on 12 Aug 2026. It came from that whole week of trading, not one trade.</p>
+    <div class="shot" style="height:180px;margin-top:16px">[Payout certificate]</div>
+    <button class="x" type="button" id="mClose">Close</button>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+<script>
+(function(){
+  var pages=[].slice.call(document.querySelectorAll('[data-page]'));
+  function route(){
+    var h=(location.hash||'#/').replace(/^#\/?/,'');
+    if(h==='fundednext'||h==='apex'){return;}
+    if(h==='')h='home';
+    var found=false;
+    pages.forEach(function(p){var on=p.getAttribute('data-page')===h;p.classList.toggle('on',on);if(on)found=true;});
+    if(!found){pages.forEach(function(p){p.classList.toggle('on',p.getAttribute('data-page')==='home');});h='home';}
+    document.body.setAttribute('data-route',h);
+    var top=h.split('/')[0];
+    document.querySelectorAll('[data-nav]').forEach(function(a){a.classList.toggle('on',a.getAttribute('data-nav')===top);});
+    document.getElementById('drawer').classList.remove('open');
+    document.getElementById('menuBtn').setAttribute('aria-expanded','false');
+    window.scrollTo(0,0);
+    flipped=false; setTimeout(checkFlip,50);
+  }
+  window.addEventListener('hashchange',route);
+
+  // In page anchors on Start here
+  document.addEventListener('click',function(e){
+    var a=e.target.closest('a[href^="#"]');
+    if(a){var id=a.getAttribute('href').slice(1);if(id&&id.charAt(0)!=='/'){var el=document.getElementById(id);if(el){e.preventDefault();el.scrollIntoView({behavior:'smooth'});}}}
+  });
+
+  // Mobile menu
+  var mb=document.getElementById('menuBtn');
+  mb.addEventListener('click',function(){var d=document.getElementById('drawer');var o=d.classList.toggle('open');mb.setAttribute('aria-expanded',o?'true':'false');});
+
+  // Term tips
+  document.querySelectorAll('.tip').forEach(function(t){
+    t.addEventListener('click',function(e){e.stopPropagation();var o=t.classList.toggle('open');t.setAttribute('aria-expanded',o?'true':'false');});
+  });
+  document.addEventListener('click',function(){document.querySelectorAll('.tip.open').forEach(function(t){t.classList.remove('open');t.setAttribute('aria-expanded','false');});});
+
+  // Modal
+  var modal=document.getElementById('modal');
+  document.querySelectorAll('[data-modal]').forEach(function(b){b.addEventListener('click',function(){modal.classList.add('open');document.getElementById('mClose').focus();});});
+  document.getElementById('mClose').addEventListener('click',function(){modal.classList.remove('open');});
+  modal.addEventListener('click',function(e){if(e.target===modal)modal.classList.remove('open');});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')modal.classList.remove('open');});
+
+  // Copy code
+  var toast=document.getElementById('toast');
+  function say(t){toast.textContent=t;toast.classList.add('show');setTimeout(function(){toast.classList.remove('show');},1600);}
+  document.querySelectorAll('[data-copy]').forEach(function(b){
+    b.addEventListener('click',function(){
+      var v=b.getAttribute('data-copy');
+      try{navigator.clipboard.writeText(v).then(function(){say('Code '+v+' copied');},function(){say('Code: '+v);});}catch(err){say('Code: '+v);}
+    });
+  });
+
+  // Scenarios
+  var S={beat:{nq:['▼ Down','#9A5B00'],gold:['▼ Down','#9A5B00'],odds:'Two hikes',pos:12,note:'Above 120K. Hike odds climb back. Money leaves Nasdaq and gold.'},
+         near:{nq:['◆ Chop','#5E5457'],gold:['◆ Flat','#5E5457'],odds:'One hike',pos:45,note:'Close to 85K. Already priced in. Price chops both ways. I sit out.'},
+         miss:{nq:['▲ Up','#117A45'],gold:['▲ Up','#117A45'],odds:'Cut talk starts',pos:82,note:'Below 40K. This is what happened on 7 August. Cut odds rose and Nasdaq ran.'}};
+  function setScen(k){
+    var c=S[k];
+    document.querySelectorAll('#scen .seg button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-s')===k?'true':'false');});
+    var nq=document.getElementById('sNq'),g=document.getElementById('sGold');
+    nq.textContent=c.nq[0];nq.style.color=c.nq[1];g.textContent=c.gold[0];g.style.color=c.gold[1];
+    document.getElementById('sOdds').textContent=c.odds;
+    document.getElementById('sMark').style.left='calc('+c.pos+'% - 12px)';
+    document.getElementById('sNote').textContent=c.note;
+  }
+  document.querySelectorAll('#scen .seg button').forEach(function(b){b.addEventListener('click',function(){setScen(b.getAttribute('data-s'));});});
+  setScen('miss');
+
+  // Priced in slider
+  var notes=['Almost nothing was expected. The full move is still on the table.','Some of it was guessed. Most of the move is still there.','Most of it was guessed. This night was about here. Smaller run, cleaner target.','Nearly all of it was guessed. Even a big miss barely moves price.'];
+  var pcts=[20,40,60,80];var pr=document.getElementById('pr');
+  function setPr(){var i=+pr.value;document.getElementById('room').textContent='~'+Math.round(300*(1-pcts[i]/100))+' pts';document.getElementById('roomNote').textContent=notes[i];}
+  pr.addEventListener('input',setPr);setPr();
+
+  // Quiz
+  var qn=document.getElementById('quizNote');
+  document.querySelectorAll('#quiz button').forEach(function(b){
+    b.addEventListener('click',function(){
+      var a=b.getAttribute('data-a');
+      document.querySelectorAll('#quiz button').forEach(function(x){x.classList.remove('right','wrong');if(x.getAttribute('data-a')==='up')x.classList.add('right');});
+      if(a!=='up')b.classList.add('wrong');
+      qn.hidden=false;
+      qn.textContent=a==='up'?'Right. A miss this big pulls cut odds forward. Nasdaq likes that.':'Not this time. A miss this big pulls cut odds forward, and Nasdaq ran up.';
+    });
+  });
+
+
+
+  // Week ahead scenarios
+  var W={strong:{nq:['▼ Down','#9A5B00'],gold:['▼ Down','#9A5B00'],usd:['▲ Up','#117A45'],note:'Strong jobs keep the hike story alive. That fits what Jackson Hole already started.'},
+         weak:{nq:['▲ Up','#117A45'],gold:['▲ Up','#117A45'],usd:['▼ Down','#9A5B00'],note:'Weak jobs give the Fed a reason to wait again. The hike odds from Friday would have to unwind.'}};
+  function setW(k){var c=W[k];document.querySelectorAll('#wk .seg button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-w')===k?'true':'false');});
+    [['wNq','nq'],['wGold','gold'],['wUsd','usd']].forEach(function(x){var el=document.getElementById(x[0]);el.textContent=c[x[1]][0];el.style.color=c[x[1]][1];});
+    document.getElementById('wNote').textContent=c.note;}
+  document.querySelectorAll('#wk .seg button').forEach(function(b){b.addEventListener('click',function(){setW(b.getAttribute('data-w'));});});
+  setW('strong');
+
+  // Email signup (sample only)
+  document.querySelectorAll('[data-signup]').forEach(function(f){f.addEventListener('submit',function(e){e.preventDefault();f.reset();say('Thanks. Sample only, not connected yet.');});});
+  // Two modes
+  var M={'90':{dir:'◆ Both sides',do:'Take 1 to 1, go home',ex:'Friday · 38 handles',note:'I can make the argument for both sides. So I keep it small and I do not size up on a coin flip.'},
+         '10':{dir:'▲ Clear',do:'Hold for the move',ex:'7 Aug · 102 handles',note:'The fundamental picture is readable. My scenarios already told me what the number meant, so I let it run.'}};
+  function setMode(k){var c=M[k];document.querySelectorAll('#modes .seg button').forEach(function(b){b.setAttribute('aria-pressed',b.getAttribute('data-m')===k?'true':'false');});
+    document.getElementById('mDir').textContent=c.dir;document.getElementById('mDo').textContent=c.do;document.getElementById('mEx').textContent=c.ex;document.getElementById('mNote').textContent=c.note;}
+  document.querySelectorAll('#modes .seg button').forEach(function(b){b.addEventListener('click',function(){setMode(b.getAttribute('data-m'));});});
+  setMode('90');
+
+  // Number flip: 85K counts down to −23K when seen
+  var flipped=false;
+  function checkFlip(){
+    var el=document.querySelector('[data-page="home"].on [data-flip]');
+    if(!el||flipped)return;
+    var r=el.getBoundingClientRect();
+    if(r.top<window.innerHeight*0.85&&r.bottom>0){
+      flipped=true;
+      var reduce=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      if(reduce){el.textContent='−23K';return;}
+      var from=85,to=-23,t0=null,dur=1200;
+      function step(t){if(!t0)t0=t;var p=Math.min(1,(t-t0)/dur);var e=1-Math.pow(1-p,3);var v=Math.round(from+(to-from)*e);el.textContent=(v<0?'−'+Math.abs(v):v)+'K';if(p<1)requestAnimationFrame(step);}
+      requestAnimationFrame(step);
+    }
+  }
+  window.addEventListener('scroll',checkFlip,{passive:true});
+
+  route();
+})();
+</script>
+</body>
+</html>

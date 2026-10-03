@@ -1,0 +1,19 @@
+---
+// Full width section. black = reading, white = contrast, wine = brand moment.
+interface Props { variant?: 'black' | 'white' | 'wine' }
+const { variant = 'black' } = Astro.props;
+---
+<section class:list={['band', variant]}>
+  <div class="wrap"><slot /></div>
+</section>
+
+<style>
+  .band { padding: 110px 0; }
+  .white { background: var(--white); color: var(--ink-body); }
+  .white :global(h1), .white :global(h2), .white :global(h3) { color: var(--ink); }
+  .white :global(.label) { color: var(--wine); }
+  .wine { background: var(--wine); color: var(--text-on-wine); }
+  .wine :global(h1), .wine :global(h2) { color: var(--white); }
+  .wine :global(.label) { color: var(--rose-on-wine); }
+  @media (max-width: 860px) { .band { padding: 64px 0; } }
+</style>

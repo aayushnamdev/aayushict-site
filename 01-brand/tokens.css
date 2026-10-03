@@ -1,0 +1,60 @@
+/* aayushict.space brand tokens, version 1, 2 Oct 2026
+   Paste into your global stylesheet. Every page should use these, never raw hex. */
+
+:root {
+  /* Base, black side */
+  --page: #141011;          /* page background */
+  --page-deep: #0E0B0C;     /* outside the page, behind frames */
+  --surface: #1E1719;       /* cards on black */
+  --surface-raised: #2A2124;/* chart frames, image boxes */
+  --line: #2B2325;          /* borders and rules on black */
+  --line-strong: #3A2A2F;   /* open term tip border */
+
+  /* Text on black */
+  --text-heading: #F6F1EE;
+  --text-body: #E9E3E0;
+  --text-soft: #C9BEC1;     /* intro line, card text */
+  --text-muted: #8C7F82;    /* meta, captions, sign off */
+  --text-number: #FFFFFF;   /* numbers inside text */
+
+  /* Brand */
+  --wine: #6E1A33;          /* buttons, bands, selected states, key number on white */
+  --wine-deep: #5A1429;     /* cards inside the wine band */
+  --rose: #B44C6C;          /* deep rose: logo ict, labels, links, term underline, on black only */
+  --rose-on-wine: #F7C9D1;  /* labels inside the wine band */
+  --text-on-wine: #F5E6EA;
+
+  /* White side */
+  --white: #FFFFFF;         /* interactive cards, numbers table, contrast bands */
+  --white-tint: #F7F2F3;    /* tiles inside white cards */
+  --white-line: #EADDE0;
+  --white-track: #F3ECEE;   /* toggle background */
+  --ink: #1A1416;           /* headings on white */
+  --ink-body: #3A3134;      /* body on white */
+  --ink-muted: #5E5457;     /* labels on white */
+
+  /* Direction. Always arrow plus word, never colour alone */
+  --up-on-black: #5FD39A;
+  --down-on-black: #FFB27A;
+  --up-on-white: #117A45;
+  --down-on-white: #9A5B00;
+
+  /* Fonts */
+  --font-heading: Aptos, "Figtree", "Segoe UI", sans-serif;
+  --font-body: "Source Serif 4", Georgia, serif;
+  --font-ui: "Instrument Sans", system-ui, sans-serif;
+  --font-number: "JetBrains Mono", ui-monospace, monospace;
+
+  /* Radius */
+  --radius-button: 10px;
+  --radius-card: 14px;
+  --radius-white-card: 20px;   /* 18px on phone */
+
+  /* Reading width (laptop). Text, white cards and charts share these exact edges */
+  --reading-width: 900px;
+  --phone-padding: 22px;
+}
+
+/* Google Fonts line for the <head>:
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Figtree:wght@600;700;800&family=Instrument+Sans:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+*/

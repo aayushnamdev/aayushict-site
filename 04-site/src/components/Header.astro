@@ -1,132 +1,71 @@
 ---
-import { site, nav, startHereCta } from '../data/site';
+import { site } from '../config/site';
+import Wordmark from './Wordmark.astro';
+const path = Astro.url.pathname;
+const isOn = (href: string) => path === href || path.startsWith(href + '/');
 ---
-
-<header class="site-header">
-  <div class="container header-inner">
-    <a href="/" class="logo">{site.name}</a>
-    <nav class="main-nav">
-      <ul>
-        {nav.map((item) => (
-          <li><a href={item.href}>{item.label}</a></li>
-        ))}
-      </ul>
+<header class="top">
+  <div class="wrap bar">
+    <a class="logo" href="/" aria-label="aayushict home"><Wordmark /></a>
+    <nav class="nav" aria-label="Main">
+      {site.nav.map((l) => <a href={l.href} class:list={[{ on: isOn(l.href) }]} aria-current={isOn(l.href) ? 'page' : undefined}>{l.label}</a>)}
+      <a class="btn" href={site.cta.href}>{site.cta.label}</a>
     </nav>
-    <a href={startHereCta.href} class="btn btn-cta start-here-btn">{startHereCta.label}</a>
-    <button class="menu-toggle" aria-label="Menu" aria-expanded="false">☰</button>
+    <div class="right">
+      <a class="btn sm" href={site.cta.href}>{site.cta.label}</a>
+      <button class="menu" id="menuBtn" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="drawer"><span></span><span></span><span></span></button>
+    </div>
   </div>
-  <nav class="mobile-nav" hidden>
-    <ul>
-      {nav.map((item) => (
-        <li><a href={item.href}>{item.label}</a></li>
-      ))}
-      <li><a href={startHereCta.href}>{startHereCta.label}</a></li>
-    </ul>
+  <nav class="drawer" id="drawer" aria-label="Mobile">
+    {site.nav.map((l) => <a href={l.href}>{l.label}</a>)}
+    <a class="btn" href={site.cta.href}>{site.cta.label}</a>
   </nav>
 </header>
 
-<style>
-  .site-header {
-    position: sticky;
-    top: 0;
-    z-index: 50;
-    background: var(--bg);
-    border-bottom: 1px solid var(--border);
-  }
-
-  .header-inner {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-    padding-top: 0.85rem;
-    padding-bottom: 0.85rem;
-  }
-
-  .logo {
-    font-weight: 700;
-    font-size: 1.1rem;
-    color: var(--text);
-    text-decoration: none;
-    margin-right: auto;
-  }
-
-  .main-nav ul {
-    display: flex;
-    gap: 1.25rem;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-  }
-
-  .main-nav a {
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 500;
-    font-size: 0.95rem;
-  }
-
-  .main-nav a:hover {
-    color: var(--accent);
-  }
-
-  .start-here-btn {
-    font-size: 0.9rem;
-    padding: 0.5rem 1rem;
-  }
-
-  .menu-toggle {
-    display: none;
-    background: none;
-    border: none;
-    font-size: 1.4rem;
-    cursor: pointer;
-    color: var(--text);
-  }
-
-  .mobile-nav {
-    border-top: 1px solid var(--border);
-    padding: 0.5rem 1.25rem 1rem;
-  }
-
-  .mobile-nav ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-
-  .mobile-nav a {
-    color: var(--text);
-    text-decoration: none;
-    font-weight: 500;
-  }
-
-  @media (max-width: 720px) {
-    .main-nav {
-      display: none;
-    }
-    .start-here-btn {
-      display: none;
-    }
-    .menu-toggle {
-      display: block;
-    }
-  }
-</style>
-
 <script>
-  const toggle = document.querySelector('.menu-toggle');
-  const mobileNav = document.querySelector('.mobile-nav');
-  toggle?.addEventListener('click', () => {
-    const isHidden = mobileNav?.hasAttribute('hidden');
-    if (isHidden) {
-      mobileNav?.removeAttribute('hidden');
-      toggle.setAttribute('aria-expanded', 'true');
-    } else {
-      mobileNav?.setAttribute('hidden', '');
-      toggle.setAttribute('aria-expanded', 'false');
-    }
+  const btn = document.getElementById('menuBtn');
+  const drawer = document.getElementById('drawer');
+  btn?.addEventListener('click', () => {
+    const open = drawer?.classList.toggle('open') ?? false;
+    btn.setAttribute('aria-expanded', String(open));
+    btn.setAttribute('aria-label', open ? 'Close menu' : 'Open menu');
   });
 </script>
+
+<style>
+  .top {
+    position: sticky; top: 0; z-index: 20;
+    background: var(--header-bg); backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--line);
+    padding-top: env(safe-area-inset-top, 0px);
+  }
+  .bar { display: flex; justify-content: space-between; align-items: center; height: 68px; }
+  .logo { text-decoration: none; }
+  .nav { display: flex; align-items: center; gap: 30px; font-family: var(--font-ui); font-size: 15px; }
+  .nav a { color: var(--text-body); text-decoration: none; padding: 6px 0; border-bottom: 2px solid transparent; }
+  .nav a:hover { color: var(--text-heading); }
+  .nav a.on { color: var(--text-heading); border-bottom-color: var(--wine); }
+  .nav a.btn { padding: 12px 18px; border-bottom: none; }
+  .right, .drawer { display: none; }
+  .menu {
+    display: none; width: 44px; height: 44px; background: none; border: none;
+    flex-direction: column; justify-content: center; align-items: center; gap: 5px;
+  }
+  .menu span { width: 22px; height: 2px; background: var(--text-body); }
+
+  @media (max-width: 860px) {
+    .bar { height: 64px; }
+    .nav { display: none; }
+    .menu { display: flex; }
+    .right { display: flex; align-items: center; gap: 10px; }
+    .drawer.open {
+      display: flex; flex-direction: column; gap: 4px;
+      padding: 8px var(--phone-padding) 20px; border-top: 1px solid var(--line);
+    }
+    .drawer a {
+      font-family: var(--font-ui); font-size: 17px; color: var(--text-body);
+      text-decoration: none; padding: 12px 0; border-bottom: 1px solid var(--line);
+    }
+    .drawer a.btn { margin-top: 12px; border: none; color: var(--white); justify-content: center; }
+  }
+</style>

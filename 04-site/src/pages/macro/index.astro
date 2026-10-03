@@ -1,69 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import { getCollection } from 'astro:content';
-
-const briefings = (await getCollection('macro')).sort(
-  (a, b) => b.data.updated.valueOf() - a.data.updated.valueOf()
-);
+import Band from '../../components/Band.astro';
 ---
-
-<BaseLayout title="Macro Desk · Aayush ICT" description="Event briefings on CPI, NFP and FOMC, newest first.">
-  <section class="container measure header-section">
-    <h1>Macro Desk</h1>
-    <p>Event briefings, newest first. What's priced in, and what would change it.</p>
-  </section>
-
-  <section class="container measure">
-    <ul class="briefing-list">
-      {briefings.map((b) => (
-        <li class="card">
-          <div class="briefing-top">
-            <span class="badge">{b.data.event}</span>
-            <span class="badge type-badge">{b.data.type.replace('-', ' ')}</span>
-          </div>
-          <h2><a href={`/macro/${b.data.slug}`}>{b.data.title}</a></h2>
-          <p class="date mono">Updated {b.data.updated.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
-        </li>
-      ))}
-    </ul>
-    {briefings.length === 0 && <p>No briefings yet. First one is coming.</p>}
-  </section>
+<BaseLayout title="Macro" description="What the market expects, what would change it.">
+  <Band>
+    <p class="label">Macro</p>
+    <h1>Macro</h1>
+    <p class="ui" style="margin-top:16px;color:var(--text-muted)">Page coming next.</p>
+  </Band>
 </BaseLayout>
-
-<style>
-  .header-section {
-    padding: 3rem 0 1.5rem;
-  }
-  .briefing-list {
-    list-style: none;
-    margin: 0 0 3rem;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-  }
-  .briefing-top {
-    display: flex;
-    gap: 0.5rem;
-    margin-bottom: 0.5rem;
-  }
-  .type-badge {
-    text-transform: capitalize;
-  }
-  .briefing-list h2 {
-    margin: 0 0 0.35rem;
-    font-size: 1.3rem;
-  }
-  .briefing-list a {
-    text-decoration: none;
-    color: var(--text);
-  }
-  .briefing-list a:hover {
-    color: var(--accent);
-  }
-  .date {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    margin: 0;
-  }
-</style>

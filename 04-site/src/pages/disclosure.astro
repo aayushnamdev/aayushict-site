@@ -1,13 +1,11 @@
 ---
-import ArticleLayout from '../layouts/ArticleLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Band from '../components/Band.astro';
 ---
-
-<ArticleLayout title="Disclosure · Aayush ICT">
-  <h1>Disclosure</h1>
-  <p>Some links on this site are affiliate links. If you sign up through one, I may get a
-  commission. Some of them come with a discount code for you. Neither changes what I write.</p>
-  <p>I only list firms and tools I have used myself, or would use myself. I list cons on
-  every firm card. If I stop using something, I say so.</p>
-  <p>This site never ranks firms as "best". Fit depends on your budget, account size,
-  drawdown type and platform. I write toward fit, not a ranking.</p>
-</ArticleLayout>
+<BaseLayout title="Disclosure" description="How affiliate links work on this site.">
+  <Band>
+    <p class="label">Disclosure</p>
+    <h1>Disclosure</h1>
+    <p class="ui" style="margin-top:16px;color:var(--text-muted)">Page coming next.</p>
+  </Band>
+</BaseLayout>

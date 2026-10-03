@@ -1,159 +1,84 @@
-/* Design tokens — see 02-brand/design-tokens.md. Keep the two in sync. */
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
+@import './tokens.css';
 
+/* Astro's Fonts API renames each family to a hashed name, so the plain names in tokens.css
+   would never match. Point the font tokens at Astro's generated variables, which already
+   carry size matched fallbacks. Same stacks as brand-schema.md section 3. */
 :root {
-  --bg: #FAFAF7;
-  --surface: #FFFFFF;
-  --surface-muted: #F2F1EC;
-  --border: #E4E2DA;
-
-  --text: #1A1A18;
-  --text-muted: #5C5B55;
-
-  --accent: #1F4FD1;
-  --accent-hover: #173CA3;
-  --cta: #C98A06;
-  --cta-text: #1A1A18;
-
-  --up: #117A45;
-  --down: #B42318;
-  --neutral: #6B6A63;
-
-  --font-body: 'Inter', 'Source Sans 3', system-ui, sans-serif;
-  --font-num: 'JetBrains Mono', ui-monospace, monospace;
-
-  --text-base: 1.125rem;
-  --leading: 1.7;
-  --measure: 68ch;
-  --radius: 10px;
+  --font-heading: Aptos, var(--astro-figtree), 'Segoe UI', sans-serif;
+  --font-body: var(--astro-source-serif), Georgia, serif;
+  --font-ui: var(--astro-instrument-sans), system-ui, sans-serif;
+  --font-number: var(--astro-jetbrains-mono), ui-monospace, monospace;
 }
 
-* {
-  box-sizing: border-box;
+/* Reset and base. Type scale from brand-schema.md section 3. Phone sizes apply at 860px and below. */
+:root {
+  --pad: 100px;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+  background: var(--page);
 }
-
-html {
-  color-scheme: light;
-}
+html { scroll-padding-top: calc(env(safe-area-inset-top, 0px) + 80px); }
+*, *::before, *::after { box-sizing: border-box; }
 
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--text);
+  background: var(--page);
+  color: var(--text-body);
   font-family: var(--font-body);
-  font-size: var(--text-base);
-  line-height: var(--leading);
+  font-size: 21px;
+  line-height: 1.8;
   -webkit-font-smoothing: antialiased;
 }
-
-a {
-  color: var(--accent);
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
-a:hover {
-  color: var(--accent-hover);
-}
-
+img { max-width: 100%; }
+a { color: var(--rose); text-underline-offset: 4px; }
+a:hover { color: var(--text-heading); }
+button { font-family: var(--font-ui); cursor: pointer; }
+:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; border-radius: 6px; }
 h1, h2, h3, h4 {
-  line-height: 1.25;
-  font-weight: 700;
-  margin: 0 0 0.5em;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--text-heading);
+  margin: 0;
+  line-height: 1.15;
+}
+p { margin: 0; }
+
+/* Shared helpers */
+.n { font-family: var(--font-number); font-size: 0.82em; color: var(--text-number); }
+.label {
+  font-family: var(--font-number);
+  font-size: 13px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--rose);
+  line-height: 1.4;
+}
+.ui { font-family: var(--font-ui); }
+.mono { font-family: var(--font-number); }
+.wrap { max-width: 1280px; margin: 0 auto; padding: 0 var(--pad); }
+.col { max-width: var(--reading-width); margin: 0 auto; padding: 0 24px; }
+.sr {
+  position: absolute; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); white-space: nowrap;
 }
 
-h1 { font-size: clamp(2rem, 4vw, 2.75rem); }
-h2 { font-size: clamp(1.5rem, 3vw, 1.875rem); }
-h3 { font-size: 1.375rem; }
-
-p {
-  margin: 0 0 1.25em;
-}
-
-.measure {
-  max-width: var(--measure);
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.container {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 0 1.25rem;
-}
-
-.mono {
-  font-family: var(--font-num);
-}
-
-.card {
-  background: var(--surface);
-  border: 1px solid var(--border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-}
-
-.surface-muted {
-  background: var(--surface-muted);
-  border-radius: var(--radius);
-}
-
+/* Buttons. At least 44px tall for touch. */
 .btn {
-  display: inline-block;
-  font-weight: 600;
-  border-radius: var(--radius);
-  padding: 0.65rem 1.25rem;
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 44px; padding: 12px 18px;
+  background: var(--wine); color: var(--white) !important;
+  font-family: var(--font-ui); font-weight: 500; font-size: 15px;
+  border: none; border-radius: var(--radius-button);
   text-decoration: none;
-  border: 1px solid transparent;
-  cursor: pointer;
 }
+.btn:hover { background: var(--wine-hover); }
+.btn.white { background: var(--white); color: var(--wine) !important; font-weight: 600; }
+.btn.sm { min-height: 44px; padding: 9px 14px; font-size: 14px; } /* 44px touch target, taller than the reference's 40px */
 
-.btn-primary {
-  background: var(--accent);
-  color: #FFFFFF;
+@media (max-width: 1100px) { :root { --pad: 40px; } }
+@media (max-width: 860px) {
+  :root { --pad: var(--phone-padding); }
+  body { font-size: 18px; line-height: 1.75; }
+  .col { padding: 0 var(--phone-padding); }
 }
-
-.btn-primary:hover {
-  background: var(--accent-hover);
-  color: #FFFFFF;
-}
-
-.btn-secondary {
-  background: transparent;
-  color: var(--text);
-  border-color: var(--border);
-}
-
-.btn-secondary:hover {
-  border-color: var(--text-muted);
-}
-
-.btn-cta {
-  background: var(--cta);
-  color: var(--cta-text);
-}
-
-.btn-cta:hover {
-  filter: brightness(0.94);
-}
-
-.up { color: var(--up); }
-.down { color: var(--down); }
-.neutral { color: var(--neutral); }
-
-.badge {
-  display: inline-block;
-  font-size: 0.8rem;
-  font-weight: 600;
-  padding: 0.15rem 0.6rem;
-  border-radius: 999px;
-  background: var(--surface-muted);
-  color: var(--text-muted);
-  border: 1px solid var(--border);
-}
-
-@media (max-width: 640px) {
-  .container {
-    padding: 0 1rem;
-  }
-}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

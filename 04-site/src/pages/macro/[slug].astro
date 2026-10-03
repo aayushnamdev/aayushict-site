@@ -1,93 +1,14 @@
 ---
-import ArticleLayout from '../../layouts/ArticleLayout.astro';
-import Breadcrumbs from '../../components/Breadcrumbs.astro';
-import Route from '../../components/Route.astro';
-import EventHeader from '../../components/EventHeader.astro';
-import NumbersTable from '../../components/NumbersTable.astro';
-import PricedInMeter from '../../components/PricedInMeter.astro';
-import ScenarioCard from '../../components/ScenarioCard.astro';
-import KeyPointCallout from '../../components/KeyPointCallout.astro';
-import CallBox from '../../components/CallBox.astro';
-import InlineFirmCTA from '../../components/InlineFirmCTA.astro';
-import RelatedContent from '../../components/RelatedContent.astro';
-import Disclaimer from '../../components/Disclaimer.astro';
-import { getCollection, getEntry, render } from 'astro:content';
+import { getCollection, render } from 'astro:content';
+import PostLayout from '../../layouts/PostLayout.astro';
 
 export async function getStaticPaths() {
-  const briefings = await getCollection('macro');
-  return briefings.map((entry) => ({
-    params: { slug: entry.data.slug },
-    props: { entry },
-  }));
+  const posts = await getCollection('macro');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
 }
-
-const { entry } = Astro.props;
-const { data } = entry;
-const { Content } = await render(entry);
-
-const badgeMap = { preview: 'Preview', 'post-release': 'Post release', review: 'Review' } as const;
-
-let learnEntry = null;
-if (data.learn) {
-  learnEntry = await getEntry('learn', data.learn).catch(() => null);
-}
-
-let journalEntry = null;
-if (data.call) {
-  journalEntry = await getEntry('journal', data.call).catch(() => null);
-}
+const { post } = Astro.props;
+const { Content } = await render(post);
 ---
-
-<ArticleLayout title={`${data.title} · Aayush ICT`} description={data.title}>
-  <Breadcrumbs
-    crumbs={[
-      { label: 'Macro', href: '/macro' },
-      { label: data.event },
-    ]}
-  />
-
-  <EventHeader event={data.event} releaseAt={data.releaseAt} badge={badgeMap[data.type]} updated={data.updated} />
-
-  {data.route.length > 0 && <Route steps={data.route} />}
-
-  {data.numbers.length > 0 && <NumbersTable numbers={data.numbers} />}
-
-  {data.pricedIn && <PricedInMeter label={data.pricedIn.label} path={data.pricedIn.path} />}
-
-  <div class="prose">
-    <Content />
-  </div>
-
-  {data.scenarios.length > 0 && (
-    <>
-      <h2>What could happen</h2>
-      {data.scenarios.map((s) => <ScenarioCard {...s} />)}
-    </>
-  )}
-
-  {journalEntry && journalEntry.data.direction && journalEntry.data.target != null && (
-    <CallBox
-      asset={journalEntry.data.asset ?? ''}
-      direction={journalEntry.data.direction}
-      target={journalEntry.data.target}
-      invalidation={journalEntry.data.invalidation ?? ''}
-      status={journalEntry.data.status}
-    />
-  )}
-
-  {data.reel && (
-    <p><a href={data.reel} target="_blank" rel="noopener">Watch the reel →</a></p>
-  )}
-
-  {learnEntry && (
-    <KeyPointCallout label="Learn the concept behind this">
-      <p><a href={`/learn/${learnEntry.data.category}/${learnEntry.id}`}>{learnEntry.data.title} →</a></p>
-    </KeyPointCallout>
-  )}
-
-  <InlineFirmCTA slug="fundednext" />
-
-  <RelatedContent items={[{ title: 'Back to Macro Desk', href: '/macro' }]} />
-
-  <Disclaimer />
-</ArticleLayout>
+<PostLayout title={post.data.title} subtitle={post.data.subtitle} route={post.data.route}>
+  <Content />
+</PostLayout>

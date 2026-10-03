@@ -1,69 +1,26 @@
 ---
-import { site } from '../data/site';
+import { site } from '../config/site';
+import EmailSignup from './EmailSignup.astro';
+interface Props { showSignup?: boolean }
+const { showSignup = true } = Astro.props;
 ---
-
-<footer class="site-footer">
-  <div class="container footer-inner">
-    <div class="footer-col">
-      <p class="footer-brand">{site.name}</p>
-      <p class="footer-disclaimer">
-        Not financial advice. I write down what I watch and what I trade. It is my opinion,
-        not a recommendation. Trade your own plan.
-      </p>
-      <p><a href="/disclosure">Disclosure</a> · <a href="/disclaimer">Disclaimer</a> · <a href="/privacy">Privacy</a></p>
-    </div>
-    <div class="footer-col">
-      <p class="footer-heading">Follow</p>
-      <p>
-        <a href={site.instagram} rel="noopener" target="_blank">Instagram</a><br />
-        <a href={site.substack} rel="noopener" target="_blank">Substack</a><br />
-        <a href={site.youtube} rel="noopener" target="_blank">YouTube</a>
-      </p>
-    </div>
-  </div>
-  <div class="container">
-    <p class="copyright">&copy; {new Date().getFullYear()} {site.name}. All rights reserved.</p>
+<footer>
+  {showSignup && (
+    <div class="wrap sign"><EmailSignup variant="footer" id="email-footer" /></div>
+  )}
+  <div class="wrap fine">
+    <span>{site.footerLine}</span>
+    <span>{site.legal.map((l, i) => <>{i > 0 && ' · '}<a href={l.href}>{l.label}</a></>)}</span>
   </div>
 </footer>
 
 <style>
-  .site-footer {
-    border-top: 1px solid var(--border);
-    background: var(--surface-muted);
-    margin-top: 4rem;
-    padding: 2.5rem 0 1.5rem;
+  footer { border-top: 1px solid var(--line); padding: 40px 0 48px; background: var(--page-deep); }
+  .sign { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
+  .fine {
+    display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    font-family: var(--font-number); font-size: 13px; color: var(--text-muted); line-height: 1.6;
   }
-
-  .footer-inner {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 2rem;
-    justify-content: space-between;
-  }
-
-  .footer-col {
-    max-width: 420px;
-  }
-
-  .footer-brand {
-    font-weight: 700;
-    margin-bottom: 0.5rem;
-  }
-
-  .footer-disclaimer {
-    color: var(--text-muted);
-    font-size: 0.9rem;
-  }
-
-  .footer-heading {
-    font-weight: 600;
-    margin-bottom: 0.5rem;
-  }
-
-  .copyright {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    margin-top: 2rem;
-    margin-bottom: 0;
-  }
+  .fine a { color: var(--text-muted); text-decoration: none; }
+  .fine a:hover { color: var(--text-heading); }
 </style>

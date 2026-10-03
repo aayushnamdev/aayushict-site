@@ -13,3 +13,5 @@ npm-debug.log*
 
 # OS
 .DS_Store
+04-site/.vercel/
+_archive/**/node_modules/

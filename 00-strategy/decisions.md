@@ -18,3 +18,10 @@ Dated record of locked calls. Add to this, don't rewrite history.
   Start here, About, legal pages, `/go/[slug]` redirects. Watch and Tools ship as "coming soon."
   Everything else in the v2 plan (section 10, phases 5-8) comes after the site is live.
 - Domain: aayushict.space, bought and connected to Vercel after the first deploy.
+
+## 2026-10-03
+- New design pack (`01-brand/`, `00-strategy/BUILD-PLAN.md`) replaces the 27 Sep v1 build. Dark first: black for reading, wine for brand, white for things you touch.
+- v1 archived in `_archive/2026-09-v1/` (site, build-plan-v2, requirements, old brand docs, old templates). Kept live: drafts, Assets, front-page notes, site-brief, ops.
+- Fresh Astro 7 + MDX project in `04-site/` with Vercel adapter, self-hosted Google fonts via the Astro Fonts API, content collections per BUILD-PLAN section 3. Pages are empty shells. Widgets and real pages come piece by piece.
+- `/tools` page dropped. Tools live inside Start here.
+- Affiliate redirects are built from `src/config/firms.ts`. Apex stays off until a code and link exist.

@@ -1,65 +1,11 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import PathSteps from '../../components/PathSteps.astro';
-import { getCollection } from 'astro:content';
-
-const guides = (await getCollection('learn')).sort((a, b) => a.data.order - b.data.order);
-
-const categoryLabels: Record<string, string> = {
-  'macro-events': 'Macro events',
-  'ict-with-macro': 'ICT with macro',
-  'prop-firms': 'Prop firms',
-  payouts: 'Payouts (India)',
-  tools: 'Tools and platforms',
-  psychology: 'Psychology',
-};
-
-const byCategory = new Map<string, typeof guides>();
-for (const g of guides) {
-  const list = byCategory.get(g.data.category) ?? [];
-  list.push(g);
-  byCategory.set(g.data.category, list);
-}
+import Band from '../../components/Band.astro';
 ---
-
-<BaseLayout title="Learn · Aayush ICT" description="Organized by what you need, not by when it was written.">
-  <section class="container measure header-section">
+<BaseLayout title="Learn" description="Guides by need, taught through one real event first.">
+  <Band>
+    <p class="label">Learn</p>
     <h1>Learn</h1>
-    <p>Organized by what you need, not by when it was written.</p>
-  </section>
-
-  <section class="container">
-    <PathSteps />
-  </section>
-
-  <section class="container measure">
-    {[...byCategory.entries()].map(([category, items]) => (
-      <div class="category-block">
-        <h2>{categoryLabels[category] ?? category}</h2>
-        <ul class="simple-list">
-          {items.map((g) => (
-            <li><a href={`/learn/${category}/${g.id}`}>{g.data.title}</a></li>
-          ))}
-        </ul>
-      </div>
-    ))}
-    {guides.length === 0 && <p>Guides are coming. Check back soon.</p>}
-  </section>
+    <p class="ui" style="margin-top:16px;color:var(--text-muted)">Page coming next.</p>
+  </Band>
 </BaseLayout>
-
-<style>
-  .header-section {
-    padding: 3rem 0 0;
-  }
-  .category-block {
-    margin: 0 0 2.5rem;
-  }
-  .simple-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
-    gap: 0.6rem;
-  }
-</style>

@@ -1,15 +1,11 @@
 ---
-import ArticleLayout from '../layouts/ArticleLayout.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Band from '../components/Band.astro';
 ---
-
-<ArticleLayout title="Disclaimer · Aayush ICT">
-  <h1>Disclaimer</h1>
-  <p>Nothing on this site is financial advice. I write down what I watch, what I read, and
-  what I trade. It is my opinion, formed from my own process. It is not a recommendation to
-  buy or sell anything.</p>
-  <p>Trading futures, forex and CFDs carries real risk. You can lose money, including more
-  than you put in on some products. Past results, including anything I post about my own
-  trades, do not predict future results.</p>
-  <p>This is not a signal service. I do not manage money. Verify anything you read here,
-  especially prop firm rules, which change without notice.</p>
-</ArticleLayout>
+<BaseLayout title="Disclaimer" description="Not advice. Stop loss on.">
+  <Band>
+    <p class="label">Disclaimer</p>
+    <h1>Disclaimer</h1>
+    <p class="ui" style="margin-top:16px;color:var(--text-muted)">Page coming next.</p>
+  </Band>
+</BaseLayout>

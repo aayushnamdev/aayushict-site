@@ -1,21 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Band from '../components/Band.astro';
 ---
-
-<BaseLayout title="Watch · Aayush ICT" description="Playlists run as a curriculum. Coming soon.">
-  <section class="container measure coming-soon-section">
+<BaseLayout title="Watch" description="Reel playlists. Coming soon.">
+  <Band>
+    <p class="label">Watch</p>
     <h1>Watch</h1>
-    <p>Playlists, run as a curriculum. Who should watch, what you'll know by the end, what you
-    need first, and what to watch next.</p>
-    <div class="card">
-      <p>The first playlist is coming. For now, everything I've recorded is on
-      <a href="https://instagram.com/aayush_ict" target="_blank" rel="noopener">Instagram</a>.</p>
-    </div>
-  </section>
+    <p class="ui" style="margin-top:16px;color:var(--text-muted)">Page coming next.</p>
+  </Band>
 </BaseLayout>
-
-<style>
-  .coming-soon-section {
-    padding: 3rem 0 5rem;
-  }
-</style>

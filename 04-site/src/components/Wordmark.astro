@@ -1,0 +1,20 @@
+---
+// "aayush" + accented "ict". Letter spacing follows brand-schema.md section 4:
+// tight when big, 0 at the 20px header size, looser below 14px.
+interface Props {
+  on?: 'black' | 'white' | 'wine';
+  size?: number;
+}
+const { on = 'black', size = 22 } = Astro.props;
+const spacing = size >= 44 ? '-0.035em' : size >= 28 ? '-0.02em' : size > 14 ? '0' : '0.015em';
+---
+<span class:list={['wordmark', on]} style={`font-size:${size}px;letter-spacing:${spacing}`}>aayush<i>ict</i></span>
+
+<style>
+  .wordmark { font-family: var(--font-heading); font-weight: 700; line-height: 1; color: var(--text-heading); }
+  .wordmark i { font-style: normal; color: var(--rose); }
+  .white { color: var(--ink); }
+  .white i { color: var(--wine); }
+  .wine { color: var(--white); }
+  .wine i { color: var(--rose-on-wine); }
+</style>

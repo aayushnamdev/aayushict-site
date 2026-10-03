@@ -6,19 +6,19 @@ Macro events (CPI, FOMC, NFP) connected to real price in Gold, NQ and the Dollar
 ## Folder map
 | Folder | What it's for |
 |---|---|
-| `00-strategy/` | The build plan, requirements, and a dated decisions log |
-| `02-brand/` | Voice rules and design tokens — read before writing or styling anything |
-| `03-content/` | Writing workspace: drafts, content ideas, MDX templates. **Not published directly.** |
+| `00-strategy/` | `BUILD-PLAN.md` (the current plan), `site-brief.md`, and the dated `decisions.md` log |
+| `01-brand/` | The approved design pack: `reference-site.html`, tokens, brand schema, guide, page mockups. Read before styling anything |
+| `03-content/` | Writing workspace: drafts, `Assets/` proof screenshots, front page notes. **Not published directly.** |
 | `04-site/` | The actual Astro website. This is the only folder Vercel deploys. |
 | `05-ops/` | Affiliate link tracking and the launch checklist |
+| `_archive/` | Old work. `2026-09-v1/` is the first build (light theme). `source-zips/` holds the original zips. Never deployed |
 
 ## How to publish a post
-1. Draft in `03-content/drafts/`, in Aayush's voice (see `02-brand/voice-guide.md`).
-2. Pick the right template in `03-content/templates/` (briefing / guide / journal entry) and
-   fill in the frontmatter.
-3. Run it against the voice checklist: sentence length, no em dashes, heading density.
-4. Copy the finished MDX into `04-site/src/content/<collection>/` (`macro`, `learn`, or `journal`).
-5. `cd 04-site && npm run dev`, check it renders, then commit and `vercel --prod` to publish.
+1. Draft in `03-content/drafts/`, in Aayush's voice (`01-brand/brand-schema.md` section 7).
+2. Run it against the voice checklist: sentence length, no em dashes, heading density.
+3. Create the MDX file in `04-site/src/content/<collection>/` (`macro`, `learn`, or `journal`).
+   Frontmatter schemas are in `04-site/src/content.config.ts`.
+4. `cd 04-site && npm run dev`, check it renders at 375px and 1280px, then commit and `vercel --prod`.
 
 ## Local dev
 ```

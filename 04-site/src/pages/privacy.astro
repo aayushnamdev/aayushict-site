@@ -1,14 +1,11 @@
 ---
-import ArticleLayout from '../layouts/ArticleLayout.astro';
-import { site } from '../data/site';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Band from '../components/Band.astro';
 ---
-
-<ArticleLayout title="Privacy · Aayush ICT">
-  <h1>Privacy</h1>
-  <p>This site does not sell your data. It does not require an account.</p>
-  <p>Basic, anonymous analytics may be added later to see which pages are useful. If that
-  changes, this page will say so, with the name of the tool used.</p>
-  <p>Affiliate links go through partner platforms, which have their own privacy policies.
-  I don't control those.</p>
-  <p>Questions: reach me on <a href={site.instagram} target="_blank" rel="noopener">Instagram</a>.</p>
-</ArticleLayout>
+<BaseLayout title="Privacy" description="What this site stores about you.">
+  <Band>
+    <p class="label">Privacy</p>
+    <h1>Privacy</h1>
+    <p class="ui" style="margin-top:16px;color:var(--text-muted)">Page coming next.</p>
+  </Band>
+</BaseLayout>

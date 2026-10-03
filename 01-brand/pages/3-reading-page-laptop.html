@@ -1,0 +1,241 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reading page, laptop</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Figtree:wght@600;700&family=Instrument+Sans:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+*{box-sizing:border-box}
+.col{width:900px;align-self:center}
+.wide{width:900px;align-self:center}
+.h{font-family:Aptos,'Figtree','Segoe UI',sans-serif;font-weight:600;color:#F6F1EE;margin:0}
+.p{font-family:'Source Serif 4',Georgia,serif;font-size:21px;line-height:1.8;color:#E9E3E0;margin:0}
+.n{font-family:'JetBrains Mono',monospace;font-size:17px;color:#FFFFFF}
+.wc{background:#FFFFFF;border-radius:20px;padding:32px 36px;display:flex;flex-direction:column;gap:22px;color:#3A3134}
+.wl{font-family:'JetBrains Mono',monospace;font-size:12px;letter-spacing:.1em;color:#6E1A33}
+.wh{font-family:Aptos,'Figtree','Segoe UI',sans-serif;font-weight:600;font-size:26px;color:#1A1416;margin:0}
+.ws{font-family:'Instrument Sans',sans-serif;font-size:13px;color:#5E5457}
+.seg{display:flex;background:#F3ECEE;border-radius:12px;padding:4px;gap:4px}
+button{font-family:'Instrument Sans',sans-serif;cursor:pointer}
+</style>
+
+<style>html,body{background:#0E0B0C}</style>
+</head>
+<body>
+<template id="dc-tpl">
+<div style="width: 1280px; min-height: 2860px; margin: 0 auto; box-sizing: border-box; background: #141011; color: #E9E3E0; display: flex; flex-direction: column">
+
+<div style="display: flex; justify-content: space-between; align-items: center; padding: 16px 100px; border-bottom: 1px solid #2B2325; font-family: 'Instrument Sans', system-ui, sans-serif">
+<a href="1-home-laptop.html" style="text-decoration: none"><span style="font-family: Aptos, 'Figtree', 'Segoe UI', sans-serif; font-weight: 700; font-size: 22px; letter-spacing: -0.01em; color: #F6F1EE">aayush<span style="color: #B44C6C">ict</span></span></a>
+<div style="display: flex; align-items: center; gap: 32px; font-size: 15px; color: #E9E3E0">
+<span>Macro</span><span style="color: #F6F1EE; border-bottom: 2px solid #6E1A33; padding-bottom: 4px">Learn</span><span>Journal</span><span>Watch</span><span>About</span>
+<span style="background: #6E1A33; color: #FFFFFF; font-weight: 500; padding: 12px 18px; border-radius: 10px">Start here</span>
+</div>
+</div>
+
+<div style="padding: 80px 0 120px; display: flex; flex-direction: column; gap: 30px">
+
+<div class="col" style="display: flex; flex-direction: column; gap: 18px">
+<div style="font-family: 'Instrument Sans', sans-serif; font-size: 14px; color: #8C7F82">Learn <span style="color: #5E5457">/</span> Macro basics</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 13px; letter-spacing: 0.1em; color: #B44C6C">GUIDE · MACRO BASICS</div>
+<h1 class="h" style="font-size: 54px; line-height: 1.08; letter-spacing: -0.01em">What priced in really means</h1>
+<p style="margin: 0; font-family: 'Source Serif 4', Georgia, serif; font-size: 24px; line-height: 1.55; color: #C9BEC1">A bad number doesn't always move price. Here is why, using one real Friday night.</p>
+<div style="display: flex; gap: 18px; font-family: 'Instrument Sans', sans-serif; font-size: 14px; color: #8C7F82; padding: 8px 0 26px; border-bottom: 1px solid #2B2325">
+<span>Aayush Namdev</span><span>·</span><span>Updated 8 Aug 2026</span><span>·</span><span>6 min read</span>
+</div>
+</div>
+
+<div class="col" style="display: flex; flex-direction: column; gap: 24px">
+<p class="p">On Friday 7 August, the jobs number came in at <span class="n">−23K</span>. The forecast was <span class="n">85K</span>. That is a big miss.</p>
+<p class="p">Most people expect a big miss to cause a big move. It did move. But less than you would think, because a lot was already <span style="border-bottom: 2px dotted #B44C6C; color: #F6F1EE">priced in</span>.</p>
+</div>
+
+<div class="wide wc" style="margin: 24px 0">
+<div style="display: flex; justify-content: space-between; align-items: flex-end; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="wl">TRY IT · SCENARIOS</div>
+<h3 class="wh">Pick the result. See what moves.</h3>
+</div>
+<div class="seg">
+<sc-for list="{{tabs}}" as="t" hint-placeholder-count="3">
+<button onClick="{{t.pick}}" style="{{t.style}}">{{t.label}}</button>
+</sc-for>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 14px">
+<div style="background: #F7F2F3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 8px"><span class="ws">Nasdaq futures</span><span style="{{nqStyle}}">{{nq}}</span></div>
+<div style="background: #F7F2F3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 8px"><span class="ws">Gold</span><span style="{{goldStyle}}">{{gold}}</span></div>
+<div style="background: #F7F2F3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 8px"><span class="ws">September odds</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 18px; color: #1A1416">{{odds}}</span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; justify-content: space-between" class="ws"><span>Hike</span><span>Hold</span><span>Cut</span></div>
+<div style="position: relative; height: 10px; border-radius: 5px; background: linear-gradient(90deg, #EADDE0, #B44C6C, #6E1A33)">
+<div style="{{markerStyle}}"></div>
+</div>
+</div>
+<p style="margin: 0; font-family: 'Source Serif 4', serif; font-size: 18px; line-height: 1.65; color: #3A3134">{{note}}</p>
+</div>
+
+<div class="col">
+<h2 class="h" style="font-size: 34px; line-height: 1.2; padding-top: 24px">How much room was left</h2>
+</div>
+<div class="col">
+<p class="p">ADP had already come in weak, <span class="n">44,000</span> against <span class="n">65,000</span> expected. Gold was up <span class="n">6%</span> on the week. So the market had half guessed the miss before it printed.</p>
+</div>
+
+<div class="wide wc" style="margin: 24px 0">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="wl">TRY IT · PRICED IN METER</div>
+<h3 class="wh">Slide how much was already expected.</h3>
+</div>
+<div style="display: flex; flex-direction: column; gap: 12px">
+<div style="position: relative; height: 44px; display: flex; align-items: center">
+<div style="position: absolute; left: 0; right: 0; height: 6px; border-radius: 3px; background: #EADDE0"></div>
+<div style="{{fillStyle}}"></div>
+<div style="position: absolute; left: 0; right: 0; display: flex; justify-content: space-between">
+<sc-for list="{{stops}}" as="s" hint-placeholder-count="4">
+<button onClick="{{s.pick}}" style="{{s.style}}"></button>
+</sc-for>
+</div>
+</div>
+<div style="display: flex; justify-content: space-between">
+<sc-for list="{{stops}}" as="s" hint-placeholder-count="4">
+<span style="{{s.labelStyle}}">{{s.label}}</span>
+</sc-for>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px">
+<div style="background: #F7F2F3; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><span class="ws">Usual NFP move</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 28px; color: #1A1416">~300 pts</span></div>
+<div style="background: #6E1A33; border-radius: 14px; padding: 18px; display: flex; flex-direction: column; gap: 6px"><span style="font-family: 'Instrument Sans', sans-serif; font-size: 13px; color: #F5E6EA">Room left to run</span><span style="font-family: 'JetBrains Mono', monospace; font-size: 28px; color: #FFFFFF">~{{room}} pts</span></div>
+</div>
+<p style="margin: 0; font-family: 'Source Serif 4', serif; font-size: 18px; line-height: 1.65; color: #3A3134">{{roomNote}}</p>
+</div>
+
+<div class="col">
+<p class="p">I entered at <span class="n">6:04 PM</span> in a bullish 1 minute fair value gap. Four MNQ. Three ran the full <span class="n">102</span> points. That fits the room that was left.</p>
+</div>
+
+<div class="col" style="background: #2A2124; border-radius: 12px; height: 320px; display: flex; align-items: center; justify-content: center; font-family: 'JetBrains Mono', monospace; font-size: 13px; color: #8C7F82">[Chart: NQ 1 minute, 6:04 PM entry]</div>
+
+<div class="wide wc" style="margin: 24px 0">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<div class="wl">CHECK YOURSELF</div>
+<h3 class="wh">Forecast 85K. Actual −23K. Where does NQ go first?</h3>
+</div>
+<div style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px">
+<sc-for list="{{answers}}" as="a" hint-placeholder-count="3">
+<button onClick="{{a.pick}}" style="{{a.style}}">{{a.label}}</button>
+</sc-for>
+</div>
+<sc-if value="{{answered}}" hint-placeholder-val="{{ false }}">
+<p style="margin: 0; font-family: 'Source Serif 4', serif; font-size: 18px; line-height: 1.65; color: #3A3134">{{feedback}}</p>
+</sc-if>
+</div>
+
+<div class="col" style="display: flex; flex-direction: column; gap: 24px">
+<blockquote style="margin: 12px 0; padding: 4px 0 4px 26px; border-left: 3px solid #6E1A33; font-family: 'Source Serif 4', serif; font-style: italic; font-size: 27px; line-height: 1.5; color: #F6F1EE">The news is not the trade. The surprise is the trade.</blockquote>
+<div style="background: #6E1A33; border-radius: 16px; padding: 30px 32px; display: flex; justify-content: space-between; align-items: center; gap: 24px; margin-top: 24px">
+<div style="display: flex; flex-direction: column; gap: 6px">
+<div class="h" style="font-size: 24px; color: #FFFFFF">Next release, I write it before the print.</div>
+<div style="font-family: 'Source Serif 4', serif; font-size: 17px; color: #F5E6EA">Free. One email per big release.</div>
+</div>
+<span style="background: #FFFFFF; color: #6E1A33; font-family: 'Instrument Sans', sans-serif; font-weight: 600; font-size: 15px; padding: 13px 18px; border-radius: 10px; white-space: nowrap">Get the briefing</span>
+</div>
+<div style="font-family: 'JetBrains Mono', monospace; font-size: 14px; color: #8C7F82; padding-top: 18px; border-top: 1px solid #2B2325">Not advice. Stop loss on.</div>
+</div>
+
+</div>
+</div>
+</template>
+<div id="dc-root"></div>
+
+<script>
+class DCLogic{constructor(p){this.props=p||{};this.state={};}setState(p){Object.assign(this.state,typeof p==='function'?p(this.state):p);window.__dcRender();}forceUpdate(){window.__dcRender();}}
+</script>
+
+<script>
+class Component extends DCLogic {
+constructor(props) {
+super(props);
+this.state = { scen: 'miss', stop: 2, answer: null };
+}
+renderVals() {
+const S = {
+beat: { label: 'Beat', nq: '▼ Down', nqC: '#9A5B00', gold: '▼ Down', goldC: '#9A5B00', odds: 'Two hikes', pos: 12, note: 'Above 120K. Hike odds climb back. Money leaves Nasdaq and gold.' },
+near: { label: 'Near forecast', nq: '◆ Chop', nqC: '#5E5457', gold: '◆ Flat', goldC: '#5E5457', odds: 'One hike', pos: 45, note: 'Close to 85K. Already priced in. Price chops both ways. I sit out.' },
+miss: { label: 'Miss', nq: '▲ Up', nqC: '#117A45', gold: '▲ Up', goldC: '#117A45', odds: 'Cut talk starts', pos: 82, note: 'Below 40K. This is what happened on 7 August. Cut odds rose and Nasdaq ran.' }
+};
+const scen = this.state.scen;
+const cur = S[scen];
+const tabs = ['beat', 'near', 'miss'].map((k) => ({
+label: S[k].label,
+pick: () => this.setState({ scen: k }),
+style: 'border: none; border-radius: 9px; padding: 10px 16px; min-height: 40px; font-size: 14px; font-weight: 600; ' + (k === scen ? 'background: #6E1A33; color: #FFFFFF;' : 'background: transparent; color: #5E5457;')
+}));
+const big = "font-family: 'JetBrains Mono', monospace; font-size: 22px; font-weight: 500; color: ";
+const pcts = [20, 40, 60, 80];
+const stop = this.state.stop;
+const stops = pcts.map((p, i) => ({
+label: p + '%',
+pick: () => this.setState({ stop: i }),
+style: 'width: 26px; height: 26px; border-radius: 13px; padding: 0; ' + (i === stop ? 'background: #6E1A33; border: 4px solid #FFFFFF; box-shadow: 0 0 0 2px #6E1A33;' : (i < stop ? 'background: #6E1A33; border: 4px solid #FFFFFF;' : 'background: #FFFFFF; border: 2px solid #D9CBCF;')),
+labelStyle: "font-family: 'JetBrains Mono', monospace; font-size: 13px; color: " + (i === stop ? '#6E1A33' : '#8C7F82')
+}));
+const room = Math.round(300 * (1 - pcts[stop] / 100));
+const notes = ['Almost nothing was expected. The full move is still on the table.', 'Some of it was guessed. Most of the move is still there.', 'Most of it was guessed. This night was about here. Smaller run, cleaner target.', 'Nearly all of it was guessed. Even a big miss barely moves price.'];
+const correct = 'up';
+const ans = this.state.answer;
+const answers = [{ id: 'up', label: '▲ Up' }, { id: 'down', label: '▼ Down' }, { id: 'chop', label: '◆ Chop' }].map((a) => {
+let st = 'border-radius: 12px; padding: 16px; min-height: 52px; font-size: 16px; font-weight: 600; ';
+if (ans === null) st += 'background: #F7F2F3; color: #1A1416; border: 1px solid #EADDE0;';
+else if (a.id === correct) st += 'background: #E7F4EC; color: #117A45; border: 2px solid #117A45;';
+else if (a.id === ans) st += 'background: #FBEFE3; color: #9A5B00; border: 2px solid #9A5B00;';
+else st += 'background: #F7F2F3; color: #8C7F82; border: 1px solid #EADDE0;';
+return { label: a.label, pick: () => this.setState({ answer: a.id }), style: st };
+});
+return {
+tabs: tabs,
+nq: cur.nq, nqStyle: big + cur.nqC,
+gold: cur.gold, goldStyle: big + cur.goldC,
+odds: cur.odds, note: cur.note,
+markerStyle: 'position: absolute; top: -7px; left: calc(' + cur.pos + '% - 12px); width: 24px; height: 24px; border-radius: 12px; background: #FFFFFF; border: 3px solid #1A1416; transition: left .3s',
+stops: stops,
+fillStyle: 'position: absolute; left: 0; height: 6px; border-radius: 3px; background: #6E1A33; width: ' + (stop / 3 * 100) + '%',
+room: room, roomNote: notes[stop],
+answers: answers,
+answered: ans !== null,
+feedback: ans === correct ? 'Right. A miss this big pulls cut odds forward. Nasdaq likes that.' : 'Not this time. A miss this big pulls cut odds forward, and Nasdaq ran up.'
+};
+}
+}
+</script>
+
+<script>
+(function(){
+const tpl=document.getElementById('dc-tpl'), mount=document.getElementById('dc-root');
+const comp=(typeof Component!=='undefined')?new Component({}):null;
+function look(path,sc){path=path.trim();if(path==='true')return true;if(path==='false')return false;if(/^-?\d+(\.\d+)?$/.test(path))return +path;let v=sc;for(const k of path.split('.')){if(v==null)return undefined;v=v[k];}return v;}
+function interp(str,sc){const whole=str.match(/^\s*\{\{([^}]+)\}\}\s*$/);if(whole)return look(whole[1],sc);return str.replace(/\{\{([^}]+)\}\}/g,(m,p)=>{const v=look(p,sc);return v==null?'':v;});}
+function r(node,sc,out){
+ if(node.nodeType===3){out.push(document.createTextNode(String(interp(node.textContent,sc)??'')));return;}
+ if(node.nodeType!==1)return;
+ const t=node.tagName.toLowerCase();
+ if(t==='sc-for'){const list=look(node.getAttribute('list').replace(/[{}]/g,''),sc)||[];const as=node.getAttribute('as')||'item';list.forEach((it,i)=>{const s=Object.assign({},sc,{[as]:it,$index:i});node.childNodes.forEach(c=>r(c,s,out));});return;}
+ if(t==='sc-if'){if(look(node.getAttribute('value').replace(/[{}]/g,''),sc))node.childNodes.forEach(c=>r(c,sc,out));return;}
+ const el=document.createElement(t);
+ for(const a of node.attributes){if(a.name.startsWith('hint-'))continue;
+  if(a.name.startsWith('on')){const fn=interp(a.value,sc);if(typeof fn==='function')el.addEventListener(a.name.slice(2),fn);continue;}
+  const v=interp(a.value,sc);el.setAttribute(a.name,v==null?'':v);}
+ node.childNodes.forEach(c=>{const o=[];r(c,sc,o);o.forEach(n=>el.appendChild(n));});
+ out.push(el);
+}
+window.__dcRender=function(){const vals=comp&&comp.renderVals?comp.renderVals():{};const out=[];tpl.content.childNodes.forEach(c=>r(c,Object.assign({},vals),out));mount.replaceChildren(...out);};
+window.__dcRender();
+})();
+</script>
+
+</body>
+</html>

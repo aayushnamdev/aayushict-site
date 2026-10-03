@@ -1,18 +1,11 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import Band from '../components/Band.astro';
 ---
-
-<BaseLayout title="Page not found · Aayush ICT">
-  <section class="container measure not-found">
-    <h1>Page not found</h1>
-    <p>That page doesn't exist, or it moved.</p>
-    <p><a href="/">Back to home</a> · <a href="/macro">Macro Desk</a> · <a href="/learn">Learn</a></p>
-  </section>
+<BaseLayout title="Not found" description="That page does not exist.">
+  <Band>
+    <p class="label">Not found</p>
+    <h1>Not found</h1>
+    <p class="ui" style="margin-top:16px;color:var(--text-muted)">Page coming next.</p>
+  </Band>
 </BaseLayout>
-
-<style>
-  .not-found {
-    padding: 5rem 0;
-    text-align: center;
-  }
-</style>

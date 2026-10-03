@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>aayushict brand guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&family=Figtree:wght@400;600;700;800&family=Instrument+Sans:wght@500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="tokens.css">
+<style>
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--page);color:var(--text-body);font-family:var(--font-body);font-size:19px;line-height:1.75}
+.wrap{max-width:1100px;margin:0 auto;padding:0 32px}
+section{padding:96px 0}
+.band-white{background:var(--white);color:var(--ink-body)}
+.band-wine{background:var(--wine);color:var(--text-on-wine)}
+h1,h2,h3{font-family:var(--font-heading);font-weight:600;margin:0;color:var(--text-heading);line-height:1.15}
+.band-white h2,.band-white h3{color:var(--ink)}
+.band-wine h2,.band-wine h3{color:#fff}
+h2{font-size:40px;margin-bottom:14px}
+h3{font-size:22px;margin:0 0 8px}
+.lede{font-size:21px;color:var(--text-soft);max-width:720px;margin:0 0 40px}
+.band-white .lede{color:var(--ink-muted)}
+.band-wine .lede{color:var(--text-on-wine)}
+.label{font-family:var(--font-number);font-size:13px;letter-spacing:.1em;text-transform:uppercase;color:var(--rose);margin-bottom:14px;display:block}
+.band-white .label{color:var(--wine)}
+.band-wine .label{color:var(--rose-on-wine)}
+.mono{font-family:var(--font-number)}
+.ui{font-family:var(--font-ui)}
+.grid{display:grid;gap:16px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius-card);padding:22px}
+.band-white .card{background:var(--white-tint);border-color:var(--white-line)}
+.sw{border-radius:14px;overflow:hidden;border:1px solid var(--line)}
+.band-white .sw{border-color:var(--white-line)}
+.sw .chip{height:96px}
+.sw .meta{padding:14px 16px;background:var(--surface);font-family:var(--font-ui);font-size:14px;line-height:1.5}
+.band-white .sw .meta{background:var(--white)}
+.sw .meta b{display:block;font-size:16px;color:var(--text-heading)}
+.band-white .sw .meta b{color:var(--ink)}
+.sw .meta code{font-family:var(--font-number);font-size:13px;color:var(--text-muted)}
+.sw .meta span{display:block;color:var(--text-soft);margin-top:4px}
+.band-white .sw .meta span{color:var(--ink-muted)}
+.row{display:grid;grid-template-columns:220px 1fr;gap:24px;align-items:baseline;padding:22px 0;border-bottom:1px solid var(--line)}
+.row .spec{font-family:var(--font-number);font-size:13px;line-height:1.7;color:var(--text-muted)}
+.do,.dont{border-radius:14px;padding:20px;font-family:var(--font-ui);font-size:15px;line-height:1.55}
+.do{background:#E7F4EC;color:#0D5C34}
+.dont{background:#FBEFE3;color:#7A4800}
+.do b,.dont b{display:block;margin-bottom:6px;font-size:16px}
+.logo{font-family:var(--font-heading);font-weight:700;line-height:1;white-space:nowrap}
+.logo i{font-style:normal;color:var(--rose)}
+.on-white .logo{color:var(--ink)} .on-white .logo i{color:var(--wine)}
+.on-wine .logo{color:#fff} .on-wine .logo i{color:var(--rose-on-wine)}
+.tile{border-radius:16px;padding:48px 24px;display:flex;align-items:center;justify-content:center;min-height:180px}
+.voice li{margin-bottom:10px}
+.rhythm{display:flex;flex-direction:column;gap:6px;border-radius:14px;overflow:hidden}
+.rhythm div{padding:14px 18px;font-family:var(--font-ui);font-size:14px}
+table{width:100%;border-collapse:collapse;font-family:var(--font-ui);font-size:15px}
+th,td{text-align:left;padding:12px 10px;border-bottom:1px solid var(--white-line)}
+th{font-weight:600;color:var(--ink)}
+td.mono{font-size:14px}
+@media (max-width:820px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}.g2{grid-template-columns:1fr}.row{grid-template-columns:1fr;gap:6px}h2{font-size:30px}section{padding:64px 0}}
+@media (max-width:480px){.g3,.g4{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+
+<header style="border-bottom:1px solid var(--line)">
+<div class="wrap" style="display:flex;justify-content:space-between;align-items:center;padding-top:18px;padding-bottom:18px">
+<span class="logo" style="font-size:22px;letter-spacing:-0.01em;color:var(--text-heading)">aayush<i>ict</i></span>
+<span class="ui" style="font-size:14px;color:var(--text-muted)">Brand guide · version 1 · 2 Oct 2026</span>
+</div>
+</header>
+
+<section>
+<div class="wrap">
+<span class="label">aayushict.space</span>
+<h1 style="font-size:64px;line-height:1.05;max-width:820px">One look for the website, every page, every screen.</h1>
+<p class="lede" style="margin-top:22px">Black for reading. Wine for the brand. White where you touch, play or compare. Deep rose for small accents. This guide holds every colour, font, size and rule we decided, so the site can be built without guessing.</p>
+<div class="grid g4" style="margin-top:32px">
+<div class="card"><h3>Black</h3><p style="margin:0;font-size:16px;color:var(--text-soft)">The base. Calm, long reading.</p></div>
+<div class="card" style="background:var(--wine);border-color:var(--wine)"><h3 style="color:#fff">Wine</h3><p style="margin:0;font-size:16px;color:var(--text-on-wine)">The brand. Buttons and big moments.</p></div>
+<div class="card" style="background:#fff;border-color:#fff"><h3 style="color:var(--ink)">White</h3><p style="margin:0;font-size:16px;color:var(--ink-muted)">Contrast. Interactive parts and numbers.</p></div>
+<div class="card"><h3 style="color:var(--rose)">Deep rose</h3><p style="margin:0;font-size:16px;color:var(--text-soft)">Small accents on black only.</p></div>
+</div>
+</div>
+</section>
+
+<section class="band-white">
+<div class="wrap">
+<span class="label">01 Colours</span>
+<h2>The palette</h2>
+<p class="lede">Use the token names from tokens.css in code. The hex values are here so you can match them in Canva or Figma too.</p>
+
+<h3 style="margin-top:8px">Black side</h3>
+<div class="grid g4" style="margin:14px 0 36px">
+<div class="sw"><div class="chip" style="background:#141011"></div><div class="meta"><b>Page</b><code>#141011 · --page</code><span>Background of every page.</span></div></div>
+<div class="sw"><div class="chip" style="background:#1E1719"></div><div class="meta"><b>Surface</b><code>#1E1719 · --surface</code><span>Cards and boxes on black.</span></div></div>
+<div class="sw"><div class="chip" style="background:#2B2325"></div><div class="meta"><b>Line</b><code>#2B2325 · --line</code><span>Borders and dividers.</span></div></div>
+<div class="sw"><div class="chip" style="background:#2A2124"></div><div class="meta"><b>Raised</b><code>#2A2124 · --surface-raised</code><span>Chart and image frames.</span></div></div>
+</div>
+
+<h3>Text on black</h3>
+<div class="grid g4" style="margin:14px 0 36px">
+<div class="sw"><div class="chip" style="background:#F6F1EE"></div><div class="meta"><b>Heading</b><code>#F6F1EE</code><span>Titles. Never pure white.</span></div></div>
+<div class="sw"><div class="chip" style="background:#E9E3E0"></div><div class="meta"><b>Body</b><code>#E9E3E0</code><span>All reading text.</span></div></div>
+<div class="sw"><div class="chip" style="background:#C9BEC1"></div><div class="meta"><b>Soft</b><code>#C9BEC1</code><span>Intro lines, card text.</span></div></div>
+<div class="sw"><div class="chip" style="background:#8C7F82"></div><div class="meta"><b>Muted</b><code>#8C7F82</code><span>Dates, captions, sign off.</span></div></div>
+</div>
+
+<h3>Brand</h3>
+<div class="grid g4" style="margin:14px 0 36px">
+<div class="sw"><div class="chip" style="background:#6E1A33"></div><div class="meta"><b>Wine</b><code>#6E1A33 · --wine</code><span>Buttons, wine band, selected toggles, key number on white.</span></div></div>
+<div class="sw"><div class="chip" style="background:#B44C6C"></div><div class="meta"><b>Deep rose</b><code>#B44C6C · --rose</code><span>Logo ict, labels, links, term underline. On black only.</span></div></div>
+<div class="sw"><div class="chip" style="background:#5A1429"></div><div class="meta"><b>Wine deep</b><code>#5A1429</code><span>Cards inside the wine band.</span></div></div>
+<div class="sw"><div class="chip" style="background:#F7C9D1"></div><div class="meta"><b>Rose on wine</b><code>#F7C9D1</code><span>Labels inside the wine band.</span></div></div>
+</div>
+
+<h3>White side</h3>
+<div class="grid g4" style="margin:14px 0 36px">
+<div class="sw"><div class="chip" style="background:#FFFFFF;border-bottom:1px solid #EADDE0"></div><div class="meta"><b>White</b><code>#FFFFFF</code><span>Interactive cards, numbers table, bands.</span></div></div>
+<div class="sw"><div class="chip" style="background:#F7F2F3"></div><div class="meta"><b>White tint</b><code>#F7F2F3</code><span>Tiles inside white cards.</span></div></div>
+<div class="sw"><div class="chip" style="background:#1A1416"></div><div class="meta"><b>Ink</b><code>#1A1416</code><span>Headings and numbers on white.</span></div></div>
+<div class="sw"><div class="chip" style="background:#5E5457"></div><div class="meta"><b>Ink muted</b><code>#5E5457</code><span>Labels on white.</span></div></div>
+</div>
+
+<h3>Direction</h3>
+<p style="margin:4px 0 14px;color:var(--ink-muted);font-size:17px">Red and green already mean down and up in trading, so they never become brand colours. Direction always shows an arrow plus a word.</p>
+<div class="grid g4">
+<div class="sw"><div class="chip" style="background:#141011;display:flex;align-items:center;justify-content:center"><span class="mono" style="color:#5FD39A;font-size:20px">▲ Up</span></div><div class="meta"><b>Up on black</b><code>#5FD39A</code></div></div>
+<div class="sw"><div class="chip" style="background:#141011;display:flex;align-items:center;justify-content:center"><span class="mono" style="color:#FFB27A;font-size:20px">▼ Down</span></div><div class="meta"><b>Down on black</b><code>#FFB27A</code></div></div>
+<div class="sw"><div class="chip" style="background:#fff;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #EADDE0"><span class="mono" style="color:#117A45;font-size:20px">▲ Up</span></div><div class="meta"><b>Up on white</b><code>#117A45</code></div></div>
+<div class="sw"><div class="chip" style="background:#fff;display:flex;align-items:center;justify-content:center;border-bottom:1px solid #EADDE0"><span class="mono" style="color:#9A5B00;font-size:20px">▼ Down</span></div><div class="meta"><b>Down on white</b><code>#9A5B00</code></div></div>
+</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<span class="label">02 Where white lives</span>
+<h2>White is for contrast, not everywhere</h2>
+<p class="lede">Reading always happens on black. White appears only where something needs to stand out or be touched.</p>
+<div class="grid g2" style="align-items:start">
+<div>
+<h3>On the home page</h3>
+<p style="font-size:17px;color:var(--text-soft);margin:0 0 16px">Full width bands that switch contrast, like chapters.</p>
+<div class="rhythm">
+<div style="background:#1E1719;color:var(--text-heading)">Black · hero</div>
+<div style="background:#fff;color:var(--ink)">White · the gap</div>
+<div style="background:#1E1719;color:var(--text-heading)">Black · one real night, with a white numbers card</div>
+<div style="background:var(--wine);color:#fff">Wine · this night was rare</div>
+<div style="background:#fff;color:var(--ink)">White · what you get here</div>
+<div style="background:#0E0B0C;color:var(--text-muted);border:1px solid var(--line)">Black · footer</div>
+</div>
+</div>
+<div>
+<h3>On reading pages</h3>
+<p style="font-size:17px;color:var(--text-soft);margin:0 0 16px">Black page. White cards for toggles, sliders, quizzes and numbers tables.</p>
+<div style="background:#fff;border-radius:18px;padding:22px;display:flex;flex-direction:column;gap:14px">
+<span class="label" style="color:var(--wine);margin:0">Try it · scenarios</span>
+<span style="font-family:var(--font-heading);font-weight:600;font-size:20px;color:var(--ink)">Pick the result. See what moves.</span>
+<div style="display:flex;gap:4px;background:var(--white-track);border-radius:12px;padding:4px">
+<span class="ui" style="flex:1;text-align:center;padding:9px;font-size:14px;color:var(--ink-muted)">Beat</span>
+<span class="ui" style="flex:1;text-align:center;padding:9px;font-size:14px;color:var(--ink-muted)">Near</span>
+<span class="ui" style="flex:1;text-align:center;padding:9px;font-size:14px;font-weight:600;background:var(--wine);color:#fff;border-radius:9px">Miss</span>
+</div>
+<div style="display:flex;justify-content:space-between;background:var(--white-tint);border-radius:12px;padding:12px 14px"><span class="ui" style="font-size:13px;color:var(--ink-muted)">Nasdaq futures</span><span class="mono" style="color:#117A45">▲ Up</span></div>
+</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="band-white">
+<div class="wrap">
+<span class="label">03 Fonts</span>
+<h2>Four fonts, four jobs</h2>
+<p class="lede">Each font does one job only. Never swap them around.</p>
+<div class="grid g2">
+<div class="card"><span class="label" style="margin-bottom:6px">Headings</span><div style="font-family:var(--font-heading);font-weight:600;font-size:40px;line-height:1.1;color:var(--ink)">Aptos SemiBold</div><p style="margin:10px 0 0;font-size:16px;color:var(--ink-muted)">Every title and heading. Weight 600. Aptos is Microsoft's font, so phones without Office show Figtree instead, which looks very close.</p></div>
+<div class="card"><span class="label" style="margin-bottom:6px">Reading</span><div style="font-family:var(--font-body);font-size:34px;line-height:1.2;color:var(--ink)">Source Serif 4</div><p style="margin:10px 0 0;font-size:16px;color:var(--ink-muted)">All body text. Chosen for calm, long reading. Free from Google Fonts.</p></div>
+<div class="card"><span class="label" style="margin-bottom:6px">Interface</span><div style="font-family:var(--font-ui);font-weight:600;font-size:32px;line-height:1.2;color:var(--ink)">Instrument Sans</div><p style="margin:10px 0 0;font-size:16px;color:var(--ink-muted)">Nav, buttons, toggles, captions, meta lines. Nothing longer than a line.</p></div>
+<div class="card"><span class="label" style="margin-bottom:6px">Numbers</span><div style="font-family:var(--font-number);font-size:30px;line-height:1.2;color:var(--ink)">−23K · 4.1% · 6:04 PM</div><p style="margin:10px 0 0;font-size:16px;color:var(--ink-muted)">JetBrains Mono. Every number, price, time and section label.</p></div>
+</div>
+
+<h3 style="margin-top:48px">Sizes</h3>
+<div style="overflow-x:auto">
+<table>
+<tr><th>Use</th><th>Font</th><th>Laptop</th><th>Phone</th><th>Line height</th></tr>
+<tr><td>Home hero line</td><td>Aptos 600</td><td class="mono">68</td><td class="mono">40</td><td class="mono">1.08</td></tr>
+<tr><td>Home section heading</td><td>Aptos 600</td><td class="mono">44</td><td class="mono">30</td><td class="mono">1.15</td></tr>
+<tr><td>Page title</td><td>Aptos 600</td><td class="mono">54</td><td class="mono">36</td><td class="mono">1.1</td></tr>
+<tr><td>Section heading</td><td>Aptos 600</td><td class="mono">34</td><td class="mono">27</td><td class="mono">1.2</td></tr>
+<tr><td>Sub heading</td><td>Aptos 600</td><td class="mono">24</td><td class="mono">21</td><td class="mono">1.3</td></tr>
+<tr><td>Intro line</td><td>Source Serif 4</td><td class="mono">24</td><td class="mono">20</td><td class="mono">1.55</td></tr>
+<tr><td>Body text</td><td>Source Serif 4</td><td class="mono">21</td><td class="mono">18</td><td class="mono">1.8</td></tr>
+<tr><td>Number inside text</td><td>JetBrains Mono</td><td class="mono">17</td><td class="mono">15</td><td class="mono">same as text</td></tr>
+<tr><td>Nav and buttons</td><td>Instrument Sans</td><td class="mono">15</td><td class="mono">14</td><td class="mono">1</td></tr>
+<tr><td>Meta and captions</td><td>Instrument Sans</td><td class="mono">14</td><td class="mono">13</td><td class="mono">1.5</td></tr>
+<tr><td>Section label</td><td>JetBrains Mono, capitals, spacing 0.1em</td><td class="mono">13</td><td class="mono">12</td><td class="mono">1</td></tr>
+</table>
+</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<span class="label">04 The wordmark</span>
+<h2>aayushict</h2>
+<p class="lede">One word, all lowercase, Aptos Bold. No underscore. The "ict" carries the accent colour.</p>
+<div class="grid g3">
+<div class="tile" style="background:#141011;border:1px solid var(--line)"><span class="logo" style="font-size:48px;letter-spacing:-0.035em;color:var(--text-heading)">aayush<i>ict</i></span></div>
+<div class="tile on-white" style="background:#fff"><span class="logo" style="font-size:48px;letter-spacing:-0.035em">aayush<i>ict</i></span></div>
+<div class="tile on-wine" style="background:var(--wine)"><span class="logo" style="font-size:48px;letter-spacing:-0.035em">aayush<i>ict</i></span></div>
+</div>
+<div class="grid g3" style="margin-top:12px">
+<p class="ui" style="margin:0;font-size:14px;color:var(--text-muted)">On black: ict in deep rose #B44C6C</p>
+<p class="ui" style="margin:0;font-size:14px;color:var(--text-muted)">On white: ict in wine #6E1A33</p>
+<p class="ui" style="margin:0;font-size:14px;color:var(--text-muted)">On wine: ict in soft pink #F7C9D1</p>
+</div>
+
+<h3 style="margin-top:56px">Spacing changes with size</h3>
+<p style="font-size:17px;color:var(--text-soft);margin:0 0 10px">Tight when big, a little looser when small, so the letters never touch.</p>
+<div class="row"><span class="spec">72px and up · −0.035em</span><span class="logo" style="font-size:72px;letter-spacing:-0.035em;color:var(--text-heading)">aayush<i>ict</i></span></div>
+<div class="row"><span class="spec">44px · −0.035em</span><span class="logo" style="font-size:44px;letter-spacing:-0.035em;color:var(--text-heading)">aayush<i>ict</i></span></div>
+<div class="row"><span class="spec">28px · −0.02em</span><span class="logo" style="font-size:28px;letter-spacing:-0.02em;color:var(--text-heading)">aayush<i>ict</i></span></div>
+<div class="row"><span class="spec">20px, site header · 0</span><span class="logo" style="font-size:20px;letter-spacing:0;color:var(--text-heading)">aayush<i>ict</i></span></div>
+<div class="row"><span class="spec">14px and below · +0.015em</span><span class="logo" style="font-size:14px;letter-spacing:0.015em;color:var(--text-heading)">aayush<i>ict</i></span></div>
+
+<div class="grid g2" style="margin-top:48px;align-items:center">
+<div style="display:flex;gap:28px;align-items:flex-end">
+<div style="width:110px;height:110px;border-radius:55px;background:#141011;border:2px solid var(--wine);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:800;font-size:56px;line-height:1;letter-spacing:-0.02em"><span style="color:var(--text-heading)">a</span><span style="color:var(--rose)">i</span></div>
+<div style="width:56px;height:56px;border-radius:28px;background:#141011;border:1px solid var(--wine);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:800;font-size:28px;line-height:1"><span style="color:var(--text-heading)">a</span><span style="color:var(--rose)">i</span></div>
+<div style="width:32px;height:32px;border-radius:16px;background:#141011;border:1px solid var(--wine);display:flex;align-items:center;justify-content:center;font-family:var(--font-heading);font-weight:800;font-size:16px;line-height:1"><span style="color:var(--text-heading)">a</span><span style="color:var(--rose)">i</span></div>
+</div>
+<div><h3>Profile picture and favicon</h3><p style="margin:0;font-size:17px;color:var(--text-soft)">Just "ai" in Aptos ExtraBold, the i in deep rose, on a black circle with a thin wine ring. Two letters stay clear even at comment size.</p></div>
+</div>
+
+<div class="grid g2" style="margin-top:40px">
+<div class="card"><h3>Heavy version</h3><span class="logo" style="font-weight:800;font-size:40px;letter-spacing:-0.045em;color:var(--text-heading);display:block;margin:8px 0 12px">aayush<i>ict</i></span><p style="margin:0;font-size:16px;color:var(--text-soft)">Aptos ExtraBold. Only for thumbnails and big covers, never in the site header.</p></div>
+<div class="grid" style="gap:12px">
+<div class="dont"><b>Don't add an underscore</b>aayush_ict was the old name style. The mark is one word now.</div>
+<div class="dont"><b>Don't put deep rose on wine</b>It disappears. Use the soft pink on wine.</div>
+<div class="dont"><b>Don't keep it tight when small</b>Below 28px, open the spacing using the table above.</div>
+</div>
+</div>
+</div>
+</section>
+
+<section class="band-white">
+<div class="wrap">
+<span class="label">05 Building blocks</span>
+<h2>The pieces every page uses</h2>
+<p class="lede">Buttons, cards and boxes keep the same shape everywhere.</p>
+<div class="grid g3">
+<div class="card" style="background:#141011;border-color:#141011;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+<span class="label" style="color:var(--rose);margin:0">Buttons</span>
+<span class="ui" style="background:var(--wine);color:#fff;font-weight:500;font-size:15px;padding:13px 18px;border-radius:10px">Start here</span>
+<span class="ui" style="background:#fff;color:var(--wine);font-weight:600;font-size:15px;padding:13px 18px;border-radius:10px">Get the briefing</span>
+<p style="margin:0;font-size:14px;color:var(--text-muted)" class="ui">Wine on black. White with wine text on wine. Radius 10. At least 44px tall on phone.</p>
+</div>
+<div class="card" style="background:#141011;border-color:#141011;display:flex;flex-direction:column;gap:14px;align-items:flex-start">
+<span class="label" style="color:var(--rose);margin:0">Proof chips</span>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><span class="mono" style="font-size:14px;padding:8px 12px;border-radius:10px;background:var(--surface);border:1px solid var(--line);color:var(--text-heading)">102 points</span><span class="mono" style="font-size:14px;padding:8px 12px;border-radius:10px;background:var(--surface);border:1px solid var(--wine);color:var(--text-heading)">Apex payout $1,446 ↗</span></div>
+<p style="margin:0;font-size:14px;color:var(--text-muted)" class="ui">Mono text on surface. A wine border means it opens proof.</p>
+</div>
+<div class="card" style="background:#141011;border-color:#141011;display:flex;flex-direction:column;gap:12px">
+<span class="label" style="color:var(--rose);margin:0">Term tip</span>
+<p style="margin:0;font-size:17px;color:var(--text-body)">A lot was already <span style="border-bottom:2px dotted var(--rose);color:var(--text-heading)">priced in</span>.</p>
+<div style="background:var(--surface);border:1px solid var(--line-strong);border-radius:12px;padding:12px 14px"><span class="ui" style="font-size:13px;font-weight:600;color:var(--rose)">Priced in</span><p style="margin:4px 0 0;font-size:15px;line-height:1.55;color:var(--text-body)">What the market already expects.</p></div>
+</div>
+<div class="card" style="background:#fff;border-color:var(--white-line);display:flex;flex-direction:column">
+<span class="label" style="margin:0 0 10px">Numbers table</span>
+<span class="mono" style="font-size:44px;color:var(--wine);line-height:1">−23K</span>
+<div style="display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #EDE6E8;margin-top:10px"><span style="font-size:15px;color:var(--ink-muted)">Forecast</span><span class="mono" style="color:var(--ink)">85K</span></div>
+<div style="display:flex;justify-content:space-between;padding:10px 0"><span style="font-size:15px;color:var(--ink-muted)">Previous</span><span class="mono" style="color:var(--ink)">20K</span></div>
+</div>
+<div class="card" style="background:#141011;border-color:#141011;display:flex;flex-direction:column;gap:10px">
+<span class="label" style="color:var(--rose);margin:0">Pull line</span>
+<blockquote style="margin:0;padding-left:18px;border-left:3px solid var(--wine);font-style:italic;font-size:20px;line-height:1.5;color:var(--text-heading)">The news is not the trade. The surprise is the trade.</blockquote>
+<p style="margin:0;font-size:14px;color:var(--text-muted)" class="ui">One per page at most.</p>
+</div>
+<div class="card" style="background:var(--wine);border-color:var(--wine);display:flex;flex-direction:column;gap:12px">
+<span class="label" style="color:var(--rose-on-wine);margin:0">Call box</span>
+<span style="font-family:var(--font-heading);font-weight:600;font-size:20px;color:#fff">Next release, I write it before the print.</span>
+<span class="ui" style="align-self:flex-start;background:#fff;color:var(--wine);font-weight:600;font-size:14px;padding:11px 16px;border-radius:10px">Get the briefing</span>
+</div>
+</div>
+
+<h3 style="margin-top:48px">Layout</h3>
+<div class="grid g3">
+<div class="card"><b class="ui" style="color:var(--ink)">Laptop reading width</b><p style="margin:6px 0 0;font-size:16px;color:var(--ink-muted)">900px. Text, white cards and charts share the exact same left and right edges.</p></div>
+<div class="card"><b class="ui" style="color:var(--ink)">Phone</b><p style="margin:6px 0 0;font-size:16px;color:var(--ink-muted)">22px side padding. Side by side cards stack. Check every page at 375px.</p></div>
+<div class="card"><b class="ui" style="color:var(--ink)">Corners</b><p style="margin:6px 0 0;font-size:16px;color:var(--ink-muted)">Buttons 10. Cards 14. White interactive cards 20 on laptop, 18 on phone.</p></div>
+</div>
+</div>
+</section>
+
+<section class="band-wine">
+<div class="wrap">
+<span class="label">06 Voice</span>
+<h2>How the words sound</h2>
+<p class="lede">The look is calm. The words should be too.</p>
+<div class="grid g2">
+<ul class="voice" style="margin:0;padding-left:20px;font-size:18px">
+<li>First person. I read, I traded, I don't remember.</li>
+<li>Sentences of about 9 to 13 words.</li>
+<li>Plain Indian English. Explain jargon on first use with a term tip.</li>
+<li>No em dashes, no hyphens joining thoughts. Use full stops or commas.</li>
+</ul>
+<ul class="voice" style="margin:0;padding-left:20px;font-size:18px">
+<li>Never "hawkish" or "dovish". Say what the Fed is likely to do.</li>
+<li>Real numbers only. If something isn't remembered, say so.</li>
+<li>Show losing trades too. They stay visible.</li>
+<li>Every market post ends with: Not advice. Stop loss on.</li>
+</ul>
+</div>
+</div>
+</section>
+
+<section>
+<div class="wrap">
+<span class="label">07 Files in this folder</span>
+<h2>What to open</h2>
+<div class="grid g2" style="margin-top:24px">
+<div class="card"><h3>pages/</h3><p style="margin:0;font-size:16px;color:var(--text-soft)">The final designs. Home and reading page, laptop and phone. The reading pages work: click the toggles, slider and quiz. File 5 labels every text style.</p></div>
+<div class="card"><h3>tokens.css and tokens.json</h3><p style="margin:0;font-size:16px;color:var(--text-soft)">Every colour, font and size as code. Give these to Claude Code when you build the site.</p></div>
+<div class="card"><h3>brand-schema.md</h3><p style="margin:0;font-size:16px;color:var(--text-soft)">This guide as plain text, for building and for handing to anyone else.</p></div>
+<div class="card"><h3>README.md</h3><p style="margin:0;font-size:16px;color:var(--text-soft)">A short map of the folder.</p></div>
+</div>
+<p class="mono" style="margin:56px 0 0;padding-top:20px;border-top:1px solid var(--line);font-size:14px;color:var(--text-muted)">Not a signal service. Not advice. Stop loss on.</p>
+</div>
+</section>
+
+</body>
+</html>

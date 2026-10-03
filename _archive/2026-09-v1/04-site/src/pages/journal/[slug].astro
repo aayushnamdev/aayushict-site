@@ -1,0 +1,59 @@
+---
+import ArticleLayout from '../../layouts/ArticleLayout.astro';
+import Breadcrumbs from '../../components/Breadcrumbs.astro';
+import CallBox from '../../components/CallBox.astro';
+import Disclaimer from '../../components/Disclaimer.astro';
+import { getCollection, getEntry, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const entries = await getCollection('journal');
+  return entries.map((entry) => ({
+    params: { slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+
+let briefingEntry = null;
+if (data.briefing) {
+  briefingEntry = await getEntry('macro', data.briefing).catch(() => null);
+}
+
+const title = data.title ?? `${data.asset ?? ''} ${data.kind}`;
+---
+
+<ArticleLayout title={`${title} · Journal · Aayush ICT`}>
+  <Breadcrumbs crumbs={[{ label: 'Journal', href: '/journal' }, { label: title }]} />
+  <h1>{title}</h1>
+  <p class="date mono">{data.date.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}</p>
+
+  {data.kind === 'call' && data.direction && data.target != null && (
+    <CallBox
+      asset={data.asset ?? ''}
+      direction={data.direction}
+      target={data.target}
+      invalidation={data.invalidation ?? ''}
+      status={data.status}
+    />
+  )}
+
+  <div class="prose">
+    <Content />
+  </div>
+
+  {briefingEntry && (
+    <p><a href={`/macro/${briefingEntry.data.slug}`}>See the briefing this call came from →</a></p>
+  )}
+
+  <Disclaimer />
+</ArticleLayout>
+
+<style>
+  .date {
+    color: var(--text-muted);
+    margin: -0.5rem 0 1.5rem;
+  }
+</style>

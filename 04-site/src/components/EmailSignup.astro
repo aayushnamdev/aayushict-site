@@ -1,0 +1,56 @@
+---
+// Three variants: band (on black), wine (on the wine band), footer.
+// The provider is not chosen yet. email.action null = show thank you, store nothing.
+import { email } from '../config/email';
+interface Props {
+  variant?: 'band' | 'wine' | 'footer';
+  id: string; // unique per page, used to link label and input
+}
+const { variant = 'band', id } = Astro.props;
+const text = variant === 'footer' ? email.footerPrompt : email.prompt;
+---
+<div class:list={['signup', variant]}>
+  <p class="ui prompt">{text}</p>
+  <form class:list={['sform', { onwine: variant === 'wine' }]} data-signup action={email.action ?? undefined} method={email.action ? 'post' : undefined} data-thanks={email.thanks}>
+    <label class="sr" for={id}>Email</label>
+    <input id={id} name="email" type="email" placeholder="you@email.com" required autocomplete="email" />
+    <button class:list={['btn', { white: variant === 'wine' }]} type="submit">Sign me up</button>
+  </form>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[data-signup]').forEach((form) => {
+    // With no provider set, show the thank you and keep nothing.
+    if (form.getAttribute('action')) return;
+    form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const msg = document.createElement('p');
+      msg.className = 'ui thanks';
+      msg.setAttribute('role', 'status');
+      msg.textContent = form.dataset.thanks ?? '';
+      form.replaceWith(msg);
+    });
+  });
+</script>
+
+<style>
+  .signup { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 24px; }
+  .prompt { font-size: 15px; color: var(--text-soft); margin: 0; }
+  .band .prompt { font-size: 18px; }
+  .wine .prompt { color: var(--text-on-wine); font-size: 18px; }
+  .sform { display: flex; gap: 10px; flex: 1; min-width: 280px; max-width: 460px; }
+  .sform input {
+    flex: 1; min-width: 0; min-height: 48px; padding: 0 14px;
+    border-radius: var(--radius-button); border: 1px solid var(--line-strong);
+    background: var(--page); color: var(--text-heading);
+    font-family: var(--font-ui); font-size: 16px;
+  }
+  .sform input::placeholder { color: var(--text-muted); }
+  .sform.onwine input { background: var(--white); color: var(--ink); border-color: var(--white); }
+  .sform.onwine input::placeholder { color: var(--ink-muted); }
+  .sform :global(.btn) { min-height: 48px; white-space: nowrap; }
+  .thanks { color: var(--text-heading); margin: 0; }
+  @media (max-width: 860px) {
+    .sform { flex-direction: column; min-width: 0; max-width: none; width: 100%; }
+  }
+</style>
