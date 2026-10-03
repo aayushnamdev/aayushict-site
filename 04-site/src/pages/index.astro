@@ -6,7 +6,7 @@ import SideCard from '../components/SideCard.astro';
 import ProofChips from '../components/ProofChips.astro';
 import GapCards from '../components/GapCards.astro';
 import NumberFlip from '../components/NumberFlip.astro';
-import GapMeter from '../components/GapMeter.astro';
+import ReadingOrder from '../components/ReadingOrder.astro';
 import ValueTiles from '../components/ValueTiles.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import payout from '../assets/proof/apex-payout-2026-08-12.png';
@@ -114,11 +114,14 @@ const jsonLd = [
         <p>Most releases land near the forecast. Price just chops, up and down, and nothing runs.</p>
         <p>Even this night, a lot was already priced in. The room left to run was smaller than usual.</p>
       </div>
-      <GapMeter
-        label="Room left"
-        usual={{ text: 'Usual move on a surprise this big', value: '~300 pts', pct: 100 }}
-        night={{ text: 'This night', value: '~100 to 150 pts', pct: 42 }}
-        note="Room left"
+      <!-- PLACEHOLDER: the three steps are the draft's wording, not Aayush's yet -->
+      <ReadingOrder
+        label="Read it in this order"
+        steps={[
+          { title: 'Start here', text: 'One real night, with the numbers and screenshots. About 7 minutes.', href: '/start-here' },
+          { title: 'Macro Desk', text: 'What is priced in before each big release. Scenarios written before the number.', href: '/macro' },
+          { title: 'Journal', text: 'My calls and trades after the news. Wins and losses, with numbers.', href: '/journal' },
+        ]}
       />
     </div>
   </Band>

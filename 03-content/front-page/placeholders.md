@@ -23,3 +23,6 @@ Source wording: `../drafts/start-from-zero.md`.
 - The Tradovate screenshot is a tilted photo of a screen. Consider a cleaner retake.
 - The FundedNext card label comes from `fit` in `firms.ts` ("Gold and forex traders on MT5"), but the text says "my pick for beginners".
 - The draft put the calendar screenshot right after the number flip. The page puts one line between them so no two widgets sit in a row.
+
+## Home band 4 (changed 4 Oct)
+- The "Room left" meter was replaced by a "Read it in this order" card (Start here, Macro Desk, Journal). Its three one-line descriptions are the draft's wording, not yet in Aayush's words. The meter still lives on /start-here.
