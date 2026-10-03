@@ -62,6 +62,12 @@ p { margin: 0; }
   clip: rect(0 0 0 0); white-space: nowrap;
 }
 
+/* Headings. Sizes from brand-schema.md section 3. */
+.h-hero { font-size: 68px; line-height: 1.08; letter-spacing: -0.01em; }
+.h-sec { font-size: 44px; line-height: 1.15; }
+.lead { font-size: 20px; line-height: 1.7; }
+.stack { display: flex; flex-direction: column; }
+
 /* Buttons. At least 44px tall for touch. */
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
@@ -79,6 +85,8 @@ p { margin: 0; }
 @media (max-width: 860px) {
   :root { --pad: var(--phone-padding); }
   body { font-size: 18px; line-height: 1.75; }
+  .h-hero { font-size: 40px; }
+  .h-sec { font-size: 30px; }
   .col { padding: 0 var(--phone-padding); }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

@@ -3,7 +3,7 @@
 Single place to resume work on the aayushict.space front page. Written 2 Oct 2026 at the end of the first planning session.
 
 ## Status
-Direction approved by Aayush. Copy and widget spec are drafted. Not yet built in Astro. Branding and colours are still being worked on separately, so all styling here is placeholder.
+Direction approved by Aayush. Copy and widget spec are drafted. **Updated 3 Oct 2026:** pieces 1 and 2 (first screen, the gap) are built in `04-site/src/pages/index.astro` on the new dark brand, following the reference layout plus this draft's story. Pieces 3 to 7 are next. Unrewritten lines are listed in `placeholders.md`. The firm picker moves to Start here. Branding and colours are still being worked on separately, so all styling here is placeholder.
 
 | What | Where |
 |---|---|

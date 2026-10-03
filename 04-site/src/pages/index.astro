@@ -1,11 +1,83 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Band from '../components/Band.astro';
-import { site } from '../config/site';
+import TermTip from '../components/TermTip.astro';
+import SideCard from '../components/SideCard.astro';
+import ProofChips from '../components/ProofChips.astro';
+import GapCards from '../components/GapCards.astro';
+import payout from '../assets/proof/apex-payout-2026-08-12.png';
+
+// Copy comes from 03-content/drafts/start-from-zero.md, pieces 1 and 2.
+// Lines marked PLACEHOLDER are not in Aayush's words yet. Listed in 03-content/front-page/placeholders.md.
 ---
 <BaseLayout showFooterSignup={false}>
+  <!-- Piece 1. First screen -->
   <Band>
-    <h1 class="h-hero">{site.tagline}</h1>
-    <p class="ui" style="margin-top:16px;color:var(--text-muted)">Home page coming next.</p>
+    <div class="hero">
+      <div class="stack left">
+        <div class="label">Macro · Futures · From India</div>
+        <h1 class="h-hero">Know what's priced in. Trade what changes.</h1>
+        <p class="lead">
+          I'm Aayush. I trade Nasdaq futures from India. Before every big number, I know what the market already expects, so it's already{' '}
+          <TermTip title="Priced in" text="Priced in means the market already expects it. The expected number does not move price. The surprise does.">priced in</TermTip>.
+          When the number surprises, I trade it.
+        </p>
+        <ProofChips
+          chips={[{ text: '102 points' }, { text: '4 MNQ' }, { text: 'Apex payout', proof: true }]}
+          proofTitle="Apex payout, $1,446"
+          proofNote="This is from that week, not one trade. I traded 3 to 4 more days after it."
+          proofImage={payout}
+          proofAlt="Apex Trader Funding rewards certificate, $1,446, approved on 12 August 2026"
+        />
+      </div>
+      <div class="stack right">
+        <!-- PLACEHOLDER: both side cards, not in Aayush's words yet -->
+        <SideCard href="/macro" label="The macro side" title="I read the news before the chart">
+          NFP, CPI, the Fed.<br />I watch gold and the dollar too. I don't trade them.
+        </SideCard>
+        <!-- PLACEHOLDER -->
+        <SideCard href="/journal" label="The futures side" title="I trade Nasdaq futures">
+          Mostly MNQ, on funded accounts. The number gives me direction. The 1 minute chart gives me my entry.
+        </SideCard>
+      </div>
+    </div>
+  </Band>
+
+  <!-- Piece 2. The gap -->
+  <Band variant="white">
+    <div class="stack gap">
+      <div class="stack intro">
+        <div class="label">The gap</div>
+        <!-- PLACEHOLDER: heading and the line under it -->
+        <h2 class="h-sec">Most people learn one side.</h2>
+        <p class="lead">Some learn only the chart. Some only read the news. Both feel stuck in the same place.</p>
+      </div>
+      <GapCards
+        cards={[
+          { title: 'Chart only', text: "You learn setups. FVG, order blocks. But at 6 PM price moves 300 points and you don't know why." },
+          { title: 'News only', text: 'You read headlines. Jobs weak, Fed this, Fed that. But nobody shows you the trade.' },
+          { title: 'From India', text: "You can't easily trade US futures from here. Prop firms are the way in. I show you which ones, honestly." },
+          { title: 'Here', text: 'The number tells me the direction. The chart tells me where to get in. I show you both, on real trades.', highlight: true },
+        ]}
+      />
+      <!-- PLACEHOLDER: punch line -->
+      <p class="punch">The money is where they meet. Here is one real night.</p>
+    </div>
   </Band>
 </BaseLayout>
+
+<style>
+  .hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: 64px; align-items: start; margin-top: -14px; } /* band padding is 110px, the reference hero starts at 96px */
+  .left { gap: 24px; }
+  .left .lead { max-width: 560px; }
+  .right { gap: 16px; padding-top: 30px; }
+  .gap { gap: 36px; }
+  .intro { gap: 14px; max-width: 680px; }
+  .punch { font-family: var(--font-heading); font-weight: 600; font-size: 24px; line-height: 1.3; color: var(--ink); }
+  @media (max-width: 860px) {
+    .hero { grid-template-columns: 1fr; gap: 28px; margin-top: 0; }
+    .left { gap: 20px; }
+    .right { padding-top: 0; }
+    .punch { font-size: 21px; }
+  }
+</style>
