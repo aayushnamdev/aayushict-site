@@ -9,8 +9,9 @@ interface Props {
   title?: string;
   description?: string;
   showFooterSignup?: boolean; // false on the home page
+  narrow?: boolean; // reading pages: header lines up with the 760px text column
 }
-const { title, description = site.tagline, showFooterSignup = true } = Astro.props;
+const { title, description = site.tagline, showFooterSignup = true, narrow = false } = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.tagline}`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 ---
@@ -36,7 +37,7 @@ const canonical = new URL(Astro.url.pathname, site.url).href;
     <Font cssVariable="--astro-jetbrains-mono" />
   </head>
   <body>
-    <Header />
+    <Header narrow={narrow} />
     <main><slot /></main>
     <Footer showSignup={showFooterSignup} />
   </body>

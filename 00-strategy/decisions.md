@@ -27,3 +27,5 @@ Dated record of locked calls. Add to this, don't rewrite history.
 - Affiliate redirects are built from `src/config/firms.ts`. Apex stays off until a code and link exist.
 - Home page stays short (reference design). `/start-here` is the long reading page: the 7 Aug night, the firm picker with FundedNext, Apex and MRKT, and a short FAQ. There is no separate firms page and no `/tools` page.
 - Apex is a plain non-affiliate link: no code, no `/go/apex` redirect.
+
+- Reading pages (Start here, and later Macro, Learn, Journal posts) use a 760px column and 18px body text (17px phone), tighter paragraph gaps and smaller headings. Aayush compared them with the Claude chat and found the brand-schema size (900px, 21px) too big. Home page keeps the brand sizes. The header lines up with the text column on reading pages.

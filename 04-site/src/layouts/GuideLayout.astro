@@ -5,7 +5,7 @@ import EmailSignup from '../components/EmailSignup.astro';
 interface Props { title: string; subtitle?: string; route?: string[]; updated?: Date }
 const { title, subtitle, route = [], updated } = Astro.props;
 ---
-<BaseLayout title={title} description={subtitle}>
+<BaseLayout title={title} description={subtitle} narrow>
   <article class="article col">
     {route.length > 0 && (
       <ol class="route" aria-label="Route">{route.map((r) => <li>{r}</li>)}</ol>
@@ -19,17 +19,5 @@ const { title, subtitle, route = [], updated } = Astro.props;
 </BaseLayout>
 
 <style>
-  .article { padding: 56px 24px 96px; }
-  .route { display: flex; flex-wrap: wrap; gap: 8px; list-style: none; padding: 0; margin: 0 0 24px; font-family: var(--font-ui); font-size: 14px; }
-  .route li { background: var(--surface); border: 1px solid var(--line); border-radius: 999px; padding: 6px 14px; color: var(--text-soft); }
-  .title { font-size: 54px; line-height: 1.1; }
-  .sub { font-size: 24px; line-height: 1.55; color: var(--text-soft); margin-top: 16px; }
-  .meta { font-family: var(--font-ui); font-size: 14px; color: var(--text-muted); margin-top: 12px; }
-  .prose { margin-top: 40px; }
   .end { margin-top: 56px; }
-  @media (max-width: 860px) {
-    .article { padding: 40px var(--phone-padding) 72px; }
-    .title { font-size: 36px; }
-    .sub { font-size: 20px; }
-  }
 </style>

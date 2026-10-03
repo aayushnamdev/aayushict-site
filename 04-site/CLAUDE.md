@@ -15,7 +15,8 @@ Match `reference-site.html` exactly for layout, colour and type.
 6. Sentences about 9 to 13 words. First person. Never "hawkish" or "dovish". Real numbers only.
 7. Every market post ends with "Not advice. Stop loss on." (PostLayout renders it. Do not repeat it in MDX.)
 8. Interactive controls are at least 44px tall and work by keyboard and touch.
-9. Do not put two widgets in a row. About one widget per 120 to 180 words. Depth goes in tap boxes.
+9. Reading pages use a 760px column and 18px body (`--read-width`, `--read-body` in tokens.css), not the 900px and 21px in brand-schema. Aayush's call. Do not change without asking.
+10. Do not put two widgets in a row. About one widget per 120 to 180 words. Depth goes in tap boxes.
 
 ### Affiliates
 - Firms live in `src/config/firms.ts` only. `/go/<slug>` redirects are built from it in `astro.config.mjs`.

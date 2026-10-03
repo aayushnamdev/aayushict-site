@@ -1,11 +1,13 @@
 ---
 import { site } from '../config/site';
 import Wordmark from './Wordmark.astro';
+interface Props { narrow?: boolean }
+const { narrow = false } = Astro.props;
 const path = Astro.url.pathname;
 const isOn = (href: string) => path === href || path.startsWith(href + '/');
 ---
 <header class="top">
-  <div class="wrap bar">
+  <div class:list={['wrap', 'bar', { narrow }]}>
     <a class="logo" href="/" aria-label="aayushict home"><Wordmark /></a>
     <nav class="nav" aria-label="Main">
       {site.nav.map((l) => <a href={l.href} class:list={[{ on: isOn(l.href) }]} aria-current={isOn(l.href) ? 'page' : undefined}>{l.label}</a>)}
@@ -39,6 +41,8 @@ const isOn = (href: string) => path === href || path.startsWith(href + '/');
     border-bottom: 1px solid var(--line);
     padding-top: env(safe-area-inset-top, 0px);
   }
+  /* Reading pages: same box as .article so the logo and the text share a left edge. */
+  @media (min-width: 861px) { .bar.narrow { max-width: calc(var(--read-width) + 48px); padding: 0 24px; } }
   .bar { display: flex; justify-content: space-between; align-items: center; height: 68px; }
   .logo { text-decoration: none; }
   .nav { display: flex; align-items: center; gap: 30px; font-family: var(--font-ui); font-size: 15px; }
