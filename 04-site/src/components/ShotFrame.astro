@@ -1,0 +1,46 @@
+---
+// Chart or screenshot frame with a caption. Tap opens it large in a dialog.
+import { Image } from 'astro:assets';
+interface Props { src: ImageMetadata; alt: string; caption: string; id: string; tall?: boolean }
+const { src, alt, caption, id, tall = false } = Astro.props;
+---
+<figure class:list={['shot', { tall }]}>
+  <button class="frame" type="button" data-shot-open={id} aria-label={`Enlarge image: ${alt}`}>
+    <Image src={src} alt={alt} widths={[480, 960]} sizes="(max-width: 860px) 100vw, 900px" />
+    <span class="hint ui">Tap to enlarge</span>
+  </button>
+  <figcaption class="cap ui">{caption}</figcaption>
+</figure>
+
+<dialog id={id} class="big-shot" aria-label={alt}>
+  <Image src={src} alt={alt} widths={[800, 1600]} sizes="95vw" />
+  <button class="btn" type="button" data-shot-close={id}>Close</button>
+</dialog>
+
+<script>
+  document.addEventListener('click', (e) => {
+    const t = e.target as Element;
+    const open = t.closest<HTMLElement>('[data-shot-open]');
+    const close = t.closest<HTMLElement>('[data-shot-close]');
+    if (open) (document.getElementById(open.dataset.shotOpen!) as HTMLDialogElement | null)?.showModal();
+    if (close) (document.getElementById(close.dataset.shotClose!) as HTMLDialogElement | null)?.close();
+    if (t instanceof HTMLDialogElement && t.classList.contains('big-shot')) t.close();
+  });
+</script>
+
+<style>
+  .shot { margin: 0; }
+  .frame {
+    position: relative; display: block; width: 100%; height: 320px; padding: 0; cursor: zoom-in;
+    background: var(--surface-raised); border: 1px solid var(--line); border-radius: 12px; overflow: hidden;
+  }
+  .tall .frame { height: 480px; }
+  .frame :global(img) { width: 100%; height: 100%; object-fit: contain; display: block; }
+  .hint { position: absolute; right: 10px; bottom: 10px; font-size: 13px; color: var(--text-heading); background: var(--page-deep); padding: 4px 10px; border-radius: 999px; }
+  .cap { font-size: 14px; color: var(--text-muted); margin-top: 10px; line-height: 1.5; }
+  .big-shot { border: 1px solid var(--line-strong); border-radius: 14px; padding: 16px; background: var(--surface); max-width: min(96vw, 1100px); max-height: 94vh; }
+  .big-shot::backdrop { background: var(--overlay); }
+  .big-shot :global(img) { display: block; max-width: 100%; max-height: calc(94vh - 100px); width: auto; height: auto; margin: 0 auto; border-radius: 8px; }
+  .big-shot .btn { margin-top: 12px; }
+  @media (max-width: 860px) { .frame { height: 220px; } .tall .frame { height: 360px; } }
+</style>

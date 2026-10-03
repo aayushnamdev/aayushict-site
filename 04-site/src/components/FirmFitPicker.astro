@@ -1,0 +1,34 @@
+---
+// Two toggle buttons. One firm panel shows at a time. Panels come in as slots: "new" and "edge".
+interface Props { newLabel: string; edgeLabel: string }
+const { newLabel, edgeLabel } = Astro.props;
+---
+<div class="picker" data-picker>
+  <div class="seg" role="group" aria-label="Which fits you">
+    <button type="button" aria-pressed="true" data-pick="new">{newLabel}</button>
+    <button type="button" aria-pressed="false" data-pick="edge">{edgeLabel}</button>
+  </div>
+  <div data-panel="new"><slot name="new" /></div>
+  <div data-panel="edge" hidden><slot name="edge" /></div>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-picker]').forEach((root) => {
+    const buttons = root.querySelectorAll<HTMLButtonElement>('[data-pick]');
+    buttons.forEach((b) =>
+      b.addEventListener('click', () => {
+        buttons.forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+        root.querySelectorAll<HTMLElement>('[data-panel]').forEach((p) => { p.hidden = p.dataset.panel !== b.dataset.pick; });
+      })
+    );
+  });
+</script>
+
+<style>
+  .picker { background: var(--white); border-radius: var(--radius-white-card); padding: 32px 36px; color: var(--ink-body); display: flex; flex-direction: column; gap: 24px; }
+  .seg { display: grid; grid-template-columns: 1fr 1fr; background: var(--white-track); border-radius: 12px; padding: 4px; gap: 4px; }
+  .seg button { min-height: 44px; padding: 10px 12px; border: none; border-radius: 9px; background: transparent; color: var(--ink-muted); font-family: var(--font-ui); font-weight: 500; font-size: 15px; }
+  .seg button[aria-pressed='true'] { background: var(--wine); color: var(--white); }
+  [hidden] { display: none; }
+  @media (max-width: 860px) { .picker { padding: 22px 18px; border-radius: 18px; gap: 18px; } .seg button { font-size: 13px; padding: 10px 6px; } }
+</style>

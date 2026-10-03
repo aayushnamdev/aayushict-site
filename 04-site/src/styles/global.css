@@ -57,6 +57,7 @@ p { margin: 0; }
 .mono { font-family: var(--font-number); }
 .wrap { max-width: 1280px; margin: 0 auto; padding: 0 var(--pad); }
 .col { max-width: var(--reading-width); margin: 0 auto; padding: 0 24px; }
+.read { max-width: var(--reading-width); margin: 0 auto; }
 .sr {
   position: absolute; width: 1px; height: 1px; overflow: hidden;
   clip: rect(0 0 0 0); white-space: nowrap;

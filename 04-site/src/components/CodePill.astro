@@ -1,0 +1,32 @@
+---
+// Copy button for a discount code. Always shown next to its disclosure and last verified date.
+interface Props { code: string }
+const { code } = Astro.props;
+---
+<button class="pill" type="button" data-copy={code} aria-label={`Copy code ${code}`}>
+  <span class="mono">{code}</span><span class="state ui" data-state>Copy</span>
+</button>
+
+<script>
+  document.addEventListener('click', async (e) => {
+    const btn = (e.target as Element).closest<HTMLButtonElement>('[data-copy]');
+    if (!btn) return;
+    const state = btn.querySelector<HTMLElement>('[data-state]');
+    try {
+      await navigator.clipboard.writeText(btn.dataset.copy ?? '');
+      if (state) state.textContent = 'Copied';
+    } catch {
+      if (state) state.textContent = 'Press and hold to copy';
+    }
+    setTimeout(() => { if (state) state.textContent = 'Copy'; }, 1800);
+  });
+</script>
+
+<style>
+  .pill {
+    display: inline-flex; align-items: center; gap: 12px; min-height: 44px; padding: 0 14px;
+    background: var(--white); border: 1px dashed var(--wine); border-radius: var(--radius-button); color: var(--ink); cursor: pointer;
+  }
+  .mono { font-size: 16px; letter-spacing: 0.06em; }
+  .state { font-size: 13px; color: var(--wine); }
+</style>

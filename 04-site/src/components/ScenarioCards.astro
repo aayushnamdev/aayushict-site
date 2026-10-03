@@ -1,0 +1,31 @@
+---
+// Three scenarios written before the release. Arrow plus word on every card, never colour alone.
+// The one that happened gets the wine border.
+interface Scenario { condition: string; direction: 'up' | 'down' | 'flat'; meaning: string; happened?: boolean }
+interface Props { scenarios: Scenario[] }
+const { scenarios } = Astro.props;
+const mark = { up: '▲ Up', down: '▼ Down', flat: '◆ Flat' };
+---
+<div class="cards">
+  {scenarios.map((s) => (
+    <div class:list={['card', { happened: s.happened }]}>
+      <div class="label">{s.condition}</div>
+      <div class={`dir ${s.direction}`}>{mark[s.direction]}</div>
+      <p>{s.meaning}</p>
+      {s.happened && <div class="tag ui">This one happened</div>}
+    </div>
+  ))}
+</div>
+
+<style>
+  .cards { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+  .card { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+  .happened { border: 2px solid var(--wine); }
+  .dir { font-family: var(--font-number); font-size: 20px; }
+  .up { color: var(--up-on-black); }
+  .down { color: var(--down-on-black); }
+  .flat { color: var(--text-soft); }
+  p { font-size: 17px; line-height: 1.6; color: var(--text-soft); }
+  .tag { font-size: 13px; color: var(--rose); margin-top: auto; }
+  @media (max-width: 860px) { .cards { grid-template-columns: 1fr; } }
+</style>

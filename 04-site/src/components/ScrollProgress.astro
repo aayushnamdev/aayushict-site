@@ -1,0 +1,20 @@
+---
+// Thin bar at the top that fills as you read. No transition, so nothing animates for reduced motion.
+---
+<div class="progress" aria-hidden="true"><div id="bar"></div></div>
+
+<script>
+  const bar = document.getElementById('bar');
+  const update = () => {
+    const max = document.documentElement.scrollHeight - innerHeight;
+    if (bar) bar.style.transform = `scaleX(${max > 0 ? Math.min(scrollY / max, 1) : 0})`;
+  };
+  addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', update);
+  update();
+</script>
+
+<style>
+  .progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 30; pointer-events: none; }
+  #bar { height: 100%; background: var(--rose); transform-origin: 0 50%; transform: scaleX(0); }
+</style>

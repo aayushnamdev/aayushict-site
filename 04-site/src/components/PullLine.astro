@@ -1,0 +1,9 @@
+---
+// Italic serif, wine bar on the left. One per page at most.
+---
+<blockquote><slot /></blockquote>
+
+<style>
+  blockquote { margin: 0; padding: 4px 0 4px 22px; border-left: 3px solid var(--wine); font-family: var(--font-body); font-style: italic; font-size: 26px; line-height: 1.45; color: var(--text-heading); }
+  @media (max-width: 860px) { blockquote { font-size: 22px; } }
+</style>

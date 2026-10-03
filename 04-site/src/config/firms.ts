@@ -34,14 +34,14 @@ export const firms: Firm[] = [
     slug: 'apex',
     name: 'Apex Trader Funding',
     fit: 'NQ and MNQ futures',
-    code: null, // TODO real code
+    code: null,
     discount: null,
-    url: null, // TODO real link
+    url: 'https://apextraderfunding.com', // plain link, not an affiliate. No /go redirect.
     pros: [],
     cons: [],
     lastVerified: null,
-    isAffiliate: true,
-    active: false, // switch on once a code and link exist
+    isAffiliate: false,
+    active: false, // false keeps it out of the /go redirects. The home page links to url directly.
   },
   {
     slug: 'mrkt',

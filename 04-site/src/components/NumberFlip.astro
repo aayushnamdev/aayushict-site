@@ -1,0 +1,57 @@
+---
+// White numbers card. The big number counts from `from` to `to` when 60% in view.
+// The HTML holds the final value, so no JavaScript and reduced motion both show the real number.
+interface Row { label: string; value: string }
+interface Dir { name: string; direction: 'up' | 'down'; }
+interface Props { label: string; from: number; to: number; unit: string; caption: string; rows: Row[]; directions?: Dir[] }
+const { label, from, to, unit, caption, rows, directions = [] } = Astro.props;
+const fmt = (n: number) => `${n < 0 ? '−' : ''}${Math.abs(n)}${unit}`;
+---
+<div class="numcard">
+  <div class="label">{label}</div>
+  <div class="big" data-flip data-from={from} data-to={to} data-unit={unit} aria-label={`${caption}: ${fmt(to)}`}>{fmt(to)}</div>
+  <div class="cap">{caption}</div>
+  {rows.map((r) => <div class="nrow"><span>{r.label}</span><span>{r.value}</span></div>)}
+  {directions.length > 0 && (
+    <div class="dirs">
+      {directions.map((d) => <div><span>{d.name}</span><span class={d.direction === 'up' ? 'uw' : 'dw'}>{d.direction === 'up' ? '▲ Up' : '▼ Down'}</span></div>)}
+    </div>
+  )}
+</div>
+
+<script>
+  const el = document.querySelector<HTMLElement>('[data-flip]');
+  if (el && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const from = Number(el.dataset.from), to = Number(el.dataset.to), unit = el.dataset.unit ?? '';
+    const fmt = (n: number) => `${n < 0 ? '−' : ''}${Math.abs(Math.round(n))}${unit}`;
+    el.textContent = fmt(from);
+    const run = () => {
+      const t0 = performance.now(), dur = 1400;
+      const tick = (t: number) => {
+        const p = Math.min((t - t0) / dur, 1);
+        el.textContent = fmt(from + (to - from) * (1 - Math.pow(1 - p, 3)));
+        if (p < 1) requestAnimationFrame(tick);
+      };
+      requestAnimationFrame(tick);
+    };
+    const io = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) { io.disconnect(); run(); }
+    }, { threshold: 0.6 });
+    io.observe(el);
+  }
+</script>
+
+<style>
+  .numcard { background: var(--white); border-radius: 16px; padding: 28px; color: var(--ink-body); }
+  .label { color: var(--wine); }
+  .big { font-family: var(--font-number); font-size: 72px; font-weight: 500; line-height: 1; color: var(--wine); padding: 20px 0 6px; }
+  .cap { font-size: 16px; color: var(--ink-muted); padding-bottom: 14px; border-bottom: 1px solid var(--white-divider); }
+  .nrow { display: flex; justify-content: space-between; padding: 12px 0; border-bottom: 1px solid var(--white-divider); font-size: 16px; }
+  .nrow span:first-child { color: var(--ink-muted); }
+  .nrow span:last-child { font-family: var(--font-number); font-size: 17px; color: var(--ink); }
+  .dirs { display: flex; flex-direction: column; gap: 8px; padding-top: 14px; font-family: var(--font-number); font-size: 15px; }
+  .dirs div { display: flex; justify-content: space-between; }
+  .uw { color: var(--up-on-white); }
+  .dw { color: var(--down-on-white); }
+  @media (max-width: 860px) { .numcard { padding: 22px; } .big { font-size: 56px; } }
+</style>

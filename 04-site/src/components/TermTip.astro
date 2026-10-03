@@ -23,6 +23,8 @@ const { title, text } = Astro.props;
     position: relative; padding: 0; font: inherit; color: var(--text-heading); background: none; cursor: pointer;
     border: none; border-bottom: 2px dotted var(--rose);
   }
+  /* Invisible padding so the tap area reaches 44px while the text stays inline. */
+  .tip::after { content: ''; position: absolute; inset: -9px -6px; }
   .tipbox {
     display: none; position: absolute; left: 0; top: calc(100% + 10px); z-index: 10; width: 300px; max-width: calc(100vw - 2 * var(--phone-padding));
     background: var(--surface); border: 1px solid var(--line-strong); border-radius: 12px; padding: 14px 16px;

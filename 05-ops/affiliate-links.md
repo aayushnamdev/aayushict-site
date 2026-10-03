@@ -1,17 +1,18 @@
 # Affiliate links
 
-Human-readable mirror of `04-site/src/data/partners.ts`, the actual source of truth the site
-reads from. Update both when a code or URL changes. "Last verified" must be real, not copy-pasted
-forward, per build-plan-v2.md §8.2.
+Human-readable mirror of `04-site/src/config/firms.ts`, the actual source of truth the site
+reads from. Update both when a code or URL changes. "Last verified" must be a real date, not
+copy-pasted forward (BUILD-PLAN.md section 6).
 
-| Partner | Type | Status | Code | URL | Last verified |
+| Firm | Type | Affiliate | Code | URL | Last verified |
 |---|---|---|---|---|---|
-| FundedNext | prop firm (CFD/MT5) | recommend | AAYUSH | TODO real affiliate URL | 2026-09-27 |
-| Apex Trader Funding | prop firm (futures) | trade-funded | TODO | TODO | inactive until code exists |
-| MRKT (Market Edge AI) | tool | active | — | https://www.mrktedge.ai/?ref=aayush | 2026-09-27 |
+| FundedNext | prop firm (CFD/MT5 and futures) | yes | AAYUSH, 10% off | https://fundednext.com/?fpr=AAYUSH via `/go/fundednext` | 2026-10-02 |
+| Apex Trader Funding | prop firm (futures) | **no**, plain link | none | https://apextraderfunding.com (direct, no `/go`) | n/a |
+| MRKT (Market Edge AI) | tool | yes | none | https://www.mrktedge.ai/?ref=aayush via `/go/mrkt` | 2026-09-27 |
 
-## Rules (build-plan-v2.md §8.2)
-- Every link goes through `/go/[slug]`, `rel="sponsored nofollow noopener"`.
+## Rules
+- Affiliate links go through `/go/<slug>` with `rel="sponsored nofollow noopener"`.
+- Apex is not an affiliate. Link it directly with `rel="noopener"` and say "Not an affiliate link."
 - Inline disclosure next to every code.
 - Max one inline CTA per article, plus the end-of-article CTA.
 - Never place a code above the first useful paragraph.

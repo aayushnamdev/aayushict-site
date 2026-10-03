@@ -1,0 +1,35 @@
+---
+// One firm inside the picker. Reads name, fit, code and verified date from the firms config.
+import { disclosureLine, type Firm } from '../config/firms';
+import CodePill from './CodePill.astro';
+interface Props { firm: Firm; href: string; ctaLabel: string; disclosure?: string }
+const { firm, href, ctaLabel, disclosure } = Astro.props;
+const sponsored = firm.isAffiliate;
+const note = disclosure ?? (sponsored ? disclosureLine : '');
+const verified = firm.lastVerified
+  ? new Date(firm.lastVerified).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' })
+  : null;
+---
+<div class="firm">
+  <div class="label">{firm.fit}</div>
+  <h3>{firm.name}</h3>
+  <div class="body"><slot /></div>
+  <div class="actions">
+    <a class="btn" href={href} rel={sponsored ? 'sponsored nofollow noopener' : 'noopener'}>{ctaLabel}</a>
+    {firm.code && (
+      <div class="code"><CodePill code={firm.code} />{firm.discount && <span class="ui disc">{firm.discount}</span>}</div>
+    )}
+  </div>
+  <p class="ui disclosure">{note}{verified && firm.code && <> Code last verified {verified}.</>}</p>
+</div>
+
+<style>
+  .firm { display: flex; flex-direction: column; gap: 14px; }
+  .label { color: var(--wine); }
+  h3 { font-size: 26px; color: var(--ink); }
+  .body { display: flex; flex-direction: column; gap: 12px; font-size: 18px; line-height: 1.7; color: var(--ink-body); }
+  .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+  .code { display: flex; align-items: center; gap: 10px; }
+  .disc { font-size: 14px; color: var(--ink-muted); }
+  .disclosure { font-size: 14px; line-height: 1.5; color: var(--ink-muted); }
+</style>

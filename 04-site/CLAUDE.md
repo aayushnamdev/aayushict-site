@@ -22,7 +22,7 @@ Match `reference-site.html` exactly for layout, colour and type.
 - Never hardcode a partner URL in a page or MDX file.
 - Every code shows the disclosure line and a last verified date beside it.
 - No code above the first useful paragraph. At most one inline call to action per article.
-- A firm with `active: false` gets no redirect and no card.
+- A firm with `active: false` gets no `/go` redirect. Apex is not an affiliate: it is `active: false` and the page links to its `url` directly with `rel="noopener"` and the line "Not an affiliate link."
 
 ### Email
 Provider not chosen. `src/config/email.ts` holds the form action. While it is null the form shows a thank you and stores nothing.

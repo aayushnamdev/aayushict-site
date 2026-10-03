@@ -1,0 +1,44 @@
+---
+// White card. Two bars on one scale. The fill animates once when 60% in view.
+interface Props { label: string; usual: { text: string; value: string; pct: number }; night: { text: string; value: string; pct: number }; note: string }
+const { label, usual, night, note } = Astro.props;
+---
+<div class="meter" data-meter>
+  <div class="label">{label}</div>
+  <div class="row">
+    <div class="line"><span>{usual.text}</span><span class="mono">{usual.value}</span></div>
+    <div class="track"><div class="fill usual" style={`--w:${usual.pct}%`}></div></div>
+  </div>
+  <div class="row">
+    <div class="line"><span>{night.text}</span><span class="mono">{night.value}</span></div>
+    <div class="track"><div class="fill night" style={`--w:${night.pct}%`}></div></div>
+  </div>
+  <div class="note mono">▲ {note}</div>
+</div>
+
+<script>
+  const m = document.querySelector<HTMLElement>('[data-meter]');
+  if (m && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    m.classList.add('js');
+    const io = new IntersectionObserver((e) => {
+      if (e[0].isIntersecting) { io.disconnect(); m.classList.add('in'); }
+    }, { threshold: 0.6 });
+    io.observe(m);
+  }
+</script>
+
+<style>
+  .meter { background: var(--white); border-radius: var(--radius-white-card); padding: 32px 36px; color: var(--ink-body); display: flex; flex-direction: column; gap: 22px; }
+  .label { color: var(--wine); }
+  .row { display: flex; flex-direction: column; gap: 8px; }
+  .line { display: flex; justify-content: space-between; gap: 16px; font-size: 16px; }
+  .mono { color: var(--ink); }
+  .track { height: 14px; border-radius: 7px; background: var(--white-track); }
+  .fill { height: 100%; border-radius: 7px; width: var(--w); }
+  .usual { background: var(--ink-muted); }
+  .night { background: var(--wine); }
+  .js .fill { width: 0; transition: width 1s ease-out; }
+  .js.in .fill { width: var(--w); }
+  .note { font-size: 15px; color: var(--up-on-white); }
+  @media (max-width: 860px) { .meter { padding: 22px 18px; border-radius: 18px; gap: 18px; } }
+</style>
