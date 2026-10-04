@@ -1,11 +1,24 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Band from '../components/Band.astro';
+import PostLayout from '../layouts/PostLayout.astro';
+import { asOf } from '../config/payouts';
 ---
-<BaseLayout title="Privacy" description="What this site stores about you.">
-  <Band>
-    <p class="label">Privacy</p>
-    <h1>Privacy</h1>
-    <p class="ui" style="margin-top:16px;color:var(--text-muted)">Page coming next.</p>
-  </Band>
-</BaseLayout>
+<PostLayout
+  title="Privacy"
+  subtitle="What this site knows about you. Very little."
+  meta={`Aayush Namdev · Updated ${asOf}`}
+  signOff={false}
+  signup={false}
+>
+  <!-- PLACEHOLDER: privacy copy drafted from how the site works today. Update it if analytics or new tools are added -->
+  <p>This site has no cookies, no ads and no trackers. I do not run analytics right now.</p>
+
+  <h2>Your email</h2>
+  <p>If you sign up, I get your email address. It is stored at Buttondown, the tool I use to send emails.</p>
+  <p>You confirm by email first. Every email has an unsubscribe link. Use it any time and I stop writing to you.</p>
+  <p>I do not sell or share your email. I use it only to send you the emails you asked for.</p>
+
+  <h2>Other things</h2>
+  <p>This site is hosted on Vercel. Like any host, it keeps basic server logs for a short time, such as your IP address. I do not use them to follow you.</p>
+  <p>Links to Instagram, X, Substack and the firms I mention go to other sites. They have their own rules and I do not control them.</p>
+  <p>You can ask me to delete your data. Message me on <a href="https://www.instagram.com/aayush_ict/" rel="me noopener">Instagram @aayush_ict</a>, or reply to any email I send you.</p>
+</PostLayout>

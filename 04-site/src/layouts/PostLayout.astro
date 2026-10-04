@@ -4,8 +4,8 @@ import { site } from '../config/site';
 import BaseLayout from './BaseLayout.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import ScrollProgress from '../components/ScrollProgress.astro';
-interface Props { type?: 'website' | 'article'; jsonLd?: Record<string, unknown>; title: string; subtitle?: string; route?: string[]; meta?: string; progress?: boolean }
-const { type = 'website', jsonLd, title, subtitle, route = [], meta, progress = false } = Astro.props;
+interface Props { type?: 'website' | 'article'; jsonLd?: Record<string, unknown>; title: string; subtitle?: string; route?: string[]; meta?: string; progress?: boolean; signup?: boolean; signOff?: boolean }
+const { type = 'website', jsonLd, title, subtitle, route = [], meta, progress = false, signup = true, signOff = true } = Astro.props;
 ---
 <BaseLayout title={title} description={subtitle} narrow type={type} jsonLd={jsonLd}>
   {progress && <ScrollProgress />}
@@ -17,8 +17,8 @@ const { type = 'website', jsonLd, title, subtitle, route = [], meta, progress = 
     {subtitle && <p class="sub">{subtitle}</p>}
     {meta && <p class="meta">{meta}</p>}
     <div class="prose"><slot /></div>
-    <p class="signoff">{site.signOff}</p>
-    <div class="end"><EmailSignup variant="band" id="email-post" /></div>
+    {signOff && <p class="signoff">{site.signOff}</p>}
+    {signup && <div class="end"><EmailSignup variant="band" id="email-post" /></div>}
   </article>
 </BaseLayout>
 

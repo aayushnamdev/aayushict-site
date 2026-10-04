@@ -1,11 +1,54 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Band from '../components/Band.astro';
+import PostLayout from '../layouts/PostLayout.astro';
+import { firms } from '../config/firms';
+import { asOf } from '../config/payouts';
+
+// Partner list is built from config/firms.ts so the codes and dates here can never drift from the site.
+const shown = firms;
+const verified = (d: string | null) => {
+  if (!d) return null;
+  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+  const [y, m, day] = d.split('-').map(Number);
+  return `${day} ${months[m - 1]} ${y}`;
+};
 ---
-<BaseLayout title="Disclosure" description="How affiliate links work on this site.">
-  <Band>
-    <p class="label">Disclosure</p>
-    <h1>Disclosure</h1>
-    <p class="ui" style="margin-top:16px;color:var(--text-muted)">Page coming next.</p>
-  </Band>
-</BaseLayout>
+<PostLayout
+  title="Disclosure"
+  subtitle="How I earn from this site, in plain words."
+  meta={`Aayush Namdev · Updated ${asOf}`}
+  signOff={false}
+  signup={false}
+>
+  <!-- PLACEHOLDER: legal copy drafted from Aayush's notes, not yet read by him -->
+  <p>This site has affiliate links. If you sign up through one, I may earn a commission.</p>
+  <p>It costs you nothing extra. Some links come with a discount code for you.</p>
+
+  <h2>Who pays me</h2>
+  <ul class="partners">
+    {shown.map((f) => (
+      <li>
+        <span class="name">{f.name}</span>
+        <span class="what">
+          {f.isAffiliate ? 'Affiliate link. I earn a commission if you sign up.' : 'Not an affiliate. A plain link, I earn nothing.'}
+          {f.code && <> Code <span class="mono">{f.code}</span>{f.discount && <>, {f.discount}</>}.</>}
+          {verified(f.lastVerified) && f.isAffiliate && <> Checked {verified(f.lastVerified)}.</>}
+        </span>
+      </li>
+    ))}
+  </ul>
+  <p>I show my Alpha Capital payout as proof of what I do. There is no link to them on this site.</p>
+
+  <h2>What does not change</h2>
+  <p>Affiliate links never change what I write. I say what fits you, even when it pays me nothing.</p>
+  <p>Every link like this is marked where it appears. I check each code and write the date. If the terms change, I update it.</p>
+  <p>I do not sell mentorship, courses or signals. Affiliate links are the only way this site earns.</p>
+</PostLayout>
+
+<style>
+  .partners { list-style: none; margin: 0; padding: 0; border-top: 1px solid var(--line); }
+  .partners li { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 4px 20px; padding: 14px 0; border-bottom: 1px solid var(--line); }
+  .name { font-family: var(--font-heading); font-weight: 600; color: var(--text-heading); }
+  .what { font-size: 17px; color: var(--text-soft); }
+  .mono { font-family: var(--font-number); font-size: 15px; color: var(--text-number); }
+  @media (max-width: 860px) { .partners li { grid-template-columns: 1fr; } }
+</style>

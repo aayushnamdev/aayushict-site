@@ -6,7 +6,7 @@ const { tiles } = Astro.props;
 ---
 <div class="tiles">
   {tiles.map((t) => (
-    <a class="tile" href={t.href}>
+    <a class="tile" href={t.href} {...(t.href.startsWith('http') ? { target: '_blank', rel: 'me noopener' } : {})}>
       <h3>{t.title} <span aria-hidden="true">→</span></h3>
       <p>{t.text}</p>
     </a>

@@ -2,10 +2,24 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Band from '../components/Band.astro';
 ---
-<BaseLayout title="Not found" description="That page does not exist.">
+<BaseLayout title="Page not found" description="That page does not exist." narrow>
   <Band>
-    <p class="label">Not found</p>
-    <h1>Not found</h1>
-    <p class="ui" style="margin-top:16px;color:var(--text-muted)">Page coming next.</p>
+    <div class="read stack lost">
+      <p class="label">404</p>
+      <h1 class="h-sec">That page is not here.</h1>
+      <p class="lead">The link may be old, or I may not have written it yet. Here is where to go.</p>
+      <p class="actions">
+        <a class="btn" href="/start-here">Start here</a>
+        <a class="btn white-btn" href="/">Go home</a>
+        <a class="btn white-btn" href="/about">About me</a>
+      </p>
+    </div>
   </Band>
 </BaseLayout>
+
+<style>
+  .lost { gap: 18px; padding: 24px 0 40px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 8px; }
+  .white-btn { background: var(--surface); border: 1px solid var(--line-strong); }
+  .white-btn:hover { background: var(--surface-raised); }
+</style>

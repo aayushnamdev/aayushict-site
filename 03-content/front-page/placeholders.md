@@ -32,3 +32,10 @@ Source wording: `../drafts/start-from-zero.md`.
 - Facts to confirm: "six years in markets" and "MA in Psychology" (from the site brief and his Instagram bio), "mostly with Apex" and "some from Alpha Capital".
 - Payout numbers live in `04-site/src/config/payouts.ts`. Paid total is computed ($12,391, shown as $12.4K, matching the Instagram bio). The $1,500 approved on 1 Oct 2026 is listed but not counted until paid. Update the file when a payout is paid.
 - Originals saved in `03-content/Assets/payouts/`. The Apex dashboard screenshot is not published, only the typed table and the certificates.
+
+## Legal pages (drafted 4 Oct 2026, need Aayush's read)
+- Disclosure, Disclaimer and Privacy are drafted from how the site works today and his notes. Not yet read by him.
+- **Confirm:** "I am not a financial adviser" (Disclaimer). If any SEBI or local rule applies to him, get a legal read before launch.
+- **Privacy says no analytics and no cookies.** If analytics, a chat widget or any tracker is added later, update the Privacy page the same day.
+- Contact is Instagram DM or replying to any email. No email address is published. Add a dedicated address when he has one.
+- The Disclosure partner list is built from `04-site/src/config/firms.ts`, so codes and verified dates stay in sync.

@@ -1,11 +1,22 @@
 ---
-import BaseLayout from '../layouts/BaseLayout.astro';
-import Band from '../components/Band.astro';
+import PostLayout from '../layouts/PostLayout.astro';
+import { asOf } from '../config/payouts';
 ---
-<BaseLayout title="Disclaimer" description="Not advice. Stop loss on.">
-  <Band>
-    <p class="label">Disclaimer</p>
-    <h1>Disclaimer</h1>
-    <p class="ui" style="margin-top:16px;color:var(--text-muted)">Page coming next.</p>
-  </Band>
-</BaseLayout>
+<PostLayout
+  title="Disclaimer"
+  subtitle="Not advice. Stop loss on."
+  meta={`Aayush Namdev · Updated ${asOf}`}
+  signup={false}
+>
+  <!-- PLACEHOLDER: legal copy drafted from Aayush's notes. Confirm "not a financial adviser" and consider a legal read -->
+  <p>I am not a financial adviser. Nothing on this site is advice. It is how I read events and how I traded them.</p>
+  <p>I do not give signals. I do not tell you what to buy or sell. You make your own calls.</p>
+
+  <h2>Trading is risky</h2>
+  <p>Trading futures can lose money, and it can happen fast. You can lose everything you put in. Only risk what you can afford to lose.</p>
+  <p>My results are mine. They do not promise you anything. My payouts are real, but they came from the days that went well. I have days that do not.</p>
+  <p>Prop firm rules change. Read the rules yourself before you pay for any account.</p>
+  <p>Numbers and screenshots are from the date shown. Markets move. I can be wrong, and sometimes I am. I try to say so when it happens.</p>
+  <p>I trade the markets I write about. I may hold a position while you read this.</p>
+  <p>Taxes and laws are different in every country. Check what applies to you.</p>
+</PostLayout>

@@ -6,10 +6,16 @@
 
 - [Home](https://aayushict.space/): who I am, how I trade, and the gap this site fills.
 - [Start here](https://aayushict.space/start-here/): one real NFP night on 7 August 2026 with the numbers and screenshots, why it was rare, and how to trade US futures from India through prop firms.
+- [About](https://aayushict.space/about/): who Aayush Namdev is, how he trades (macro for direction, a 1 minute scalping model in the New York morning session), and his payouts so far with certificates.
+- [Disclosure](https://aayushict.space/disclosure/): how the site earns, which links are affiliate links, and which are not.
+- [Disclaimer](https://aayushict.space/disclaimer/): not advice, not a signal service, trading is risky.
+- [Privacy](https://aayushict.space/privacy/): no cookies, no trackers, email stored at Buttondown.
 
-## Feed
+## Find the author
 
-- [RSS](https://aayushict.space/rss.xml)
+- Instagram: https://www.instagram.com/aayush_ict/
+- X: https://x.com/AayushICT
+- Substack: https://substack.com/@aayushnamdev
 
 ## Disclosure
 

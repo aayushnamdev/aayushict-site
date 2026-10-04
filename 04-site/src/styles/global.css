@@ -58,7 +58,7 @@ p { margin: 0; }
 .mono { font-family: var(--font-number); }
 .wrap { max-width: 1280px; margin: 0 auto; padding: 0 var(--pad); }
 .col { max-width: var(--reading-width); margin: 0 auto; padding: 0 24px; }
-.read { max-width: var(--reading-width); margin: 0 auto; }
+.read { width: 100%; max-width: var(--read-width); margin: 0 auto; } /* same 760px column as the reading pages */
 .skip {
   position: absolute; left: 16px; top: -64px; z-index: 100;
   padding: 12px 18px; border-radius: var(--radius-button);

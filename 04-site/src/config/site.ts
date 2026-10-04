@@ -19,17 +19,14 @@ export const site = {
   tagline: "Know what's priced in. Trade what changes.",
   signOff: 'Not advice. Stop loss on.',
   footerLine: 'Not a signal service. Not advice. Stop loss on.',
+  // Lean launch: only pages that are real. Add Macro, Learn, Journal, Watch back when each has content.
   nav: [
-    { label: 'Macro', href: '/macro' },
-    { label: 'Learn', href: '/learn' },
-    { label: 'Journal', href: '/journal' },
-    { label: 'Watch', href: '/watch' },
     { label: 'About', href: '/about' },
   ],
   cta: { label: 'Start here', href: '/start-here' },
-  // Pages that exist only as "coming next" shells. They get noindex and stay out of the sitemap.
-  // Remove a path from this list when its real page is built.
-  pending: ['/macro', '/learn', '/journal', '/watch', '/disclosure', '/disclaimer', '/privacy'] as string[],
+  // Paths of pages that exist but are not ready. They get noindex and stay out of the sitemap.
+  // Empty now. Add a path while building a new page, remove it when the page is real.
+  pending: [] as string[],
   legal: [
     { label: 'Disclosure', href: '/disclosure' },
     { label: 'Disclaimer', href: '/disclaimer' },
