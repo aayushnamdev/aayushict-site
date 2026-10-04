@@ -26,3 +26,9 @@ Source wording: `../drafts/start-from-zero.md`.
 
 ## Home band 4 (changed 4 Oct)
 - The "Room left" meter was replaced by a "Read it in this order" card (Start here, Macro Desk, Journal). Its three one-line descriptions are the draft's wording, not yet in Aayush's words. The meter still lives on /start-here.
+
+## About page (built 4 Oct 2026)
+- All copy is drafted from Aayush's own notes (real trader, scalping model on the 1 minute chart in the New York morning session, macro for direction and conviction, no jargon, no mentorship, affiliate links only). He has not read and edited it yet. His phrase "I strip down every jargon" was kept as he said it.
+- Facts to confirm: "six years in markets" and "MA in Psychology" (from the site brief and his Instagram bio), "mostly with Apex" and "some from Alpha Capital".
+- Payout numbers live in `04-site/src/config/payouts.ts`. Paid total is computed ($12,391, shown as $12.4K, matching the Instagram bio). The $1,500 approved on 1 Oct 2026 is listed but not counted until paid. Update the file when a payout is paid.
+- Originals saved in `03-content/Assets/payouts/`. The Apex dashboard screenshot is not published, only the typed table and the certificates.

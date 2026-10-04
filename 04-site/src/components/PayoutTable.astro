@@ -1,0 +1,36 @@
+---
+// Plain table of every payout. Real HTML table, so screen readers and AI search can read it.
+import { payouts, paidTotal, pendingTotal, asOf, money } from '../config/payouts';
+const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+const fmt = (d: string) => { const [y, m, day] = d.split('-').map(Number); return `${day} ${months[m - 1]} ${y}`; };
+---
+<div class="wrap-table" role="region" aria-label="Payout table" tabindex="0">
+  <table>
+    <caption class="sr">Payouts from Apex Trader Funding and Alpha Capital, as of {asOf}</caption>
+    <thead><tr><th scope="col">Date</th><th scope="col">Firm</th><th scope="col" class="r">Amount</th><th scope="col">Status</th></tr></thead>
+    <tbody>
+      {payouts.map((p) => (
+        <tr>
+          <td class="mono">{fmt(p.date)}</td>
+          <td>{p.firm}</td>
+          <td class="mono r">{money(p.amount)}</td>
+          <td>{p.status === 'paid' ? 'Paid' : 'Approved'}{p.note && <span class="note"> · {p.note}</span>}</td>
+        </tr>
+      ))}
+    </tbody>
+    <tfoot>
+      <tr><th scope="row" colspan="2">Paid so far, as of {asOf}</th><td class="mono r">{money(paidTotal)}</td><td>{pendingTotal > 0 && <span class="note">{money(pendingTotal)} approved, not counted</span>}</td></tr>
+    </tfoot>
+  </table>
+</div>
+
+<style>
+  .wrap-table { overflow-x: auto; }
+  table { width: 100%; border-collapse: collapse; font-family: var(--font-ui); font-size: 15px; line-height: 1.45; color: var(--text-body); min-width: 520px; }
+  th, td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
+  thead th { font-family: var(--font-number); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); font-weight: 400; }
+  .r { text-align: right; padding-right: 20px; }
+  .mono { font-family: var(--font-number); color: var(--text-number); font-size: 14px; white-space: nowrap; }
+  .note { color: var(--text-muted); font-size: 13px; }
+  tfoot th, tfoot td { border-bottom: none; padding-top: 14px; color: var(--text-heading); font-weight: 600; }
+</style>

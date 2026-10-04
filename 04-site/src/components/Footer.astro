@@ -1,5 +1,5 @@
 ---
-import { site } from '../config/site';
+import { site, social } from '../config/site';
 import EmailSignup from './EmailSignup.astro';
 interface Props { showSignup?: boolean }
 const { showSignup = true } = Astro.props;
@@ -10,6 +10,7 @@ const { showSignup = true } = Astro.props;
   )}
   <div class="wrap fine">
     <span>{site.footerLine}</span>
+    <span>{social.map((x, i) => <>{i > 0 && ' · '}<a href={x.href} rel="me noopener" target="_blank">{x.label}</a></>)}</span>
     <span>{site.legal.map((l, i) => <>{i > 0 && ' · '}<a href={l.href}>{l.label}</a></>)}</span>
   </div>
 </footer>

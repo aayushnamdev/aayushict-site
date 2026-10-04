@@ -1,0 +1,46 @@
+---
+// Small certificate thumbnails. Tap one to see it large in a dialog.
+import { Image } from 'astro:assets';
+interface Item { src: ImageMetadata; alt: string; caption: string; id: string }
+interface Props { items: Item[] }
+const { items } = Astro.props;
+---
+<ul class="grid">
+  {items.map((it) => (
+    <li>
+      <button class="thumb" type="button" data-proof-open={it.id} aria-label={`Enlarge: ${it.caption}`}>
+        <Image src={it.src} alt={it.alt} widths={[360, 720]} sizes="(max-width: 860px) 45vw, 370px" />
+      </button>
+      <span class="cap ui">{it.caption}</span>
+    </li>
+  ))}
+</ul>
+{items.map((it) => (
+  <dialog id={it.id} class="proof-big" aria-label={it.alt}>
+    <Image src={it.src} alt={it.alt} widths={[800, 1600]} sizes="95vw" />
+    <button class="btn" type="button" data-proof-close={it.id}>Close</button>
+  </dialog>
+))}
+
+<script>
+  document.addEventListener('click', (e) => {
+    const t = e.target as Element;
+    const open = t.closest<HTMLElement>('[data-proof-open]');
+    const close = t.closest<HTMLElement>('[data-proof-close]');
+    const dlg = (id?: string) => (id ? (document.getElementById(id) as HTMLDialogElement | null) : null);
+    if (open) { const d = dlg(open.dataset.proofOpen); if (d && !d.open) d.showModal(); }
+    if (close) dlg(close.dataset.proofClose)?.close();
+    if (t instanceof HTMLDialogElement && t.classList.contains('proof-big')) t.close();
+  });
+</script>
+
+<style>
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; list-style: none; margin: 0; padding: 0; }
+  .thumb { display: block; width: 100%; padding: 0; background: var(--surface-raised); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; cursor: zoom-in; }
+  .thumb :global(img) { display: block; width: 100%; height: auto; }
+  .cap { display: block; font-size: 14px; line-height: 1.5; color: var(--text-muted); margin-top: 8px; }
+  .proof-big { border: 1px solid var(--line-strong); border-radius: 14px; padding: 16px; background: var(--surface); max-width: min(96vw, 1100px); max-height: 94vh; }
+  .proof-big::backdrop { background: var(--overlay); }
+  .proof-big :global(img) { display: block; max-width: 100%; max-height: calc(94vh - 100px); width: auto; height: auto; margin: 0 auto; border-radius: 8px; }
+  .proof-big .btn { margin-top: 12px; }
+</style>

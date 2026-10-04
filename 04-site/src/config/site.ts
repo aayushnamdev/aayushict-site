@@ -3,8 +3,15 @@ export const person = {
   '@type': 'Person',
   name: 'Aayush Namdev',
   url: 'https://aayushict.space',
-  sameAs: ['https://www.instagram.com/aayush_ict/'],
+  sameAs: ['https://www.instagram.com/aayush_ict/', 'https://x.com/AayushICT', 'https://substack.com/@aayushnamdev'],
 } as const;
+
+// Where to find Aayush. Used by the footer and the About page.
+export const social = [
+  { label: 'Instagram', handle: '@aayush_ict', href: 'https://www.instagram.com/aayush_ict/' },
+  { label: 'X', handle: '@AayushICT', href: 'https://x.com/AayushICT' },
+  { label: 'Substack', handle: '@aayushnamdev', href: 'https://substack.com/@aayushnamdev' },
+] as const;
 
 export const site = {
   name: 'aayushict',
@@ -22,7 +29,7 @@ export const site = {
   cta: { label: 'Start here', href: '/start-here' },
   // Pages that exist only as "coming next" shells. They get noindex and stay out of the sitemap.
   // Remove a path from this list when its real page is built.
-  pending: ['/macro', '/learn', '/journal', '/watch', '/about', '/disclosure', '/disclaimer', '/privacy'] as string[],
+  pending: ['/macro', '/learn', '/journal', '/watch', '/disclosure', '/disclaimer', '/privacy'] as string[],
   legal: [
     { label: 'Disclosure', href: '/disclosure' },
     { label: 'Disclaimer', href: '/disclaimer' },
