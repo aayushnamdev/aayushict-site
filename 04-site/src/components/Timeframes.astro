@@ -1,0 +1,35 @@
+---
+// The timeframes he reads together. Only what he said: daily, 1 hour, 5 minute and 1 minute, all together.
+// The 1 hour gives direction. The 1 minute is for the entry. The other two are in the mix, not labelled.
+const rows = [
+  { name: 'Daily', tag: '', w: 100 },
+  { name: '1 hour', tag: 'Direction', w: 78, hot: true },
+  { name: '5 minute', tag: '', w: 58 },
+  { name: '1 minute', tag: 'Entry', w: 40, hot: true },
+];
+---
+<figure class="tf">
+  <ol>
+    {rows.map((r) => (
+      <li>
+        <span class="nm ui">{r.name}</span>
+        <span class="track"><span class:list={['bar', { hot: r.hot }]} style={`width:${r.w}%`}></span></span>
+        <span class="tag mono">{r.tag && <>◆ {r.tag}</>}</span>
+      </li>
+    ))}
+  </ol>
+  <figcaption class="cap ui">All four together. The 1 hour for direction, the 1 minute for entry.</figcaption>
+</figure>
+
+<style>
+  .tf { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 18px 18px 14px; }
+  ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  li { display: grid; grid-template-columns: 78px minmax(0, 1fr) 96px; gap: 12px; align-items: center; }
+  .nm { font-size: 15px; color: var(--text-heading); }
+  .track { height: 12px; border-radius: 6px; background: var(--page); }
+  .bar { display: block; height: 100%; border-radius: 6px; background: var(--line-strong); }
+  .bar.hot { background: var(--wine); }
+  .tag { font-size: 13px; color: var(--up-on-black); white-space: nowrap; }
+  .cap { font-size: 14px; color: var(--text-muted); margin: 14px 0 0; line-height: 1.5; }
+  @media (max-width: 480px) { li { grid-template-columns: 70px minmax(0, 1fr) 84px; gap: 8px; } .nm { font-size: 14px; } .tag { font-size: 12px; } }
+</style>

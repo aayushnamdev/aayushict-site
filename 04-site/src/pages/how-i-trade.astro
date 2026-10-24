@@ -2,6 +2,7 @@
 import PostLayout from '../layouts/PostLayout.astro';
 import Icon from '../components/Icon.astro';
 import SessionsArc from '../components/SessionsArc.astro';
+import Timeframes from '../components/Timeframes.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import { site, person } from '../config/site';
 
@@ -20,8 +21,9 @@ const sealed = [
   { icon: 'screen', title: 'The technicals', line: 'The technicals and the strategy, all of it.' },
   { icon: 'clock', title: 'What time I trade', line: 'I will show you the times.' },
   { icon: 'layers', title: 'What I look for', line: 'Which PD arrays I look for.' },
-  { icon: 'globe', title: 'Every session', line: 'It repeats in Asia, London and New York.' },
-  { icon: 'pin', title: 'Why London', line: 'It works best when the market is moving.' },
+  { icon: 'globe', title: 'Every session', line: 'It repeats in Asia, London and New York. I trade them when they move.' },
+  { icon: 'target', title: 'The timeframes', line: 'The daily, 1 hour, 5 minute and 1 minute, all together.' },
+  { icon: 'pin', title: 'Where I trade most', line: 'New York AM, mostly.' },
 ] as const;
 ---
 <PostLayout
@@ -34,7 +36,7 @@ const sealed = [
   jsonLd={jsonLd}
   signup={false}
 >
-  <!-- PLACEHOLDER: all copy below is drafted from what Aayush said out loud. He has not read and edited it yet. -->
+  <!-- Copy follows what Aayush said out loud (24 Oct 2026). New York AM and the timeframes were his corrections. -->
   <p>This is how I trade, every single day.</p>
   <p>The real model, not a vague idea. I will show the whole thing.</p>
 
@@ -55,8 +57,14 @@ const sealed = [
     ))}
   </ul>
 
-  <p>The model is not only a New York thing. It repeats in every session.</p>
-  <p>It works best when the market is moving. That is why I trade London most.</p>
+  <p>The model works best when the market is volatile and moving. That is why I trade the New York AM session mostly.</p>
+  <p>But it repeats in every session. If London or Asia is moving, with good ranges, I trade them too. They can be amazing sessions.</p>
+
+  <h2>How I read the chart</h2>
+  <p>I look at the daily, the 1 hour, the 5 minute and the 1 minute, all together.</p>
+  <p>The 1 hour gives me direction. The 1 minute is for my entry.</p>
+
+  <Timeframes />
 
   <div class="getit">
     <h2 class="ui">Get it first</h2>
@@ -77,5 +85,6 @@ const sealed = [
   .lock { position: absolute; top: 14px; right: 14px; display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-muted); }
   .getit { background: var(--surface); border: 1px solid var(--line-strong); border-bottom: 3px solid var(--wine); border-radius: var(--radius-card); padding: 22px 20px; }
   .getit h2 { font-size: 22px; margin: 0 0 14px; }
+  .sealed li:last-child:nth-child(odd) { grid-column: 1 / -1; }
   @media (max-width: 700px) { .sealed { grid-template-columns: 1fr; } }
 </style>
