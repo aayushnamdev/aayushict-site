@@ -33,13 +33,14 @@ const card = (lines, sub, { y0 = 300, step = 92 } = {}) => `<svg xmlns="http://w
   ${lines.map((l, i) => `<text x="70" y="${y0 + i * step}" font-family="${font}" font-weight="700" font-size="${l.size ?? 76}" letter-spacing="-2" fill="${l.fill ?? heading}">${l.text}</text>`).join('\n  ')}
   <text x="70" y="${y0 + (lines.length - 1) * step + 70}" font-family="${font}" font-size="32" fill="${muted}">${sub}</text>
 </svg>`;
-const withPhoto = async (svg, file) => sharp(Buffer.from(svg)).composite([{ input: framed, left: 750, top: 74 }]).png().toFile(file);
+// JPEG, not PNG: WhatsApp and others skip preview images over about 300 KB. A flat JPEG of this card is far smaller.
+const withPhoto = async (svg, file) => sharp(Buffer.from(svg)).composite([{ input: framed, left: 750, top: 74 }]).flatten({ background: page }).jpeg({ quality: 82, mozjpeg: true }).toFile(file);
 // The payout total comes from the payouts file, so the card never disagrees with the site.
 const paidTotal = [...readFileSync('src/config/payouts.ts', 'utf8').matchAll(/amount: (\d+), status: 'paid'/g)].reduce((n, m) => n + Number(m[1]), 0);
 const paidShort = `$${(paidTotal / 1000).toFixed(1)}K`;
-await withPhoto(card([{ text: "I'm Aayush.", size: 70 }, { text: 'I trade Nasdaq futures', size: 62 }, { text: 'from India.', size: 62, fill: rose }], `${paidShort} paid out, with proof`, { y0: 260, step: 86 }), 'public/og-default-v4.png');
-await withPhoto(card([{ text: 'How I trade.', size: 84 }, { text: 'Coming soon.', size: 84, fill: rose }], 'The model behind about 95% of my trades'), 'public/og-how-i-trade-v2.png');
-console.log('wrote og-default-v4.png, og-how-i-trade-v2.png');
+await withPhoto(card([{ text: "I'm Aayush.", size: 70 }, { text: 'I trade Nasdaq futures', size: 62 }, { text: 'from India.', size: 62, fill: rose }], `${paidShort} paid out, with proof`, { y0: 260, step: 86 }), 'public/og-default-v5.jpg');
+await withPhoto(card([{ text: 'How I trade.', size: 84 }, { text: 'Coming soon.', size: 84, fill: rose }], 'The model behind about 95% of my trades'), 'public/og-how-i-trade-v3.jpg');
+console.log('wrote og-default-v5.jpg, og-how-i-trade-v3.jpg');
 
 // favicon.ico: one 48x48 PNG inside an ICO container (valid for every current browser).
 const png = await sharp(readFileSync('public/favicon.svg'), { density: 384 }).resize(48, 48).png().toBuffer();
