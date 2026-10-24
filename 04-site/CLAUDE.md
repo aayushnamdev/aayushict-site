@@ -29,11 +29,11 @@ Match `reference-site.html` exactly for layout, colour and type.
 - A firm with `active: false` gets no `/go` redirect. Apex is not an affiliate: it is `active: false` and the page links to its `url` directly with `rel="noopener"` and the line "Not an affiliate link."
 
 ### Email
-Provider not chosen. `src/config/email.ts` holds the form action. While it is null the form shows a thank you and stores nothing.
+Buttondown (newsletter `aayushict`, double opt-in). `src/config/email.ts` holds the public form action. The API key stays in `.env` and never goes in the site.
 
 ### Content
 Collections: `macro`, `learn`, `journal` in `src/content/`. Schemas in `src/content.config.ts` follow BUILD-PLAN section 3.
 Learn guides live at `src/content/learn/<category>/<slug>.mdx`.
 
 ### Commands
-`npm run dev` (run in background), `npm run build`, `npm run check`. Deploy from this folder with `vercel --prod`.
+`npm run dev` (run in background), `npm run build`, `npm run check`. Deploy by pushing to `main` (GitHub is connected to Vercel). How to add a post: `PUBLISHING.md`.

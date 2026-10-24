@@ -1,8 +1,10 @@
 // Used for structured data. Only facts Aayush has stated on the site.
 export const person = {
   '@type': 'Person',
+  '@id': 'https://aayushict.space/#aayush',
   name: 'Aayush Namdev',
   url: 'https://aayushict.space',
+  image: 'https://aayushict.space/og-default-v2.png',
   sameAs: ['https://www.instagram.com/aayush_ict/', 'https://x.com/AayushICT', 'https://substack.com/@aayushnamdev'],
 } as const;
 
@@ -17,10 +19,13 @@ export const site = {
   name: 'aayushict',
   url: 'https://aayushict.space',
   tagline: "Know what's priced in. Trade what changes.",
+  ogAlt: "aayushict. Know what's priced in. Trade what changes. Macro and Nasdaq futures, from India.",
   signOff: 'Not advice. Stop loss on.',
   footerLine: 'Not a signal service. Not advice. Stop loss on.',
   // Lean launch: only pages that are real. Add Macro, Learn, Journal, Watch back when each has content.
   nav: [
+    { label: 'Learn', href: '/learn' },
+    { label: 'Journal', href: '/journal' },
     { label: 'About', href: '/about' },
   ],
   cta: { label: 'Start here', href: '/start-here' },

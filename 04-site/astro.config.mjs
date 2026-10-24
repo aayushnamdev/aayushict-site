@@ -19,7 +19,7 @@ const google = fontProviders.google();
 export default defineConfig({
   site: 'https://aayushict.space',
   output: 'static',
-  adapter: vercel(),
+  adapter: vercel({ webAnalytics: { enabled: true } }),
   integrations: [
     mdx(),
     sitemap({

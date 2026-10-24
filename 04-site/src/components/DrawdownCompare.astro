@@ -1,0 +1,58 @@
+---
+// Same flat trade on two drawdown models. Real numbers from the guide: 50K account, $2,500 drawdown,
+// trade runs to +$250 and closes at break even. Arrow plus word on the result, never colour alone.
+const panels = [
+  {
+    name: 'Intraday trailing',
+    rows: [['Peak during the trade', '$50,250'], ['Closed at', '$50,000'], ['Drawdown line', '$47,750']],
+    room: 2250,
+    result: '▼ $250 less room',
+    down: true,
+  },
+  {
+    name: 'End of day',
+    rows: [['Peak during the trade', '$50,250'], ['Closed at', '$50,000'], ['Drawdown line', '$47,500']],
+    room: 2500,
+    result: '◆ No change',
+    down: false,
+  },
+];
+const max = 2500;
+---
+<figure class="cmp">
+  <div class="panels">
+    {panels.map((p) => (
+      <div class="panel">
+        <h3 class="ui">{p.name}</h3>
+        <dl>
+          {p.rows.map(([k, v]) => (<div><dt>{k}</dt><dd class="mono">{v}</dd></div>))}
+        </dl>
+        <div class="room">
+          <div class="roomtop"><span class="ui">Room left</span><span class="mono">${p.room.toLocaleString('en-US')}</span></div>
+          <div class="track" role="img" aria-label={`Room left ${p.room} of ${max} dollars`}><div class="fill" style={`width:${(p.room / max) * 100}%`}></div></div>
+        </div>
+        <p class:list={['result', 'mono', { down: p.down }]}>{p.result}</p>
+      </div>
+    ))}
+  </div>
+  <figcaption class="cap ui">Same trade, same flat result. Intraday trailing quietly took $250 of buffer.</figcaption>
+</figure>
+
+<style>
+  .cmp { margin: 0; }
+  .panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+  .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
+  h3 { font-size: 17px; font-weight: 600; color: var(--text-heading); }
+  dl { margin: 0; display: grid; gap: 8px; }
+  dl > div { display: flex; justify-content: space-between; gap: 12px; font-size: 16px; line-height: 1.4; }
+  dt { color: var(--text-soft); font-family: var(--font-ui); }
+  dd { margin: 0; color: var(--text-heading); font-size: 16px; white-space: nowrap; flex-shrink: 0; }
+  .room { display: grid; gap: 8px; }
+  .roomtop { display: flex; justify-content: space-between; font-size: 15px; color: var(--text-heading); }
+  .track { height: 10px; border-radius: 999px; background: var(--line); overflow: hidden; }
+  .fill { height: 100%; background: var(--rose); border-radius: 999px; }
+  .result { font-size: 16px; color: var(--text-soft); }
+  .result.down { color: var(--down-on-black); }
+  .cap { font-size: 14px; color: var(--text-muted); margin-top: 12px; line-height: 1.5; }
+  @media (max-width: 599px) { .panels { grid-template-columns: 1fr; } }
+</style>

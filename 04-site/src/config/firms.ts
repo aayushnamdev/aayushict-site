@@ -26,7 +26,7 @@ export const firms: Firm[] = [
     url: 'https://fundednext.com/?fpr=AAYUSH',
     pros: [],
     cons: [],
-    lastVerified: '2026-10-02',
+    lastVerified: '2026-10-24',
     isAffiliate: true,
     active: true,
   },

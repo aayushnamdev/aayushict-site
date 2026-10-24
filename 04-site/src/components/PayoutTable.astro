@@ -26,11 +26,25 @@ const fmt = (d: string) => { const [y, m, day] = d.split('-').map(Number); retur
 
 <style>
   .wrap-table { overflow-x: auto; }
-  table { width: 100%; border-collapse: collapse; font-family: var(--font-ui); font-size: 15px; line-height: 1.45; color: var(--text-body); min-width: 520px; }
+  table { width: 100%; border-collapse: collapse; font-family: var(--font-ui); font-size: 15px; line-height: 1.45; color: var(--text-body); }
   th, td { text-align: left; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); vertical-align: top; }
   thead th { font-family: var(--font-number); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); font-weight: 400; }
   .r { text-align: right; padding-right: 20px; }
   .mono { font-family: var(--font-number); color: var(--text-number); font-size: 14px; white-space: nowrap; }
   .note { color: var(--text-muted); font-size: 13px; }
   tfoot th, tfoot td { border-bottom: none; padding-top: 14px; color: var(--text-heading); font-weight: 600; }
+  @media (max-width: 600px) {
+    thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+    table, tbody, tfoot, tr, td, th { display: block; }
+    tbody tr { display: grid; grid-template-columns: 1fr auto; gap: 2px 12px; padding: 12px 0; border-bottom: 1px solid var(--line); }
+    tbody td { padding: 0; border: none; }
+    tbody td:nth-child(1) { grid-column: 1; color: var(--text-muted); }
+    tbody td:nth-child(2) { grid-column: 1; color: var(--text-heading); }
+    tbody td:nth-child(3) { grid-column: 2; grid-row: 1 / span 2; align-self: center; padding: 0; font-size: 16px; }
+    tbody td:nth-child(4) { grid-column: 1 / -1; font-size: 14px; color: var(--text-soft); }
+    tfoot tr { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; padding-top: 14px; }
+    tfoot th, tfoot td { padding: 0; }
+    tfoot td:last-child { flex-basis: 100%; }
+    .r { padding-right: 0; }
+  }
 </style>

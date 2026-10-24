@@ -23,12 +23,13 @@ const jsonLd = {
   '@type': 'Article',
   headline: 'Start here',
   description: 'One real Friday night, why it was rare, and how I trade US futures from India.',
-  author: person,
-  publisher: person,
+  author: { '@id': person['@id'] },
+  publisher: { '@id': person['@id'] },
+  datePublished: '2026-10-03',
   dateModified: '2026-10-03',
   inLanguage: 'en-IN',
   mainEntityOfPage: `${site.url}/start-here/`,
-  image: `${site.url}/og-default.png`,
+  image: `${site.url}/og-default-v2.png`,
 };
 const fundednext = getFirm('fundednext')!;
 const apex = getFirm('apex')!;

@@ -17,6 +17,7 @@ const macro = defineCollection({
     route: z.array(z.string()).default([]),
     readMinutes: z.number(),
     relatedJournal: reference('journal').optional(),
+    draft: z.boolean().default(false), // true hides the post on the live site
   }),
 });
 
@@ -36,6 +37,7 @@ const learn = defineCollection({
     updated: z.coerce.date(),
     readMinutes: z.number(),
     route: z.array(z.string()).default([]),
+    draft: z.boolean().default(false),
   }),
 });
 
@@ -44,8 +46,11 @@ const journal = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/journal' }),
   schema: z.object({
     title: z.string(),
+    description: z.string().optional(), // one line for search and link previews
     kind: z.enum(['call', 'trading-day', 'story']),
     date: z.coerce.date(),
+    readMinutes: z.number().optional(), // worked out from the word count when left out
+    draft: z.boolean().default(false),
     // Calls only
     asset: z.literal('NQ').optional(),
     direction: z.enum(['long', 'short']).optional(),

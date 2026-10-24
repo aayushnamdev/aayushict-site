@@ -14,11 +14,8 @@ Macro events (CPI, FOMC, NFP) connected to real price in Gold, NQ and the Dollar
 | `_archive/` | Old work. `2026-09-v1/` is the first build (light theme). `source-zips/` holds the original zips. Never deployed |
 
 ## How to publish a post
-1. Draft in `03-content/drafts/`, in Aayush's voice (`01-brand/brand-schema.md` section 7).
-2. Run it against the voice checklist: sentence length, no em dashes, heading density.
-3. Create the MDX file in `04-site/src/content/<collection>/` (`macro`, `learn`, or `journal`).
-   Frontmatter schemas are in `04-site/src/content.config.ts`.
-4. `cd 04-site && npm run dev`, check it renders at 375px and 1280px, then commit and `vercel --prod`.
+Draft in `03-content/drafts/` in Aayush's voice (`01-brand/brand-schema.md` section 7), then follow `04-site/PUBLISHING.md`.
+Pushing to `main` deploys to https://aayushict.space in about a minute.
 
 ## Local dev
 ```

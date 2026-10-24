@@ -35,6 +35,9 @@ const id = `tip-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
     b.hidden = !open;
     if (open) place(b);
   });
+  const reflow = () => document.querySelectorAll<HTMLElement>('.tipbox:not([hidden])').forEach(place);
+  addEventListener('resize', reflow);
+  addEventListener('orientationchange', reflow);
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Escape') return;
     const openTip = [...tips()].find((t) => t.getAttribute('aria-expanded') === 'true');
@@ -54,7 +57,7 @@ const id = `tip-${title.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
     position: absolute; left: 0; top: calc(100% + 10px); z-index: 10; width: 300px; max-width: calc(100vw - 2 * var(--phone-padding));
     background: var(--surface); border: 1px solid var(--line-strong); border-radius: 12px; padding: 14px 16px;
     text-align: left; font-family: var(--font-body); font-weight: 400; font-size: 16px; line-height: 1.55; letter-spacing: 0;
-    color: var(--text-body); box-shadow: 0 12px 30px rgba(0, 0, 0, 0.45);
+    color: var(--text-body); box-shadow: var(--shadow-pop);
   }
   .tipbox[hidden] { display: none; }
   .tipbox b { display: block; font-family: var(--font-ui); font-size: 13px; color: var(--rose-text); margin-bottom: 4px; }

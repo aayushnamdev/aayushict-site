@@ -13,8 +13,8 @@ const { src, alt, caption, id, tall = false } = Astro.props;
 </figure>
 
 <dialog id={id} class="big-shot" aria-label={alt}>
-  <Image src={src} alt={alt} widths={[800, 1600]} sizes="95vw" />
   <button class="btn" type="button" data-shot-close={id}>Close</button>
+  <Image src={src} alt={alt} widths={[800, 1600]} sizes="95vw" loading="eager" />
 </dialog>
 
 <script>
@@ -38,9 +38,9 @@ const { src, alt, caption, id, tall = false } = Astro.props;
   .frame :global(img) { width: 100%; height: 100%; object-fit: contain; display: block; }
   .hint { position: absolute; right: 10px; bottom: 10px; font-size: 13px; color: var(--text-heading); background: var(--page-deep); padding: 4px 10px; border-radius: 999px; }
   .cap { font-size: 14px; color: var(--text-muted); margin-top: 10px; line-height: 1.5; }
-  .big-shot { border: 1px solid var(--line-strong); border-radius: 14px; padding: 16px; background: var(--surface); max-width: min(96vw, 1100px); max-height: 94vh; }
+  .big-shot { border: 1px solid var(--line-strong); border-radius: 14px; padding: 16px; background: var(--surface); max-width: min(96vw, 1100px); max-height: 94vh; max-height: 94dvh; }
   .big-shot::backdrop { background: var(--overlay); }
-  .big-shot :global(img) { display: block; max-width: 100%; max-height: calc(94vh - 100px); width: auto; height: auto; margin: 0 auto; border-radius: 8px; }
-  .big-shot .btn { margin-top: 12px; }
+  .big-shot :global(img) { display: block; max-width: 100%; max-height: calc(94vh - 100px); max-height: calc(94dvh - 100px); width: auto; height: auto; margin: 0 auto; border-radius: 8px; }
+  .big-shot .btn { margin: 0 0 12px; }
   @media (max-width: 860px) { .frame { height: 220px; } .tall .frame { height: 360px; } }
 </style>

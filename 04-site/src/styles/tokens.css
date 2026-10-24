@@ -53,6 +53,7 @@
   /* Reading width (laptop). Text, white cards and charts share these exact edges */
   --reading-width: 900px;
   --phone-padding: 22px;
+  --shadow-pop: 0 12px 30px var(--overlay);
 }
 
 /* Google Fonts line for the <head>:

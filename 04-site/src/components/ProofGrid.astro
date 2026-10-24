@@ -17,8 +17,8 @@ const { items } = Astro.props;
 </ul>
 {items.map((it) => (
   <dialog id={it.id} class="proof-big" aria-label={it.alt}>
-    <Image src={it.src} alt={it.alt} widths={[800, 1600]} sizes="95vw" />
     <button class="btn" type="button" data-proof-close={it.id}>Close</button>
+    <Image src={it.src} alt={it.alt} widths={[800, 1600]} sizes="95vw" loading="eager" />
   </dialog>
 ))}
 
@@ -39,8 +39,8 @@ const { items } = Astro.props;
   .thumb { display: block; width: 100%; padding: 0; background: var(--surface-raised); border: 1px solid var(--line); border-radius: 12px; overflow: hidden; cursor: zoom-in; }
   .thumb :global(img) { display: block; width: 100%; height: auto; }
   .cap { display: block; font-size: 14px; line-height: 1.5; color: var(--text-muted); margin-top: 8px; }
-  .proof-big { border: 1px solid var(--line-strong); border-radius: 14px; padding: 16px; background: var(--surface); max-width: min(96vw, 1100px); max-height: 94vh; }
+  .proof-big { border: 1px solid var(--line-strong); border-radius: 14px; padding: 16px; background: var(--surface); max-width: min(96vw, 1100px); max-height: 94vh; max-height: 94dvh; }
   .proof-big::backdrop { background: var(--overlay); }
-  .proof-big :global(img) { display: block; max-width: 100%; max-height: calc(94vh - 100px); width: auto; height: auto; margin: 0 auto; border-radius: 8px; }
-  .proof-big .btn { margin-top: 12px; }
+  .proof-big :global(img) { display: block; max-width: 100%; max-height: calc(94vh - 100px); max-height: calc(94dvh - 100px); width: auto; height: auto; margin: 0 auto; border-radius: 8px; }
+  .proof-big .btn { margin: 0 0 12px; }
 </style>

@@ -1,16 +1,16 @@
 ---
 import PostLayout from '../layouts/PostLayout.astro';
-import { asOf } from '../config/payouts';
+const updated = '24 Oct 2026';
 ---
 <PostLayout
   title="Privacy"
   subtitle="What this site knows about you. Very little."
-  meta={`Aayush Namdev · Updated ${asOf}`}
+  meta={`Aayush Namdev · Updated ${updated}`}
   signOff={false}
   signup={false}
 >
-  <!-- PLACEHOLDER: privacy copy drafted from how the site works today. Update it if analytics or new tools are added -->
-  <p>This site has no cookies, no ads and no trackers. I do not run analytics right now.</p>
+  <p>This site has no cookies, no ads and no trackers that follow you around.</p>
+  <p>I count visits with Vercel Analytics. It sets no cookies and does not know who you are. I see page views, the country and the kind of device, nothing more.</p>
 
   <h2>Your email</h2>
   <p>If you sign up, I get your email address. It is stored at Buttondown, the tool I use to send emails.</p>

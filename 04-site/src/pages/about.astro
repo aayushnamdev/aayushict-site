@@ -78,7 +78,7 @@ const jsonLd = {
 <style>
   .handles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
   .handles a { display: flex; flex-direction: column; justify-content: center; min-height: 64px; padding: 10px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); text-decoration: none; transition: border-color 0.2s; }
-  .handles a:hover { border-color: var(--wine); }
+  @media (hover: hover) { .handles a:hover { border-color: var(--wine); } }
   .where { font-family: var(--font-number); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rose-text); }
   .who { font-family: var(--font-ui); font-size: 16px; color: var(--text-heading); }
   @media (max-width: 860px) { .handles { grid-template-columns: 1fr; } }

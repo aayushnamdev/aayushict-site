@@ -9,7 +9,7 @@
 - [About](https://aayushict.space/about/): who Aayush Namdev is, how he trades (macro for direction, a 1 minute scalping model in the New York morning session), and his payouts so far with certificates.
 - [Disclosure](https://aayushict.space/disclosure/): how the site earns, which links are affiliate links, and which are not.
 - [Disclaimer](https://aayushict.space/disclaimer/): not advice, not a signal service, trading is risky.
-- [Privacy](https://aayushict.space/privacy/): no cookies, no trackers, email stored at Buttondown.
+- [Privacy](https://aayushict.space/privacy/): no cookies, cookieless visit counts through Vercel Analytics, email stored at Buttondown.
 
 ## Find the author
 

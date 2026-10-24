@@ -4,10 +4,10 @@ import { site } from '../config/site';
 import BaseLayout from './BaseLayout.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import ScrollProgress from '../components/ScrollProgress.astro';
-interface Props { type?: 'website' | 'article'; jsonLd?: Record<string, unknown>; title: string; subtitle?: string; route?: string[]; meta?: string; progress?: boolean; signup?: boolean; signOff?: boolean }
-const { type = 'website', jsonLd, title, subtitle, route = [], meta, progress = false, signup = true, signOff = true } = Astro.props;
+interface Props { type?: 'website' | 'article'; jsonLd?: Record<string, unknown>; title: string; subtitle?: string; description?: string; route?: string[]; meta?: string; progress?: boolean; signup?: boolean; signOff?: boolean }
+const { type = 'website', jsonLd, title, subtitle, description = subtitle, route = [], meta, progress = false, signup = true, signOff = true } = Astro.props;
 ---
-<BaseLayout title={title} description={subtitle} narrow type={type} jsonLd={jsonLd}>
+<BaseLayout title={title} description={description} narrow type={type} jsonLd={jsonLd}>
   {progress && <ScrollProgress />}
   <article class="article col">
     {route.length > 0 && (

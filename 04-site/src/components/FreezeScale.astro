@@ -1,0 +1,35 @@
+---
+// Funded Apex 50K, intraday trailing. The threshold trails the balance until it reaches $50,100,
+// which happens when the balance hits $52,600. Three steps, so it reads on a phone as well as a desktop.
+const steps = [
+  { n: '1', title: 'Start', value: '$50,000', text: 'The drawdown line sits $2,500 below, at $47,500.' },
+  { n: '2', title: 'Trailing', value: '$50,000 to $52,600', text: 'The line rises with your highest balance, every dollar of it.' },
+  { n: '3', title: 'Locked', value: '$52,600', text: 'The line stops at $50,100 for good. Your balance can fall back to it, never lower.' },
+];
+---
+<figure class="scale">
+  <ol>
+    {steps.map((s) => (
+      <li>
+        <span class="num mono" aria-hidden="true">{s.n}</span>
+        <div>
+          <div class="head"><span class="ui t">{s.title}</span><span class="mono v">{s.value}</span></div>
+          <p>{s.text}</p>
+        </div>
+      </li>
+    ))}
+  </ol>
+  <figcaption class="cap ui">The threshold trails your balance up to $52,600, then locks at $50,100 for good.</figcaption>
+</figure>
+
+<style>
+  .scale { margin: 0; }
+  ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+  li { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 14px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 16px 18px; }
+  .num { width: 32px; height: 32px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; background: var(--wine); color: var(--white); font-size: 15px; }
+  .head { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 12px; }
+  .t { font-size: 17px; font-weight: 600; color: var(--text-heading); }
+  .v { font-size: 16px; color: var(--text-number); white-space: nowrap; }
+  p { margin: 4px 0 0; font-size: 16px; line-height: 1.55; color: var(--text-soft); }
+  .cap { font-size: 14px; color: var(--text-muted); margin-top: 12px; line-height: 1.5; }
+</style>
