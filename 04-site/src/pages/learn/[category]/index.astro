@@ -14,7 +14,7 @@ export async function getStaticPaths() {
 }
 const { label, items } = Astro.props;
 ---
-<BaseLayout title={`${label} guides`} description={`Guides on ${label.toLowerCase()}, with the numbers worked out.`} narrow>
+<BaseLayout title={`${label} guides`} description={`Guides on ${label.toLowerCase()}, with the numbers worked out. Plain words, real examples, and the rules checked against the firm's own page.`} narrow>
   <div class="article col">
     <h1 class="title">{label}</h1>
     <p class="sub"><a href="/learn">All guides</a></p>
