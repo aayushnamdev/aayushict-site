@@ -21,21 +21,25 @@ await sharp(Buffer.from(og)).png().toFile('public/og-default-v2.png');
 
 // Share cards with his photo. Versioned names so Instagram, WhatsApp and X fetch them fresh.
 // The portrait sits in a rounded frame on the right, the headline on the left.
-const portraitBuf = await sharp('src/assets/photos/portrait.jpg').resize(380, 475, { fit: 'cover', position: 'top' }).png().toBuffer();
+const portraitBuf = await sharp('src/assets/photos/portrait-close.jpg').resize(380, 475, { fit: 'cover', position: 'centre' }).png().toBuffer();
 const round = Buffer.from(`<svg xmlns="http://www.w3.org/2000/svg" width="380" height="475"><rect width="380" height="475" rx="26" fill="#fff"/></svg>`);
 const framed = await sharp(portraitBuf).composite([{ input: round, blend: 'dest-in' }]).png().toBuffer();
-const card = (lines, sub) => `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+// Text stays left of the photo frame (which starts at x 738), so lines are sized to end before x 700.
+const card = (lines, sub, { y0 = 300, step = 92 } = {}) => `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="${page}"/>
   <rect x="0" y="606" width="1200" height="24" fill="${wine}"/>
   <rect x="738" y="62" width="404" height="499" rx="34" fill="#1d1618" stroke="${wine}" stroke-width="3"/>
   <text x="70" y="130" font-family="${font}" font-weight="700" font-size="56" letter-spacing="-2" fill="${heading}">aayush<tspan fill="${rose}">ict</tspan></text>
-  ${lines.map((l, i) => `<text x="70" y="${300 + i * 92}" font-family="${font}" font-weight="700" font-size="${l.size ?? 76}" letter-spacing="-2" fill="${l.fill ?? heading}">${l.text}</text>`).join('\n  ')}
-  <text x="70" y="${300 + lines.length * 92 + 24}" font-family="${font}" font-size="32" fill="${muted}">${sub}</text>
+  ${lines.map((l, i) => `<text x="70" y="${y0 + i * step}" font-family="${font}" font-weight="700" font-size="${l.size ?? 76}" letter-spacing="-2" fill="${l.fill ?? heading}">${l.text}</text>`).join('\n  ')}
+  <text x="70" y="${y0 + (lines.length - 1) * step + 70}" font-family="${font}" font-size="32" fill="${muted}">${sub}</text>
 </svg>`;
 const withPhoto = async (svg, file) => sharp(Buffer.from(svg)).composite([{ input: framed, left: 750, top: 74 }]).png().toFile(file);
-await withPhoto(card([{ text: "Know what's priced in." }, { text: 'Trade what changes.' }], 'Macro and Nasdaq futures, from India'), 'public/og-default-v3.png');
-await withPhoto(card([{ text: 'How I trade.', size: 84 }, { text: 'Coming soon.', size: 84, fill: rose }], 'The model behind about 95% of my trades'), 'public/og-how-i-trade-v1.png');
-console.log('wrote og-default-v3.png, og-how-i-trade-v1.png');
+// The payout total comes from the payouts file, so the card never disagrees with the site.
+const paidTotal = [...readFileSync('src/config/payouts.ts', 'utf8').matchAll(/amount: (\d+), status: 'paid'/g)].reduce((n, m) => n + Number(m[1]), 0);
+const paidShort = `$${(paidTotal / 1000).toFixed(1)}K`;
+await withPhoto(card([{ text: "I'm Aayush.", size: 70 }, { text: 'I trade Nasdaq futures', size: 62 }, { text: 'from India.', size: 62, fill: rose }], `${paidShort} paid out, with proof`, { y0: 260, step: 86 }), 'public/og-default-v4.png');
+await withPhoto(card([{ text: 'How I trade.', size: 84 }, { text: 'Coming soon.', size: 84, fill: rose }], 'The model behind about 95% of my trades'), 'public/og-how-i-trade-v2.png');
+console.log('wrote og-default-v4.png, og-how-i-trade-v2.png');
 
 // favicon.ico: one 48x48 PNG inside an ICO container (valid for every current browser).
 const png = await sharp(readFileSync('public/favicon.svg'), { density: 384 }).resize(48, 48).png().toBuffer();

@@ -29,5 +29,5 @@ export const certificates: Certificate[] = [
   { id: 'proof-apex-1500-jun', src: apex1500jun, alt: 'Apex Trader Funding rewards certificate for Aayush Namdev, $1,500, approved 26 June 2026', caption: 'Apex, $1,500, 26 Jun 2026' },
   { id: 'proof-apex-536', kind: 'dashboard', src: apex536, alt: 'Apex Trader Funding payout history row: $536, requested 13 June 2025, status Paid. Account number hidden.', caption: 'Apex, $536, 13 Jun 2025. Dashboard, no certificate' },
   { id: 'proof-apex-1415', kind: 'dashboard', src: apex1415, alt: 'Apex Trader Funding payout history row: $1,415, requested 13 March 2025, status Paid. Account number hidden.', caption: 'Apex, $1,415, 13 Mar 2025. Dashboard, no certificate' },
-  { id: 'proof-alpha-3006', src: alpha3006, alt: 'Alpha Capital lifetime payouts certificate for Aayush Namdev, $3,006, dated 14 February 2025', caption: 'Alpha Capital, $3,006 lifetime, 14 Feb 2025' },
+  { id: 'proof-alpha-3006', src: alpha3006, alt: 'Alpha Capital lifetime payouts certificate for Aayush Namdev, $3,006 across several payouts in 2024 and 2025, dated 14 February 2025', caption: 'Alpha Capital, $3,006 across several payouts, 2024 to 2025' },
 ];

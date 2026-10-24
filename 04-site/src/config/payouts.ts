@@ -23,7 +23,7 @@ export const payouts: Payout[] = [
   { date: '2026-06-29', firm: 'Apex Trader Funding', amount: 1500, status: 'paid', proof: 'proof-apex-1500-jun' },
   { date: '2025-06-13', firm: 'Apex Trader Funding', amount: 536, status: 'paid', proof: 'proof-apex-536', note: 'No certificate. Dashboard row' },
   { date: '2025-03-13', firm: 'Apex Trader Funding', amount: 1415, status: 'paid', proof: 'proof-apex-1415', note: 'No certificate. Dashboard row' },
-  { date: '2025-02-14', firm: 'Alpha Capital', amount: 3006, status: 'paid', proof: 'proof-alpha-3006', note: 'Lifetime total on the certificate' },
+  { date: '2025-02-14', firm: 'Alpha Capital', amount: 3006, status: 'paid', proof: 'proof-alpha-3006', note: 'Several payouts in 2024 and 2025. Lifetime total on the certificate' },
 ];
 
 export const asOf = '24 Oct 2026';

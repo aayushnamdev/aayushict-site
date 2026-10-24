@@ -19,7 +19,7 @@ export const site = {
   name: 'aayushict',
   url: 'https://aayushict.space',
   tagline: "Know what's priced in. Trade what changes.",
-  ogAlt: "aayushict. Know what's priced in. Trade what changes. Macro and Nasdaq futures, from India.",
+  ogAlt: 'Aayush Namdev. I trade Nasdaq futures from India. My payouts are shown with proof.',
   signOff: 'Not advice. Stop loss on.',
   footerLine: 'Not a signal service. Not advice. Stop loss on.',
   // Lean launch: only pages that are real. Add Macro, Learn, Journal, Watch back when each has content.
