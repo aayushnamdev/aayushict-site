@@ -3,7 +3,6 @@ import BaseLayout from '../layouts/BaseLayout.astro';
 import Band from '../components/Band.astro';
 import TermTip from '../components/TermTip.astro';
 import SideCard from '../components/SideCard.astro';
-import ProofChips from '../components/ProofChips.astro';
 import GapCards from '../components/GapCards.astro';
 import NumberFlip from '../components/NumberFlip.astro';
 import ReadingOrder from '../components/ReadingOrder.astro';
@@ -11,7 +10,6 @@ import ValueTiles from '../components/ValueTiles.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import ProofStack from '../components/ProofStack.astro';
 import { Image } from 'astro:assets';
-import payout from '../assets/proof/apex-payout-2026-08-12.png';
 import { site, person } from '../config/site';
 import { certificates } from '../config/certificates';
 import { paidShort, asOf } from '../config/payouts';
@@ -56,13 +54,6 @@ const jsonLd = [
           <TermTip title="Priced in" text="Priced in means the market already expects it. The expected number does not move price. The surprise does.">priced in</TermTip>.
           When the number surprises, I trade it.
         </p>
-        <ProofChips
-          chips={[{ text: '102 points' }, { text: '4 MNQ' }, { text: 'Apex payout', proof: true }]}
-          proofTitle="Apex payout, $1,446"
-          proofNote="This is from that week, not one trade. I traded 3 to 4 more days after it."
-          proofImage={payout}
-          proofAlt="Apex Trader Funding rewards certificate, $1,446, approved on 12 August 2026"
-        />
         <p><a class="btn ghost" href="/about">About me →</a></p>
       </div>
       <div class="stack right">
@@ -95,7 +86,7 @@ const jsonLd = [
       <div class="stack proofcopy">
         <div class="label">The proof</div>
         <h2 class="h-sec"><span class="n">{paidShort}</span> paid out so far.</h2>
-        <p class="lead">Real payout certificates from Apex and Alpha Capital. Tap one to see it large.</p>
+        <p class="lead">Real payout certificates from Apex and Alpha Capital. Tap the pile to flip through.</p>
         <p class="ui fine">As of {asOf}. <a href="/about">See every payout</a></p>
       </div>
       <ProofStack items={stackItems} />

@@ -23,9 +23,14 @@ const { items } = Astro.props;
   <p class="ui count" data-count-label aria-hidden="true">1 of {items.length}</p>
 </div>
 
-{items.map((it) => (
+{items.map((it, i) => (
   <dialog id={it.id} class="proof-big" aria-label={it.alt}>
-    <button class="btn" type="button" data-proof-close={it.id}>Close</button>
+    <div class="bigbar">
+      <button class="btn ghost" type="button" data-big-nav="-1" aria-label="Previous">← Prev</button>
+      <span class="ui bigpos" aria-hidden="true">{i + 1} of {items.length}</span>
+      <button class="btn ghost" type="button" data-big-nav="1" aria-label="Next">Next →</button>
+      <button class="btn bigclose" type="button" data-proof-close={it.id}>Close</button>
+    </div>
     <Image src={it.src} alt={it.alt} widths={[800, 1600]} sizes="95vw" loading="lazy" />
     <p class="ui big-cap">{it.caption}</p>
   </dialog>
@@ -57,8 +62,29 @@ const { items } = Astro.props;
     root.querySelector('[data-next]')?.addEventListener('click', () => go(1));
     root.querySelector('[data-prev]')?.addEventListener('click', () => go(-1));
     root.querySelector('[data-open]')?.addEventListener('click', open);
-    // Tapping the pile: front card opens large, any other card comes to the front.
-    cards.forEach((c, i) => c.addEventListener('click', () => (i === front ? open() : ((front = i), paint()))));
+    // Tapping the pile: the front card moves to the back, any other card comes to the front.
+    cards.forEach((c, i) => c.addEventListener('click', () => (i === front ? go(1) : ((front = i), paint()))));
+
+    // Inside the large view, Prev and Next keep the flow going without closing and reopening by hand.
+    const ids = cards.map((c) => c.dataset.id ?? '');
+    const step = (from: HTMLDialogElement, by: number) => {
+      const at = ids.indexOf(from.id);
+      if (at < 0) return;
+      front = (at + by + n) % n;
+      from.close();
+      paint();
+      open();
+    };
+    document.querySelectorAll<HTMLDialogElement>('dialog.proof-big').forEach((d) => {
+      if (!ids.includes(d.id)) return;
+      // Tapping the big picture goes to the next one too.
+      d.querySelector('img')?.addEventListener('click', () => step(d, 1));
+      d.querySelectorAll<HTMLElement>('[data-big-nav]').forEach((b) => b.addEventListener('click', () => step(d, Number(b.dataset.bigNav))));
+      d.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight') { e.preventDefault(); step(d, 1); }
+        if (e.key === 'ArrowLeft') { e.preventDefault(); step(d, -1); }
+      });
+    });
     root.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
       if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
@@ -135,7 +161,12 @@ const { items } = Astro.props;
   .proof-big { border: 1px solid var(--line-strong); border-radius: 14px; padding: 16px; background: var(--surface); max-width: min(96vw, 1100px); max-height: 94vh; max-height: 94dvh; }
   .proof-big::backdrop { background: var(--overlay); }
   .proof-big :global(img) { display: block; max-width: 100%; max-height: calc(94vh - 140px); max-height: calc(94dvh - 140px); width: auto; height: auto; margin: 0 auto; border-radius: 8px; }
-  .proof-big .btn { margin: 0 0 12px; }
+  .bigbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; margin: 0 0 12px; }
+  .bigbar .btn { min-height: 44px; margin: 0; }
+  .bigpos { font-size: 13px; color: var(--text-muted); min-width: 52px; text-align: center; }
+  .bigclose { margin-left: auto !important; }
+  .proof-big .ghost, :global(.wine) .proof-big .ghost { border-color: var(--line-strong); color: var(--text-heading); }
+  .proof-big :global(img) { cursor: pointer; }
   .big-cap { font-size: 14px; color: var(--text-muted); margin: 10px 0 0; text-align: center; }
 
   @media (prefers-reduced-motion: reduce) {
