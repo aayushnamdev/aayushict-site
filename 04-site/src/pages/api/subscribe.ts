@@ -5,6 +5,9 @@ import type { APIRoute } from 'astro';
 
 export const prerender = false;
 
+// Where a signup came from. Saved as a Buttondown tag so he can email only the people who asked for a post.
+const sources = ['website', 'how-i-trade'];
+
 const reply = (request: Request, ok: boolean, message: string, status: number) => {
   if ((request.headers.get('accept') ?? '').includes('application/json')) {
     return new Response(JSON.stringify({ ok, message }), { status, headers: { 'content-type': 'application/json' } });
@@ -23,6 +26,9 @@ export const POST: APIRoute = async ({ request }) => {
   const email = String(form.get('email') ?? '').trim();
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email) || email.length > 254) return reply(request, false, 'Please enter a valid email.', 400);
 
+  const asked = String(form.get('source') ?? 'website');
+  const source = sources.includes(asked) ? asked : 'website';
+
   const key = import.meta.env.BUTTONDOWN_API_KEY;
   if (!key) return reply(request, false, 'Signup is not set up yet.', 500);
 
@@ -31,7 +37,7 @@ export const POST: APIRoute = async ({ request }) => {
       method: 'POST',
       headers: { Authorization: `Token ${key}`, 'Content-Type': 'application/json' },
       // "unactivated" keeps double opt-in: they get a confirmation email first.
-      body: JSON.stringify({ email_address: email, type: 'unactivated', tags: ['website'] }),
+      body: JSON.stringify({ email_address: email, type: 'unactivated', tags: source === 'website' ? ['website'] : ['website', source] }),
     });
     if (res.ok) return reply(request, true, 'ok', 200);
     const body = await res.json().catch(() => ({}));

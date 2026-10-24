@@ -13,7 +13,7 @@ export async function getStaticPaths() {
   });
 }
 const { guide } = Astro.props;
-const { Content } = await render(guide);
+const { Content, headings } = await render(guide);
 const d = guide.data;
 ---
 <GuideLayout
@@ -21,6 +21,10 @@ const d = guide.data;
   subtitle={d.subtitle}
   route={d.route}
   updated={d.updated}
+  category={d.category}
+  readMinutes={d.readMinutes}
+  headings={headings}
+  current={`learn/${guide.id}`}
   type="article"
   jsonLd={articleLd({ title: d.title, description: d.subtitle, path: `/learn/${guide.id}/`, published: d.updated, modified: d.updated })}
 >

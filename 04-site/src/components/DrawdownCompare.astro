@@ -1,29 +1,29 @@
 ---
-// Same flat trade on two drawdown models. Real numbers from the guide: 50K account, $2,500 drawdown,
+// Same flat trade on two drawdown models. Real numbers from the guide: 50K account, $2,000 drawdown,
 // trade runs to +$250 and closes at break even. Arrow plus word on the result, never colour alone.
 const panels = [
   {
     name: 'Intraday trailing',
-    rows: [['Peak during the trade', '$50,250'], ['Closed at', '$50,000'], ['Drawdown line', '$47,750']],
-    room: 2250,
+    rows: [['Peak during the trade', '$50,250'], ['Closed at', '$50,000'], ['Drawdown line', '$48,250']],
+    room: 1750,
     result: '▼ $250 less room',
     down: true,
   },
   {
     name: 'End of day',
-    rows: [['Peak during the trade', '$50,250'], ['Closed at', '$50,000'], ['Drawdown line', '$47,500']],
-    room: 2500,
+    rows: [['Peak during the trade', '$50,250'], ['Closed at', '$50,000'], ['Drawdown line', '$48,000']],
+    room: 2000,
     result: '◆ No change',
     down: false,
   },
 ];
-const max = 2500;
+const max = 2000;
 ---
 <figure class="cmp">
   <div class="panels">
     {panels.map((p) => (
       <div class="panel">
-        <h3 class="ui">{p.name}</h3>
+        <p class="ui nm">{p.name}</p>
         <dl>
           {p.rows.map(([k, v]) => (<div><dt>{k}</dt><dd class="mono">{v}</dd></div>))}
         </dl>
@@ -42,7 +42,7 @@ const max = 2500;
   .cmp { margin: 0; }
   .panels { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
   .panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 20px; display: flex; flex-direction: column; gap: 14px; }
-  h3 { font-size: 17px; font-weight: 600; color: var(--text-heading); }
+  .nm { font-size: 17px; font-weight: 600; color: var(--text-heading); margin: 0; }
   dl { margin: 0; display: grid; gap: 8px; }
   dl > div { display: flex; justify-content: space-between; gap: 12px; font-size: 16px; line-height: 1.4; }
   dt { color: var(--text-soft); font-family: var(--font-ui); }

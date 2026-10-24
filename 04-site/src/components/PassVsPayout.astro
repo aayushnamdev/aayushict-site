@@ -1,0 +1,38 @@
+---
+// Pass, the days in between, payout. Words are from the guide: most pass the evaluation without much
+// trouble, very few collect a payout, and the days in between are where accounts die. No invented figures.
+const steps = [
+  { n: '1', title: 'Pass the evaluation', note: 'Most traders manage this without much trouble.', hot: false },
+  { n: '2', title: 'The days in between', note: 'Where accounts actually die.', hot: true },
+  { n: '3', title: 'Collect a payout', note: 'Very few get here.', hot: false },
+];
+---
+<figure class="steps">
+  <ol>
+    {steps.map((s) => (
+      <li class:list={{ hot: s.hot }}>
+        <span class="num mono" aria-hidden="true">{s.n}</span>
+        <strong class="ui">{s.title}</strong>
+        <span class="note">{s.hot && <span class="mono">▼ </span>}{s.note}</span>
+      </li>
+    ))}
+  </ol>
+</figure>
+
+<style>
+  .steps { margin: 0; }
+  ol { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 22px; }
+  li { position: relative; display: flex; flex-direction: column; gap: 8px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 18px 16px; }
+  li:not(:last-child)::after { content: '→'; position: absolute; right: -19px; top: 50%; transform: translateY(-50%); color: var(--rose-text); font-size: 18px; }
+  li.hot { background: var(--wine); border-color: var(--wine); }
+  .num { width: 30px; height: 30px; border-radius: 999px; display: inline-flex; align-items: center; justify-content: center; background: var(--wine); color: var(--white); font-size: 14px; }
+  .hot .num { background: var(--white); color: var(--wine); }
+  strong { font-size: 17px; color: var(--text-heading); }
+  .hot strong { color: var(--white); }
+  .note { font-size: 15px; line-height: 1.5; color: var(--text-soft); }
+  .hot .note { color: var(--text-on-wine); }
+  @media (max-width: 700px) {
+    ol { grid-template-columns: 1fr; gap: 22px; }
+    li:not(:last-child)::after { content: '↓'; right: auto; left: 50%; top: auto; bottom: -21px; transform: translateX(-50%); }
+  }
+</style>

@@ -19,6 +19,7 @@ const isOn = (href: string) => path === href || path.startsWith(href + '/');
     </div>
   </div>
   <nav class="drawer" id="drawer" aria-label="Mobile">
+    {path.replace(/\/$/, '') !== '' && <a href="/">Home</a>}
     {site.nav.map((l) => <a href={l.href} aria-current={isOn(l.href) ? 'page' : undefined}>{l.label}</a>)}
   </nav>
 </header>

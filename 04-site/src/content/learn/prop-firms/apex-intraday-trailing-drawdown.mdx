@@ -8,6 +8,17 @@ route: ['Intraday trailing', 'End of day', 'Payouts']
 ---
 import DrawdownCompare from '../../../components/DrawdownCompare.astro';
 import FreezeScale from '../../../components/FreezeScale.astro';
+import TradePath from '../../../components/TradePath.astro';
+import TwoTraders from '../../../components/TwoTraders.astro';
+import PullLine from '../../../components/PullLine.astro';
+import ShotFrame from '../../../components/ShotFrame.astro';
+import MoreBox from '../../../components/MoreBox.astro';
+import WhichAccount from '../../../components/WhichAccount.astro';
+import PassVsPayout from '../../../components/PassVsPayout.astro';
+import { Image } from 'astro:assets';
+import riskPanel from '../../../assets/proof/tradovate-risk-panel-2026-10-24.png';
+import apexRules from '../../../assets/proof/apex-rules-50k-intraday-trail-2026-10-24.png';
+import executionShot from '../../../assets/proof/tradovate-execution-2026-08-07.png';
 import { getFirm, disclosureLine } from '../../../config/firms';
 
 export const verified = new Date(getFirm('fundednext').lastVerified).toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric' });
@@ -17,6 +28,8 @@ Here is a trade that does not exist on a normal account.
 You risk $100 going for $300. Price runs to $250 in your favour, stalls, turns, and you come out at break even. Nothing gained, nothing lost. On your own broker account, or on an end of day drawdown account, that trade never happened. Your balance is exactly where it started.
 
 On an intraday trailing account you are now down $250 and you never made a dollar.
+
+<TradePath />
 
 Most traders find this out the way I did, which is afterwards. So it gets filed under hidden rules, the thing everyone warns you about on Twitter without ever explaining. But it is not hidden. It is printed on the pricing page of every firm that sells it. I could have read it before I bought.
 
@@ -32,9 +45,11 @@ That means the account is not really measuring your results. It is measuring you
 
 If your edge is built on letting a runner go, holding through a retracement, waiting for a second leg. Then every one of those decisions is charged to you at its peak value. It does not matter whether you collect. The account was never designed to punish you. It just quietly prices the one behaviour your whole method depends on.
 
-The account type is a bet on your trading style, and nobody tells you which style it is betting against.
+<PullLine>The account type is a bet on your trading style, and nobody tells you which style it is betting against.</PullLine>
 
 Two traders buy the same 50K account on the same day. One scalps, books in points, never lets a position float far from entry. The other takes three trades a week at 1 to 3 risk to reward, and sits through drawdown inside the trade to get there. Same fee, same rules, same platform. One of them is trading on a model that matches how they make money. The other is trading a model that fines them for their own edge.
+
+<TwoTraders />
 
 Neither is a better trader. The mismatch is not a skill problem. It will not show up in your journal as one. It shows up as a string of break even days that somehow left you closer to the line.
 
@@ -44,15 +59,28 @@ There is a detail here that almost nobody mentions, and it changes how brutal th
 
 This part applies once you are funded, not while you are still in the evaluation. In the evaluation the intraday trail keeps trailing your peak for as long as you are in it, with no freeze.
 
-On a funded Apex 50K, the freeze is real but further out than most people think. The trailing threshold locks once it reaches $50,100, your starting balance plus $100. That happens once your balance hits $52,600. Everything above applies until you cross that line, and then it is over.
+On a funded Apex 50K, the freeze is real but further out than most people think. The trailing threshold locks once it reaches $50,100, your starting balance plus $100. That happens once your balance hits $52,100. Everything above applies until you cross that line, and then it is over.
 
 <FreezeScale />
 
 The rules are on <a href={getFirm('apex').url} rel="noopener">Apex's own site</a>. Not an affiliate link.
 
-That reframes the whole thing. You are not fighting an account that hunts you forever once you are funded. You are surviving a defined stretch. The style question is really a question about whether your method can cross $2,600 while being charged for its own floating profit. Some methods can. Some can, but not in the way they normally trade.
+<MoreBox title="What Apex's rules page shows">
+  <Image src={apexRules} alt="Apex rules card for the 50K Intraday Trail account: Max Drawdown $2,000, Drawdown Type Intraday Trail." widths={[400, 700]} sizes="(max-width: 860px) 90vw, 560px" />
+  <p class="fine">Apex's rules page, 24 Oct 2026. Not an affiliate link.</p>
+</MoreBox>
+
+That reframes the whole thing. You are not fighting an account that hunts you forever once you are funded. You are surviving a defined stretch. The style question is really a question about whether your method can cross $2,100 while being charged for its own floating profit. Some methods can. Some can, but not in the way they normally trade.
 
 Go and look at yours. Most people holding one of these accounts have never checked where their threshold currently sits.
+
+<ShotFrame
+  id="shot-risk-panel"
+  src={riskPanel}
+  alt="Tradovate risk panel on a funded account: equity 51,272.18, with TR.MAX DRAWDOWN showing $2000."
+  caption="My own Tradovate risk panel. TR.MAX DRAWDOWN shows $2000. This is where I check mine."
+  tall
+/>
 
 ## Fit is not edge
 
@@ -60,15 +88,31 @@ I trade an intraday trailing account. It costs me almost nothing, because I scal
 
 That is not me being good at prop firm rules. That is my style happening to line up with the product. I want to be precise about it. The version of this post where I explain how I beat the trailing drawdown would be a lie. I did not beat it. Most days it never has the chance to.
 
+<ShotFrame
+  id="shot-execution"
+  src={executionShot}
+  alt="Tradovate chart on 7 August at 6:35 PM showing the entry, the partial and the exit marked on a strong rise."
+  caption="Execution on Tradovate. The entry, the partial and the exit, marked on the chart."
+  tall
+/>
+
 The useful move is not to find the cheapest account. Look at your last 30 trades. Work out how much profit you typically leave floating before you close. Buy the drawdown model that does not charge you for it.
+
+<WhichAccount />
 
 If you read the break even trade at the top and recognised yourself, the model you want is end of day.
 
 End of day trailing works on your closing balance, not your intraday peak. Your trade can run to $250, come back, and close flat, and the floor does not move. Same trade, no charge. It still trails upward as you post new daily highs, and it still locks once your profit equals the drawdown amount. The structure is the same. It just stops pricing the part of the trade you never collected.
 
-FundedNext runs end of day on every one of their futures models, which is why I point people there when the style question comes up. Worth knowing before you buy: positions have to be flat by 3:10 PM Central, so nothing holds overnight.
+FundedNext runs end of day on every one of their futures models, which is why I point people there when the style question comes up.
+
+<MoreBox title="Worth knowing before you buy FundedNext">
+Positions have to be flat by 3:10 PM Central, so nothing holds overnight.
+</MoreBox>
 
 For most people the harder problem is not passing. It is what happens after. Most traders who buy one of these accounts pass the evaluation without much trouble. Very few of them ever collect a payout. The days between passing and payout are where accounts actually die, not the evaluation itself.
+
+<PassVsPayout />
 
 My link is <a href="/go/fundednext" rel="sponsored nofollow noopener">fundednext.com</a> (affiliate link) and the code is AAYUSH for 10% off futures. I earn if you use it, and the account I trade myself is Apex. Use it only if end of day is the model you actually need.
 

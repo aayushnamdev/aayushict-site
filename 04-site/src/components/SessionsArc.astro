@@ -1,0 +1,30 @@
+---
+// The three sessions the model repeats in. Words only, no hours and no results.
+// London is highlighted because it is where he trades most (placeholder wording, to confirm).
+---
+<figure class="sessions">
+  <svg viewBox="0 0 360 150" role="img" aria-label="The same model repeats in every session: Asia, then London, then New York. London is highlighted.">
+    <rect x="6" y="14" width="104" height="58" rx="12" class="box" />
+    <rect x="128" y="14" width="104" height="58" rx="12" class="box hot" />
+    <rect x="250" y="14" width="104" height="58" rx="12" class="box" />
+    <text x="58" y="48" text-anchor="middle" class="t">Asia</text>
+    <text x="180" y="48" text-anchor="middle" class="t on">London</text>
+    <text x="302" y="48" text-anchor="middle" class="t">New York</text>
+    <path d="M112 43h14M234 43h14" class="arrow" />
+    <path d="M302 74v26H58V74" class="loop" />
+    <path d="M52 82l6-8 6 8" class="arrow" />
+    <text x="180" y="124" text-anchor="middle" class="note">same model, every session</text>
+  </svg>
+</figure>
+
+<style>
+  .sessions { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 14px 12px 8px; }
+  svg { display: block; width: 100%; max-width: 520px; height: auto; margin: 0 auto; }
+  .box { fill: var(--page); stroke: var(--line-strong); }
+  .hot { fill: var(--wine); stroke: var(--wine); }
+  .t { font-family: var(--font-ui); font-weight: 600; font-size: 15px; fill: var(--text-soft); }
+  .on { fill: var(--white); }
+  .arrow, .loop { fill: none; stroke: var(--rose); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+  .loop { stroke-dasharray: 4 5; }
+  .note { font-family: var(--font-number); font-size: 12.5px; fill: var(--text-muted); }
+</style>

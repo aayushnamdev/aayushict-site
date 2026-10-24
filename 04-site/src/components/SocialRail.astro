@@ -1,0 +1,82 @@
+---
+// Very small social links. Laptop: a thin strip on the right edge. Phone: a small glass pill at the bottom, like
+// the Instagram app. Outbound links open in a new tab (the global link script adds the safe rel). The mail icon
+// scrolls to the signup form on the page. Tap areas are 44px, the icons are small on purpose.
+import Icon from './Icon.astro';
+import { social } from '../config/site';
+const icons = { Instagram: 'camera', X: 'x', Substack: 'substack' } as const;
+// Home shows on every page except the home page. In-site link, so it opens in the same tab.
+const showHome = (Astro.url.pathname.replace(/\/$/, '') || '/') !== '/';
+---
+<nav class="rail" aria-label="Follow Aayush">
+  {showHome && (
+    <>
+      <a class="home" href="/" aria-label="Home"><Icon name="home" size={18} /><span class="tag ui" aria-hidden="true">Home</span></a>
+      <span class="sep" aria-hidden="true"></span>
+    </>
+  )}
+  {social.map((s) => (
+    <a href={s.href} rel="me noopener" target="_blank" aria-label={`${s.label} ${s.handle}`}>
+      <Icon name={icons[s.label]} size={18} />
+    </a>
+  ))}
+  <button type="button" data-jump-signup aria-label="Get the Sunday email">
+    <Icon name="mail" size={18} />
+  </button>
+</nav>
+
+<script>
+  // Scroll to the first signup form on the page, focus the email box, and say so for screen readers.
+  document.querySelector('[data-jump-signup]')?.addEventListener('click', () => {
+    const form = document.querySelector<HTMLFormElement>('form[data-signup]');
+    if (!form) { location.href = '/#email-home'; return; }
+    const input = form.querySelector<HTMLInputElement>('input[type="email"]');
+    form.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'center' });
+    setTimeout(() => input?.focus({ preventScroll: true }), 350);
+    const live = document.getElementById('live');
+    if (live) { live.textContent = ''; setTimeout(() => { live.textContent = 'Email signup'; }, 50); }
+  });
+</script>
+
+<style>
+  .rail { position: fixed; z-index: 40; display: flex; align-items: center; }
+  .rail a, .rail button {
+    display: inline-flex; align-items: center; justify-content: center; width: 44px; height: 44px; padding: 0;
+    color: var(--text-muted); background: none; border: none; cursor: pointer; text-decoration: none;
+  }
+  .rail :global(svg) { stroke-width: 1.8; }
+  .sep { flex: none; background: var(--line-strong); }
+  .home { position: relative; color: var(--text-heading); }
+  .tag { display: none; }
+  @media (hover: hover) { .rail a:hover, .rail button:hover { color: var(--text-heading); } }
+  .rail a:focus-visible, .rail button:focus-visible { outline: 2px solid var(--rose); outline-offset: -4px; border-radius: 12px; }
+
+  /* Laptop: thin strip, right edge, vertically centred. Quiet until hovered. */
+  @media (min-width: 861px) {
+    .rail { right: 10px; top: 50%; transform: translateY(-50%); flex-direction: column; opacity: 0.55; transition: opacity 0.2s; }
+    .rail:hover, .rail:focus-within { opacity: 1; }
+    .sep { width: 18px; height: 1px; margin: 2px 0; }
+    .tag { position: absolute; right: 100%; top: 50%; transform: translateY(-50%); margin-right: 4px; padding: 4px 9px; border-radius: 999px; background: var(--surface-raised); border: 1px solid var(--line-strong); font-size: 13px; color: var(--text-heading); white-space: nowrap; opacity: 0; pointer-events: none; transition: opacity 0.15s; }
+    .home:hover .tag, .home:focus-visible .tag { display: block; opacity: 1; }
+  }
+  /* Phone: small dark glass pill. It is mostly opaque on purpose: a see-through dark pill looks muddy grey over
+     the white bands. The blur, a light top edge and a soft shadow keep the glass feel on black, white and wine. */
+  @media (max-width: 860px) {
+    .rail {
+      left: 50%; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
+      gap: 2px; padding: 3px 10px; border-radius: 999px;
+      background: var(--page); border: 1px solid var(--line-strong); box-shadow: var(--shadow-pop);
+    }
+    .rail a, .rail button { color: var(--text-body); }
+    .rail .home { color: var(--text-heading); }
+    .sep { width: 1px; height: 22px; margin: 0 4px; }
+    @supports ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+      .rail {
+        background: color-mix(in srgb, var(--page) 84%, transparent);
+        -webkit-backdrop-filter: blur(18px) saturate(1.6); backdrop-filter: blur(18px) saturate(1.6);
+        border-color: color-mix(in srgb, var(--text-heading) 22%, transparent);
+        box-shadow: 0 8px 24px color-mix(in srgb, var(--page) 55%, transparent), inset 0 1px 0 color-mix(in srgb, var(--text-heading) 18%, transparent);
+      }
+    }
+  }
+</style>

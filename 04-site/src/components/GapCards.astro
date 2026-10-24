@@ -1,12 +1,14 @@
 ---
 // Four cards. The last one is wine ("Here"). Lives inside a white band, so cards use the tint.
-interface Card { title: string; text: string; highlight?: boolean }
+import Icon from './Icon.astro';
+interface Card { title: string; text: string; highlight?: boolean; icon?: 'chart' | 'news' | 'pin' | 'target' }
 interface Props { cards: Card[] }
 const { cards } = Astro.props;
 ---
 <div class="g4">
   {cards.map((c) => (
     <div class:list={['card', { hl: c.highlight }]}>
+      {c.icon && <span class="ic"><Icon name={c.icon} /></span>}
       <h3>{c.title}</h3>
       <p>{c.text}</p>
     </div>
@@ -16,6 +18,8 @@ const { cards } = Astro.props;
 <style>
   .g4 { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 16px; }
   .card { background: var(--white-tint); border: 1px solid var(--white-line); border-radius: var(--radius-card); padding: 24px; }
+  .ic { display: block; color: var(--wine); margin-bottom: 12px; }
+  .hl .ic { color: var(--rose-on-wine); }
   .card h3 { font-size: 22px; margin-bottom: 8px; }
   .card p { font-size: 17px; line-height: 1.6; color: var(--ink-muted); }
   .hl { background: var(--wine); border-color: var(--wine); }

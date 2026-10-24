@@ -1,0 +1,40 @@
+---
+// Where Buttondown sends people after they tap the confirm link in their email.
+// It has to look like his site, with his photo, so the confirm step does not feel like a scam. Noindex (see site.ts).
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AuthorCard from '../components/AuthorCard.astro';
+import { social } from '../config/site';
+const instagram = social.find((s) => s.label === 'Instagram')!;
+---
+<BaseLayout
+  title="You're in"
+  description="Your email is confirmed. One email every Sunday, plus big release briefings."
+  showFooterSignup={false}
+  narrow
+>
+  <div class="article col">
+    <p class="label">Confirmed</p>
+    <h1 class="title">You're in.</h1>
+    <p class="sub">Thanks for confirming. You will get one email every Sunday, plus big release briefings.</p>
+
+    <div class="card"><AuthorCard /></div>
+
+    <p>The week ahead lands in your inbox. What is priced in, and the one number that can change it.</p>
+    <p>While you wait, my next post is coming. It is how I trade, every day.</p>
+
+    <div class="actions">
+      <a class="btn" href="/how-i-trade">See what is coming</a>
+      <a class="btn ghost" href={instagram.href} rel="me noopener" target="_blank">Instagram {instagram.handle}</a>
+      <a class="btn ghost" href="/">Back to the site</a>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .label { font-family: var(--font-number); font-size: 13px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--rose-text); margin: 0 0 8px; }
+  .card { margin: 32px 0 28px; }
+  p { font-size: var(--read-body); line-height: 1.7; color: var(--text-body); margin: 0 0 14px; }
+  .sub { margin-top: 14px; }
+  .actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+  .ghost { background: transparent; border: 1px solid var(--line-strong); color: var(--text-heading) !important; }
+</style>

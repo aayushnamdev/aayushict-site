@@ -1,0 +1,44 @@
+---
+// "In this guide": numbered, anchor linked, built from the h2 headings Astro already gives ids.
+// Closed on a phone so it does not push the text down, open on a laptop. Only shows with 3 or more sections.
+interface Heading { depth: number; slug: string; text: string }
+interface Props { headings: Heading[]; title?: string }
+const { headings, title = 'In this guide' } = Astro.props;
+const items = headings.filter((h) => h.depth === 2);
+---
+{items.length >= 3 && (
+  <details class="toc" data-toc>
+    <summary class="ui"><span class="label">{title}</span><span class="n">{items.length} sections</span></summary>
+    <ol>
+      {items.map((h) => <li><a href={`#${h.slug}`}>{h.text}</a></li>)}
+    </ol>
+  </details>
+)}
+
+<script>
+  // Open on laptops, closed on phones.
+  const toc = document.querySelector<HTMLDetailsElement>('[data-toc]');
+  if (toc && matchMedia('(min-width: 861px)').matches) toc.open = true;
+  toc?.addEventListener('click', (e) => {
+    const a = (e.target as Element).closest('a');
+    if (!a) return;
+    const target = document.getElementById(a.getAttribute('href')!.slice(1));
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth', block: 'start' });
+    history.replaceState(null, '', a.getAttribute('href'));
+  });
+</script>
+
+<style>
+  .toc { margin-top: 24px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); }
+  summary { list-style: none; cursor: pointer; display: flex; justify-content: space-between; align-items: center; gap: 12px; min-height: 48px; padding: 8px 18px; }
+  summary::-webkit-details-marker { display: none; }
+  .label { color: var(--rose-text); }
+  .n { font-size: 13px; color: var(--text-muted); }
+  ol { margin: 0; padding: 4px 18px 14px 44px; display: grid; gap: 2px; font-family: var(--font-ui); }
+  li { padding-left: 4px; }
+  li::marker { color: var(--rose-text); font-family: var(--font-number); font-size: 13px; }
+  ol a { display: inline-flex; align-items: center; min-height: 44px; font-size: 16px; line-height: 1.35; color: var(--text-body); text-decoration: none; }
+  @media (hover: hover) { ol a:hover { color: var(--text-heading); text-decoration: underline; } }
+</style>

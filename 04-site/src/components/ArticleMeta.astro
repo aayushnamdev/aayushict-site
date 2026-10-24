@@ -1,0 +1,41 @@
+---
+// One quiet row under the title: category, reading time, date, author and a Copy link button.
+// Copy link is what people want for stories and DMs. It confirms through the #live region.
+interface Props { date: Date; dateLabel?: 'Updated' | 'Published'; minutes: number; category?: string; author?: string }
+const { date, dateLabel = 'Updated', minutes, category, author = 'Aayush Namdev' } = Astro.props;
+const when = date.toLocaleDateString('en-GB', { day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC' });
+---
+<div class="am">
+  <p class="line ui">
+    {category && <span class="cat">{category}</span>}
+    <span>{minutes} min read</span>
+    <span>{dateLabel} <time datetime={date.toISOString()}>{when}</time></span>
+    <span>By {author}</span>
+  </p>
+  <button class="copy ui" type="button" data-copy-link>Copy link</button>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLButtonElement>('[data-copy-link]').forEach((btn) => {
+    btn.addEventListener('click', async () => {
+      const done = (text: string) => {
+        btn.textContent = text;
+        const live = document.getElementById('live');
+        if (live) { live.textContent = ''; setTimeout(() => { live.textContent = text; }, 50); }
+        setTimeout(() => { btn.textContent = 'Copy link'; }, 1800);
+      };
+      // A copy that never answers (blocked or unfocused page) must not leave the button looking dead.
+      const timeout = new Promise<never>((_, reject) => setTimeout(() => reject(new Error('slow')), 1500));
+      try { await Promise.race([navigator.clipboard.writeText(location.origin + location.pathname), timeout]); done('Link copied'); }
+      catch { done('Copy it from the address bar'); }
+    });
+  });
+</script>
+
+<style>
+  .am { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 16px; margin-top: 14px; }
+  .line { display: flex; flex-wrap: wrap; gap: 4px 14px; margin: 0; font-size: 14px; color: var(--text-muted); }
+  .cat { color: var(--rose-text); text-transform: uppercase; letter-spacing: 0.06em; font-size: 12.5px; font-family: var(--font-number); }
+  .copy { min-height: 44px; padding: 0 14px; background: transparent; border: 1px solid var(--line-strong); border-radius: var(--radius-button); color: var(--text-heading); font-size: 14px; cursor: pointer; }
+  @media (hover: hover) { .copy:hover { border-color: var(--wine); } }
+</style>

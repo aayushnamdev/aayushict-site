@@ -1,13 +1,28 @@
 ---
 // Funded Apex 50K, intraday trailing. The threshold trails the balance until it reaches $50,100,
-// which happens when the balance hits $52,600. Three steps, so it reads on a phone as well as a desktop.
+// which happens when the balance hits $52,100. Three steps, so it reads on a phone as well as a desktop.
 const steps = [
-  { n: '1', title: 'Start', value: '$50,000', text: 'The drawdown line sits $2,500 below, at $47,500.' },
-  { n: '2', title: 'Trailing', value: '$50,000 to $52,600', text: 'The line rises with your highest balance, every dollar of it.' },
-  { n: '3', title: 'Locked', value: '$52,600', text: 'The line stops at $50,100 for good. Your balance can fall back to it, never lower.' },
+  { n: '1', title: 'Start', value: '$50,000', text: 'The drawdown line sits $2,000 below, at $48,000.' },
+  { n: '2', title: 'Trailing', value: '$50,000 to $52,100', text: 'The line rises with your highest balance, every dollar of it.' },
+  { n: '3', title: 'Locked', value: '$52,100', text: 'The line stops at $50,100 for good. Your balance can fall back to it, never lower.' },
 ];
 ---
 <figure class="scale">
+  <div class="chartcard">
+  <svg class="chart" viewBox="0 0 360 190" role="img" aria-label="The balance rises from $50,000. The drawdown line trails $2,000 below it, from $48,000, then stops rising at $50,100 once the balance reaches $52,100.">
+    <polyline points="110,122 240,44 262,56 296,38 340,48" class="bal" />
+    <polyline points="110,142 240,64 340,64" class="dd" />
+    <circle cx="240" cy="44" r="5" class="dot" />
+    <text x="104" y="127" class="t" text-anchor="end">$50,000</text>
+    <text x="104" y="147" class="t down" text-anchor="end">$48,000</text>
+    <text x="240" y="28" class="t" text-anchor="middle">balance hits $52,100</text>
+    <text x="354" y="120" class="t flat" text-anchor="end">◆ locked at $50,100</text>
+    <line x1="60" y1="176" x2="80" y2="176" class="bal" />
+    <text x="86" y="180" class="t">balance</text>
+    <line x1="170" y1="176" x2="190" y2="176" class="dd" />
+    <text x="196" y="180" class="t down">drawdown line</text>
+  </svg>
+  </div>
   <ol>
     {steps.map((s) => (
       <li>
@@ -19,10 +34,18 @@ const steps = [
       </li>
     ))}
   </ol>
-  <figcaption class="cap ui">The threshold trails your balance up to $52,600, then locks at $50,100 for good.</figcaption>
+  <figcaption class="cap ui">The threshold trails your balance up to $52,100, then locks at $50,100 for good.</figcaption>
 </figure>
 
 <style>
+  .chartcard { margin-bottom: 14px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 14px 12px; }
+  .chart { display: block; width: 100%; max-width: 520px; height: auto; margin: 0 auto; }
+  .t { font-family: var(--font-number); font-size: 12px; fill: var(--text-soft); }
+  .bal { fill: none; stroke: var(--text-heading); stroke-width: 3; stroke-linejoin: round; }
+  .dd { fill: none; stroke: var(--down-on-black); stroke-width: 3; stroke-linejoin: round; }
+  .dot { fill: var(--rose); }
+  .down { fill: var(--down-on-black); }
+  .flat { fill: var(--up-on-black); }
   .scale { margin: 0; }
   ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
   li { display: grid; grid-template-columns: 36px minmax(0, 1fr); gap: 14px; align-items: start; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 16px 18px; }

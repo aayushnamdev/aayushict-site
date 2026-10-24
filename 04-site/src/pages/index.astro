@@ -9,6 +9,7 @@ import ReadingOrder from '../components/ReadingOrder.astro';
 import ValueTiles from '../components/ValueTiles.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import ProofStack from '../components/ProofStack.astro';
+import SessionsArc from '../components/SessionsArc.astro';
 import { Image } from 'astro:assets';
 import { site, person } from '../config/site';
 import { certificates } from '../config/certificates';
@@ -104,10 +105,10 @@ const jsonLd = [
       </div>
       <GapCards
         cards={[
-          { title: 'Chart only', text: "You learn setups. FVG, order blocks. But at 6 PM price moves 300 points and you don't know why." },
-          { title: 'News only', text: 'You read headlines. Jobs weak, Fed this, Fed that. But nobody shows you the trade.' },
-          { title: 'From India', text: "You can't easily trade US futures from here. Prop firms are the way in. I show you which ones, honestly." },
-          { title: 'Here', text: 'The number tells me the direction. The chart tells me where to get in. I show you both, on real trades.', highlight: true },
+          { title: 'Chart only', icon: 'chart', text: "You learn setups. FVG, order blocks. But at 6 PM price moves 300 points and you don't know why." },
+          { title: 'News only', icon: 'news', text: 'You read headlines. Jobs weak, Fed this, Fed that. But nobody shows you the trade.' },
+          { title: 'From India', icon: 'pin', text: "You can't easily trade US futures from here. Prop firms are the way in. I show you which ones, honestly." },
+          { title: 'Here', icon: 'target', text: 'The number tells me the direction. The chart tells me where to get in. I show you both, on real trades.', highlight: true },
         ]}
       />
       <!-- PLACEHOLDER: punch line -->
@@ -176,14 +177,27 @@ const jsonLd = [
       </div>
       <ValueTiles
         tiles={[
-          { title: 'Start here', text: 'One real night, and how to trade futures from India with prop firms.', href: '/start-here' },
-          { title: 'Learn', text: 'Guides on prop firms and payouts, with the numbers worked out.', href: '/learn' },
-          { title: 'Journal', text: 'My own story, and the trades I took, in my own words.', href: '/journal' },
-          { title: 'MRKT', text: 'The macro terminal I open every morning. My code AAYUSH gives you 10% off.', href: '/start-here#mrkt' },
-          { title: 'Sunday email', text: 'What is priced in for the week ahead. Scenarios written before the number.', href: '#email-home' },
-          { title: 'Instagram', text: 'Briefings before and after every big release.', href: 'https://www.instagram.com/aayush_ict/' },
+          { title: 'Start here', icon: 'flag', text: 'One real night, and how to trade futures from India with prop firms.', href: '/start-here' },
+          { title: 'Learn', icon: 'book', text: 'Guides on prop firms and payouts, with the numbers worked out.', href: '/learn' },
+          { title: 'Journal', icon: 'pencil', text: 'My own story, and the trades I took, in my own words.', href: '/journal' },
+          { title: 'MRKT', icon: 'screen', text: 'The macro terminal I open every morning. My code AAYUSH gives you 10% off.', href: '/start-here#mrkt' },
+          { title: 'Sunday email', icon: 'mail', text: 'What is priced in for the week ahead. Scenarios written before the number.', href: '#email-home' },
+          { title: 'Instagram', icon: 'camera', text: 'Briefings before and after every big release.', href: 'https://www.instagram.com/aayush_ict/' },
         ]}
       />
+    </div>
+  </Band>
+
+  <!-- 5b. Coming soon: the next post. Sends people to the teaser, which collects the signups. -->
+  <Band>
+    <div class="soon">
+      <div class="stack soontxt">
+        <div class="label">Coming soon</div>
+        <h2 class="h-sec">How I trade, every day.</h2>
+        <p class="lead">The model behind about 95% of my trades. I will show all of it.</p>
+        <p><a class="btn" href="/how-i-trade">Get it first</a></p>
+      </div>
+      <SessionsArc />
     </div>
   </Band>
 
@@ -213,6 +227,8 @@ const jsonLd = [
   @media (prefers-reduced-motion: reduce) { .portrait { transition: none; } }
   .ghost { background: transparent; border: 1px solid var(--line-strong); color: var(--text-heading) !important; }
   .proofband { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 500px); gap: clamp(32px, 5vw, 64px); align-items: center; }
+  .soon { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 460px); gap: clamp(32px, 5vw, 64px); align-items: center; }
+  .soontxt { gap: 16px; }
   .proofcopy { gap: 16px; }
   .proofcopy .fine { font-size: 14px; color: var(--text-on-wine); }
   .proofcopy .fine a { color: var(--white); }
@@ -228,7 +244,7 @@ const jsonLd = [
     .left { gap: 20px; }
     .right { padding-top: 0; }
     .punch { font-size: 21px; }
-    .split, .halves, .proofband { grid-template-columns: 1fr; gap: 32px; }
+    .split, .halves, .proofband, .soon { grid-template-columns: 1fr; gap: 32px; }
     .right { order: -1; } /* on phone the photo comes first, it is the personal part */
     .pframe { width: 200px; --ry: -5deg; }
     .right { overflow-x: clip; padding-right: 16px; }

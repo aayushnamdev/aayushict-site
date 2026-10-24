@@ -1,0 +1,26 @@
+---
+// Small "who wrote this" card for the end of a guide. Total comes from payouts.ts so it never drifts.
+import { Image } from 'astro:assets';
+import portrait from '../assets/photos/portrait.jpg';
+import { paidShort } from '../config/payouts';
+---
+<aside class="author" aria-label="About the author">
+  <Image src={portrait} alt="Aayush Namdev" widths={[120, 240]} sizes="96px" />
+  <div class="txt">
+    <p class="name">Aayush Namdev</p>
+    <p class="line">I trade Nasdaq futures on funded accounts, from India.</p>
+    <p class="mono stat">{paidShort} paid out so far</p>
+    <a class="more" href="/about">About me →</a>
+  </div>
+</aside>
+
+<style>
+  .author { display: grid; grid-template-columns: 96px minmax(0, 1fr); gap: 18px; align-items: center; background: var(--surface); border: 1px solid var(--line-strong); border-bottom: 3px solid var(--wine); border-radius: var(--radius-card); padding: 16px; }
+  .author :global(img) { width: 96px; height: 120px; object-fit: cover; border-radius: 8px; display: block; }
+  .txt { display: flex; flex-direction: column; gap: 4px; }
+  p { margin: 0; }
+  .name { font-family: var(--font-heading); font-weight: 700; font-size: 20px; color: var(--text-heading); }
+  .line { font-size: 16px; line-height: 1.5; color: var(--text-soft); }
+  .stat { font-size: 14px; color: var(--text-number); }
+  .more { display: inline-flex; align-items: center; min-height: 44px; font-family: var(--font-ui); font-size: 15px; color: var(--rose-text); }
+</style>

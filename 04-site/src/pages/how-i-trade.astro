@@ -1,0 +1,81 @@
+---
+import PostLayout from '../layouts/PostLayout.astro';
+import Icon from '../components/Icon.astro';
+import SessionsArc from '../components/SessionsArc.astro';
+import EmailSignup from '../components/EmailSignup.astro';
+import { site, person } from '../config/site';
+
+// Teaser for the next post. Copy is built from what Aayush said out loud (24 Oct 2026). No results, no numbers
+// beyond "about 95%", which he approved. Lines marked PLACEHOLDER are loose wording he has not read yet.
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'How I trade, every day (coming soon)',
+  url: `${site.url}/how-i-trade/`,
+  inLanguage: 'en-IN',
+  author: { '@id': person['@id'] },
+};
+const sealed = [
+  { icon: 'chart', title: 'The first model', line: 'The model behind about 95% of my trades.' },
+  { icon: 'screen', title: 'The technicals', line: 'The technicals and the strategy, all of it.' },
+  { icon: 'clock', title: 'What time I trade', line: 'I will show you the times.' },
+  { icon: 'layers', title: 'What I look for', line: 'Which PD arrays I look for.' },
+  { icon: 'globe', title: 'Every session', line: 'It repeats in Asia, London and New York.' },
+  { icon: 'pin', title: 'Why London', line: 'It works best when the market is moving.' },
+] as const;
+---
+<PostLayout
+  title="How I trade, every day"
+  subtitle="The model behind about 95% of my trades. I will show all of it."
+  description="Coming soon: how I trade every day. The first model, the technicals, my times and what I look for. Join the list to get it first."
+  meta="Aayush Namdev · Coming soon"
+  image="/og-how-i-trade-v1.png"
+  imageAlt="How I trade. Coming soon. Aayush Namdev."
+  jsonLd={jsonLd}
+  signup={false}
+>
+  <!-- PLACEHOLDER: all copy below is drafted from what Aayush said out loud. He has not read and edited it yet. -->
+  <p>This is how I trade, every single day.</p>
+  <p>The real model, not a vague idea. I will show the whole thing.</p>
+
+  <SessionsArc />
+
+  <h2>What I will show you</h2>
+  <ul class="sealed">
+    {sealed.map((s) => (
+      <li>
+        <span class="ic"><Icon name={s.icon} size={26} /></span>
+        <div class="txt">
+          <h3 class="ui">{s.title}</h3>
+          <p>{s.line}</p>
+          <span class="bars" aria-hidden="true"><i></i><i></i></span>
+        </div>
+        <span class="lock mono"><Icon name="lock" size={14} /> Soon</span>
+      </li>
+    ))}
+  </ul>
+
+  <p>The model is not only a New York thing. It repeats in every session.</p>
+  <p>It works best when the market is moving. That is why I trade London most.</p>
+
+  <div class="getit">
+    <h2 class="ui">Get it first</h2>
+    <EmailSignup variant="band" id="email-teaser" source="how-i-trade" prompt="Join the list. I email you the day it goes live." />
+  </div>
+</PostLayout>
+
+<style>
+  .sealed { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .sealed li { position: relative; display: grid; grid-template-columns: 40px minmax(0, 1fr); gap: 14px; padding: 18px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); }
+  .ic { color: var(--rose-text); padding-top: 2px; }
+  h3 { font-size: 18px; color: var(--text-heading); margin: 0 0 4px; }
+  .txt p { font-size: 16px; line-height: 1.5; color: var(--text-soft); margin: 0; }
+  .bars { display: flex; flex-direction: column; gap: 6px; margin-top: 12px; }
+  .bars i { display: block; height: 8px; border-radius: 4px; background: var(--line-strong); filter: blur(2.5px); }
+  .bars i:first-child { width: 88%; }
+  .bars i:last-child { width: 56%; }
+  .lock { position: absolute; top: 14px; right: 14px; display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-muted); }
+  .getit { background: var(--surface); border: 1px solid var(--line-strong); border-bottom: 3px solid var(--wine); border-radius: var(--radius-card); padding: 22px 20px; }
+  .getit h2 { font-size: 22px; margin: 0 0 14px; }
+  @media (max-width: 700px) { .sealed { grid-template-columns: 1fr; } }
+</style>

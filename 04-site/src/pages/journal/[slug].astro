@@ -1,7 +1,7 @@
 ---
 import { render } from 'astro:content';
 import PostLayout from '../../layouts/PostLayout.astro';
-import { published, formatDate, minutesToRead } from '../../lib/content';
+import { published, minutesToRead } from '../../lib/content';
 import { articleLd } from '../../lib/seo';
 import { site } from '../../config/site';
 
@@ -10,7 +10,7 @@ export async function getStaticPaths() {
   return entries.map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
 }
 const { entry } = Astro.props;
-const { Content } = await render(entry);
+const { Content, headings } = await render(entry);
 const d = entry.data;
 const minutes = d.readMinutes ?? minutesToRead(entry.body);
 const description = d.description ?? site.tagline;
@@ -18,7 +18,10 @@ const description = d.description ?? site.tagline;
 <PostLayout
   title={d.title}
   description={description}
-  meta={`Aayush Namdev · ${formatDate(d.date)} · ${minutes} min read`}
+  article={{ date: d.date, minutes }}
+  headings={headings}
+  current={`journal/${entry.id}`}
+  progress
   signOff={d.kind !== 'story'}
   type="article"
   jsonLd={articleLd({ title: d.title, description, path: `/journal/${entry.id}/`, published: d.date })}

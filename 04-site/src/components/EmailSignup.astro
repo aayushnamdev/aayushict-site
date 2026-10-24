@@ -7,9 +7,11 @@ import { email } from '../config/email';
 interface Props {
   variant?: 'band' | 'wine' | 'footer';
   id: string; // unique per page, used to link label and input
+  prompt?: string; // overrides the default line above the form
+  source?: string; // which page the signup came from, saved as a tag in Buttondown
 }
-const { variant = 'band', id } = Astro.props;
-const text = variant === 'footer' ? email.footerPrompt : email.prompt;
+const { variant = 'band', id, prompt, source = 'website' } = Astro.props;
+const text = prompt ?? (variant === 'footer' ? email.footerPrompt : email.prompt);
 ---
 {email.action && (
   <div class:list={['signup', variant]}>
@@ -25,6 +27,7 @@ const text = variant === 'footer' ? email.footerPrompt : email.prompt;
       <label class="sr" for={id}>Email</label>
       <input id={id} name="email" type="email" placeholder="you@email.com" required autocomplete="email" />
       <input type="hidden" name="embed" value="1" />
+      <input type="hidden" name="source" value={source} />
       <!-- Honeypot: people never see or fill this. Bots often do. -->
       <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
       <button class:list={['btn', { white: variant === 'wine' }]} type="submit">Sign me up</button>

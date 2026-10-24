@@ -1,0 +1,42 @@
+---
+// The break even trade from the top of the guide, drawn. Numbers are the guide's own: 50K account,
+// price runs to $50,250 and closes at $50,000. Intraday trailing moves its line up to $48,250 and
+// keeps it there. End of day stays at $48,000. Not to scale. Arrow plus word on each result.
+---
+<figure class="path">
+  <svg viewBox="0 0 360 250" role="img" aria-label="A trade runs from $50,000 up to $50,250 and back to $50,000. On intraday trailing the drawdown line moves up to $48,250. On end of day it stays at $48,000.">
+    <text x="12" y="20" class="lab">Your balance during the trade</text>
+    <line x1="20" y1="110" x2="340" y2="110" class="base" />
+    <polyline points="20,110 90,70 140,48 200,62 260,96 330,110" class="eq" />
+    <circle cx="140" cy="48" r="5" class="dot" />
+    <text x="146" y="40" class="num">peak $50,250</text>
+    <text x="20" y="130" class="num">$50,000</text>
+    <text x="340" y="130" class="num" text-anchor="end">closed $50,000</text>
+
+    <text x="12" y="158" class="lab">Your drawdown line</text>
+    <line x1="20" y1="214" x2="340" y2="214" class="eod" />
+    <polyline points="20,214 90,200 140,190 340,190" class="intra" />
+    <text x="150" y="182" class="num down">Intraday: $48,250</text>
+    <text x="150" y="204" class="down w">▼ moved up, $250 less room</text>
+    <text x="20" y="238" class="num flat">End of day: $48,000</text>
+    <text x="196" y="238" class="flat w">◆ no change</text>
+  </svg>
+  <figcaption class="cap ui">Same trade. Not to scale. Only one model charged you for the $250 you never took.</figcaption>
+</figure>
+
+<style>
+  .path { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 14px 12px 12px; }
+  svg { display: block; width: 100%; max-width: 520px; height: auto; margin: 0 auto; }
+  text { font-family: var(--font-number); font-size: 12.5px; fill: var(--text-soft); }
+  .lab { fill: var(--rose-text); letter-spacing: 0.06em; text-transform: uppercase; font-size: 11.5px; }
+  .num { fill: var(--text-number); }
+  .w { font-family: var(--font-ui); font-weight: 600; }
+  .base { stroke: var(--line-strong); stroke-width: 1; stroke-dasharray: 3 4; }
+  .eq { fill: none; stroke: var(--text-heading); stroke-width: 3; stroke-linejoin: round; stroke-linecap: round; }
+  .dot { fill: var(--rose); }
+  .intra { fill: none; stroke: var(--down-on-black); stroke-width: 3; stroke-linejoin: round; }
+  .eod { stroke: var(--up-on-black); stroke-width: 3; }
+  .down { fill: var(--down-on-black); }
+  .flat { fill: var(--up-on-black); }
+  .cap { font-size: 14px; color: var(--text-muted); margin: 10px 4px 0; line-height: 1.5; }
+</style>

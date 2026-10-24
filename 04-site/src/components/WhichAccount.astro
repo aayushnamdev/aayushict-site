@@ -1,0 +1,40 @@
+---
+// A fork: how much profit do you leave floating before you close? Only what the guide says.
+// The model that does not charge you for it is the one to buy. Not a signal, not advice.
+---
+<figure class="fork">
+  <svg viewBox="0 0 360 236" role="img" aria-label="How much profit do you leave floating before you close? A little: intraday trailing costs you little. A lot: end of day does not charge you for it.">
+    <rect x="50" y="6" width="260" height="42" rx="10" class="top" />
+    <text x="180" y="32" text-anchor="middle" class="ttl">Profit you leave floating</text>
+    <path d="M130 48 L90 96" class="arm" />
+    <path d="M230 48 L270 96" class="arm" />
+    <text x="64" y="82" text-anchor="end" class="lab">a little</text>
+    <text x="296" y="82" class="lab">a lot</text>
+    <rect x="6" y="100" width="168" height="124" rx="12" class="box a" />
+    <rect x="186" y="100" width="168" height="124" rx="12" class="box b" />
+    <text x="90" y="130" text-anchor="middle" class="ttl">Intraday</text>
+    <text x="90" y="150" text-anchor="middle" class="ttl">trailing</text>
+    <text x="90" y="182" text-anchor="middle" class="sub">I book small points</text>
+    <text x="90" y="198" text-anchor="middle" class="sub">fast</text>
+    <text x="90" y="219" text-anchor="middle" class="ok">◆ costs little</text>
+    <text x="270" y="130" text-anchor="middle" class="ttl">End of day</text>
+    <text x="270" y="182" text-anchor="middle" class="sub">I hold runners</text>
+    <text x="270" y="198" text-anchor="middle" class="sub">through pullbacks</text>
+    <text x="270" y="219" text-anchor="middle" class="ok">◆ no charge</text>
+  </svg>
+  <figcaption class="cap ui">Which box are you in?</figcaption>
+</figure>
+
+<style>
+  .fork { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 14px 12px 12px; }
+  svg { display: block; width: 100%; max-width: 520px; height: auto; margin: 0 auto; }
+  text { font-family: var(--font-ui); font-size: 13px; fill: var(--text-soft); }
+  .ttl { font-weight: 600; font-size: 14.5px; fill: var(--text-heading); }
+  .lab { font-family: var(--font-number); font-size: 12.5px; fill: var(--rose-text); }
+  .sub { font-size: 13px; }
+  .ok { font-family: var(--font-number); font-size: 13px; fill: var(--up-on-black); }
+  .top { fill: var(--surface-raised); stroke: var(--line-strong); }
+  .arm { fill: none; stroke: var(--line-strong); stroke-width: 2; stroke-dasharray: 4 4; }
+  .box { fill: var(--page); stroke: var(--line-strong); }
+  .cap { font-size: 14px; color: var(--text-muted); margin: 10px 4px 0; line-height: 1.5; }
+</style>
