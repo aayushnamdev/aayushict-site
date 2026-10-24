@@ -14,7 +14,7 @@ const fmt = (d: string) => { const [y, m, day] = d.split('-').map(Number); retur
           <td class="mono">{fmt(p.date)}</td>
           <td>{p.firm}</td>
           <td class="mono r">{money(p.amount)}</td>
-          <td>{p.status === 'paid' ? 'Paid' : 'Approved'}{p.note && <span class="note"> · {p.note}</span>}</td>
+          <td>{p.status === 'paid' ? 'Paid' : 'Approved'}{p.note && <span class="note"> · {p.note}</span>}{p.proof && <> <button class="view" type="button" data-proof-open={p.proof}>View proof</button></>}</td>
         </tr>
       ))}
     </tbody>
@@ -31,6 +31,7 @@ const fmt = (d: string) => { const [y, m, day] = d.split('-').map(Number); retur
   thead th { font-family: var(--font-number); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-muted); font-weight: 400; }
   .r { text-align: right; padding-right: 20px; }
   .mono { font-family: var(--font-number); color: var(--text-number); font-size: 14px; white-space: nowrap; }
+  .view { min-height: 44px; padding: 0 4px; background: none; border: none; color: var(--rose-text); font-family: var(--font-ui); font-size: 14px; text-decoration: underline; cursor: pointer; }
   .note { color: var(--text-muted); font-size: 13px; }
   tfoot th, tfoot td { border-bottom: none; padding-top: 14px; color: var(--text-heading); font-weight: 600; }
   @media (max-width: 600px) {

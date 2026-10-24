@@ -30,7 +30,7 @@ Source wording: `../drafts/start-from-zero.md`.
 ## About page (built 4 Oct 2026)
 - All copy is drafted from Aayush's own notes (real trader, scalping model on the 1 minute chart in the New York morning session, macro for direction and conviction, no jargon, no mentorship, affiliate links only). He has not read and edited it yet. His phrase "I strip down every jargon" was kept as he said it.
 - Facts to confirm: "six years in markets" and "MA in Psychology" (from the site brief and his Instagram bio), "mostly with Apex" and "some from Alpha Capital".
-- Payout numbers live in `04-site/src/config/payouts.ts`. Paid total is computed ($12,391, shown as $12.4K, matching the Instagram bio). The $1,500 approved on 1 Oct 2026 is listed but not counted until paid. Update the file when a payout is paid.
+- Payout numbers live in `04-site/src/config/payouts.ts`. Paid total is computed ($16,476 as of 24 Oct 2026, shown as $16.5K), checked against the Apex payout history page. Aayush confirmed every payout is paid. The $536 and $1,415 rows have no certificate, so their proof is a dashboard crop with the account number covered (scripts/make-payout-proof.mjs). All other payouts have certificates (added 24 Oct 2026). Update the file when a payout is paid.
 - Originals saved in `03-content/Assets/payouts/`. The Apex dashboard screenshot is not published, only the typed table and the certificates.
 
 ## Legal pages (drafted 4 Oct 2026, need Aayush's read)
@@ -39,3 +39,9 @@ Source wording: `../drafts/start-from-zero.md`.
 - **Privacy says no analytics and no cookies.** If analytics, a chat widget or any tracker is added later, update the Privacy page the same day.
 - Contact is Instagram DM or replying to any email. No email address is published. Add a dedicated address when he has one.
 - The Disclosure partner list is built from `04-site/src/config/firms.ts`, so codes and verified dates stay in sync.
+
+## 24 Oct 2026 changes (need Aayush's read)
+- Home: new "The proof" band with the 3D certificate stack. Hero shows his photo once `04-site/src/assets/photos/portrait.(jpg|png|webp)` exists. Instagram photos named `ig-*.jpg` in the same folder join the stack. Until then the two side cards stay.
+- Start here: new "The tool I open every morning" section (MRKT, code AAYUSH) before the prop firm picker. Lines are built from his earlier MRKT text and are not yet in his own words. MRKT is the main affiliate: code AAYUSH, 10% off.
+- Privacy page already mentions Vercel Analytics. It now also says signups pass through the site's server to Buttondown.
+- Email signup now goes through `/api/subscribe`. The Buttondown key must be set in Vercel (BUTTONDOWN_API_KEY) or signup fails on the live site.

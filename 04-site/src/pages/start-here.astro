@@ -32,6 +32,7 @@ const jsonLd = {
   image: `${site.url}/og-default-v2.png`,
 };
 const fundednext = getFirm('fundednext')!;
+const mrkt = getFirm('mrkt')!;
 const apex = getFirm('apex')!;
 ---
 <PostLayout
@@ -134,28 +135,39 @@ const apex = getFirm('apex')!;
   <p>The difference between a small win and <span class="n">102</span> points was not my chart reading. It was whether the news was readable.</p>
   <p>Some days you don't need a thesis. You just need to read the number and respect the direction.</p>
 
+  <h2 id="mrkt">The tool I open every morning</h2>
+  <!-- PLACEHOLDER: MRKT copy builds on Aayush's earlier lines. Not read and edited by him yet. -->
+  <p>Before any big number, I need to know what the market already expects. I use MRKT for that. It is a macro terminal from Market Edge AI.</p>
+  <p>I open it every morning. It shows me what is priced in, and which events carry more weight right now.</p>
+  <p>Then I write my three scenarios. That is the whole routine, and it saves me hours on Nasdaq.</p>
+  <p>MRKT is my main affiliate. I use it daily, so I say so every time.</p>
+
+  <div class="mrkt">
+    <FirmCard firm={mrkt} href="/go/mrkt" ctaLabel="See MRKT">
+      <p>Use my code <strong>AAYUSH</strong> for 10% off. It is an affiliate code. I earn a commission if you sign up.</p>
+    </FirmCard>
+  </div>
+
   <h2>How do I do this from India?</h2>
   <p>Prop firms give you their money to trade after you pass a test. You keep a share of the profit. If you fail, you lose the fee, not your savings.</p>
-  <p>Which one fits depends on you.</p>
+  <p>MRKT is my main tool. Prop firms are the second step. Which one fits depends on you.</p>
 
-  <FirmFitPicker newLabel="I'm new" edgeLabel="I know my edge">
-    <FirmCard slot="new" firm={fundednext} href="/go/fundednext" ctaLabel="See FundedNext">
-      <p>My pick for beginners. Small 5K and 10K accounts, so you can trade Nasdaq as a CFD without much at stake. Futures with end of day drawdown too. In my opinion the payout structure is great.</p>
-    </FirmCard>
-    <FirmCard
-      slot="edge"
-      firm={apex}
-      href={apex.url ?? '/start-here'}
-      ctaLabel="ApexTraderFunding.com"
-      disclosure="Not an affiliate link. I'm not affiliated with Apex."
-    >
-      <p>My payout came from here. But it is not for beginners. The drawdown is intraday and it follows your open profit. Say a trade goes to 2.5R, then falls back to breakeven. You made nothing, but your drawdown still ate away.</p>
-    </FirmCard>
-  </FirmFitPicker>
-
-  <p>For the macro side, I open MRKT every morning. It shows me what is priced in, and which events carry more weight right now. It saves me hours on Nasdaq.</p>
-  <p><a class="btn" href="/go/mrkt" rel="sponsored nofollow noopener">See MRKT</a></p>
-  <p class="ui fine">MRKT is an affiliate link. I earn a commission if you sign up. I use it daily either way. This is my honest opinion, not advice.</p>
+  <MoreBox title="Which prop firm fits me?">
+    <FirmFitPicker newLabel="I'm new" edgeLabel="I know my edge">
+      <FirmCard slot="new" firm={fundednext} href="/go/fundednext" ctaLabel="See FundedNext">
+        <p>My pick for beginners. Small 5K and 10K accounts, so you can trade Nasdaq as a CFD without much at stake. Futures with end of day drawdown too. In my opinion the payout structure is great.</p>
+      </FirmCard>
+      <FirmCard
+        slot="edge"
+        firm={apex}
+        href={apex.url ?? '/start-here'}
+        ctaLabel="ApexTraderFunding.com"
+        disclosure="Not an affiliate link. I'm not affiliated with Apex."
+      >
+        <p>My payout came from here. But it is not for beginners. The drawdown is intraday and it follows your open profit. Say a trade goes to 2.5R, then falls back to breakeven. You made nothing, but your drawdown still ate away.</p>
+      </FirmCard>
+    </FirmFitPicker>
+  </MoreBox>
 
   <h2>Questions</h2>
   <h3>Can I trade US futures from India?</h3>
@@ -163,8 +175,13 @@ const apex = getFirm('apex')!;
   <h3>Is this a signal service?</h3>
   <p>No. I share how I read events and how I traded them. You make your own calls.</p>
   <h3>Which firm is best?</h3>
-  <p>There is no best. There is what fits you. Use the picker above.</p>
+  <p>There is no best. There is what fits you. Open the picker above.</p>
 
   <p>Before every big number, I write my scenarios. Same as I did on 7 August. I share them on Instagram and in the Sunday email.</p>
   <p><a class="btn" href="https://www.instagram.com/aayush_ict/" rel="me noopener" target="_blank">Follow on Instagram</a></p>
 </PostLayout>
+
+<style>
+  .mrkt { background: var(--white); border-radius: var(--radius-white-card); padding: 28px 32px; margin: 8px 0; }
+  @media (max-width: 860px) { .mrkt { padding: 22px 20px; } }
+</style>

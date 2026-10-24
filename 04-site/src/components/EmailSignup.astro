@@ -1,6 +1,6 @@
 ---
 // Three variants: band (on black), wine (on the wine band), footer.
-// Posts to Buttondown (see config/email.ts). Works without JavaScript: the form has a real action.
+// Posts to our /api/subscribe route, which adds them to Buttondown (see config/email.ts). Works without JavaScript: the form has a real action.
 // With JavaScript it sends the signup in the background and shows the result in place.
 // If action is ever null, the form is not rendered at all, so nothing fake is shown.
 import { email } from '../config/email';
@@ -19,7 +19,6 @@ const text = variant === 'footer' ? email.footerPrompt : email.prompt;
       data-signup
       action={email.action}
       method="post"
-      target="_blank"
       data-thanks={email.thanks}
       data-error={email.error}
     >
@@ -35,6 +34,18 @@ const text = variant === 'footer' ? email.footerPrompt : email.prompt;
 
 <script>
   const live = () => document.getElementById('live');
+  // Without JavaScript the route redirects back with ?subscribed=1 or 0. Show the result in the first form.
+  const flag = new URLSearchParams(location.search).get('subscribed');
+  const first = document.querySelector<HTMLFormElement>('form[data-signup]');
+  if (flag && first) {
+    const msg = document.createElement('p');
+    msg.className = 'ui thanks';
+    msg.textContent = flag === '1' ? (first.dataset.thanks ?? '') : (first.dataset.error ?? '');
+    first.after(msg);
+    if (flag === '1') first.remove();
+    const region = live();
+    if (region) region.textContent = msg.textContent;
+  }
   document.querySelectorAll<HTMLFormElement>('form[data-signup]').forEach((form) => {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
@@ -57,7 +68,7 @@ const text = variant === 'footer' ? email.footerPrompt : email.prompt;
       try {
         const data = new FormData(form);
         data.delete('website');
-        const res = await fetch(form.action, { method: 'POST', body: data });
+        const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
         if (!res.ok) throw new Error(String(res.status));
         done(form.dataset.thanks ?? '', true);
       } catch {

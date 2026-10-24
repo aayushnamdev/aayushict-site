@@ -1,0 +1,150 @@
+---
+// Proof stack: cards piled like albums, front card first. Tap or swipe sends the front card to the back.
+// Tap the front card to see it large. Arrow keys move through the pile. Works without a mouse.
+import { Image } from 'astro:assets';
+interface Item { id: string; src: ImageMetadata; alt: string; caption: string }
+interface Props { items: Item[] }
+const { items } = Astro.props;
+---
+<div class="stack3d" data-stack data-count={items.length} role="group" aria-roledescription="carousel" aria-label="Payout certificates and photos">
+  <div class="pile">
+    {items.map((it, i) => (
+      <figure class="card" data-card style={`--i:${i}`} data-id={it.id}>
+        <Image src={it.src} alt={it.alt} widths={[360, 640, 900]} sizes="(max-width: 860px) 80vw, 460px" loading={i < 2 ? 'eager' : 'lazy'} />
+      </figure>
+    ))}
+  </div>
+  <p class="ui caption" data-caption aria-live="polite">{items[0]?.caption}</p>
+  <div class="controls">
+    <button class="btn ghost" type="button" data-prev aria-label="Previous">← Prev</button>
+    <button class="btn white" type="button" data-open>View large</button>
+    <button class="btn ghost" type="button" data-next aria-label="Next">Next →</button>
+  </div>
+  <p class="ui count" data-count-label aria-hidden="true">1 of {items.length}</p>
+</div>
+
+{items.map((it) => (
+  <dialog id={it.id} class="proof-big" aria-label={it.alt}>
+    <button class="btn" type="button" data-proof-close={it.id}>Close</button>
+    <Image src={it.src} alt={it.alt} widths={[800, 1600]} sizes="95vw" loading="lazy" />
+    <p class="ui big-cap">{it.caption}</p>
+  </dialog>
+))}
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-stack]');
+  if (root) {
+    const cards = [...root.querySelectorAll<HTMLElement>('[data-card]')];
+    const caption = root.querySelector<HTMLElement>('[data-caption]')!;
+    const label = root.querySelector<HTMLElement>('[data-count-label]')!;
+    const captions = cards.map((c) => c.querySelector('img')?.getAttribute('alt') ?? '');
+    const short = [...document.querySelectorAll<HTMLDialogElement>('dialog.proof-big')].map((d) => d.querySelector('.big-cap')?.textContent ?? '');
+    let front = 0;
+    const n = cards.length;
+    const paint = () => {
+      cards.forEach((c, i) => {
+        const depth = (i - front + n) % n; // 0 = front
+        c.style.setProperty('--d', String(depth));
+        c.setAttribute('aria-hidden', depth === 0 ? 'false' : 'true');
+        c.dataset.front = depth === 0 ? 'true' : 'false';
+      });
+      caption.textContent = short[front] || captions[front];
+      label.textContent = `${front + 1} of ${n}`;
+    };
+    const go = (step: number) => { front = (front + step + n) % n; paint(); };
+    const open = () => { const d = document.getElementById(cards[front].dataset.id ?? '') as HTMLDialogElement | null; if (d && !d.open) d.showModal(); };
+
+    root.querySelector('[data-next]')?.addEventListener('click', () => go(1));
+    root.querySelector('[data-prev]')?.addEventListener('click', () => go(-1));
+    root.querySelector('[data-open]')?.addEventListener('click', open);
+    // Tapping the pile: front card opens large, any other card comes to the front.
+    cards.forEach((c, i) => c.addEventListener('click', () => (i === front ? open() : ((front = i), paint()))));
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+      if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); }
+    });
+
+    // Swipe on touch screens.
+    let x0 = 0;
+    const pile = root.querySelector<HTMLElement>('.pile')!;
+    pile.addEventListener('touchstart', (e) => { x0 = e.touches[0].clientX; }, { passive: true });
+    pile.addEventListener('touchend', (e) => {
+      const dx = e.changedTouches[0].clientX - x0;
+      if (Math.abs(dx) > 40) go(dx < 0 ? 1 : -1);
+    });
+
+    // Slight tilt that follows the pointer on laptops. Skipped for reduced motion.
+    if (matchMedia('(hover: hover)').matches && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+      pile.addEventListener('pointermove', (e) => {
+        const r = pile.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width - 0.5;
+        const py = (e.clientY - r.top) / r.height - 0.5;
+        pile.style.setProperty('--rx', `${(-py * 8).toFixed(2)}deg`);
+        pile.style.setProperty('--ry', `${(px * 12).toFixed(2)}deg`);
+      });
+      pile.addEventListener('pointerleave', () => { pile.style.setProperty('--rx', '0deg'); pile.style.setProperty('--ry', '0deg'); });
+    }
+    paint();
+  }
+
+  document.addEventListener('click', (e) => {
+    const t = e.target as Element;
+    const close = t.closest<HTMLElement>('[data-proof-close]');
+    if (close) (document.getElementById(close.dataset.proofClose ?? '') as HTMLDialogElement | null)?.close();
+    if (t instanceof HTMLDialogElement && t.classList.contains('proof-big')) t.close();
+  });
+</script>
+
+<style>
+  .stack3d { display: flex; flex-direction: column; align-items: center; gap: 18px; width: 100%; overflow-x: clip; overflow-y: visible; padding: 8px 0 0; }
+  .pile {
+    --rx: 0deg; --ry: 0deg;
+    position: relative; width: min(100%, 460px); aspect-ratio: 4 / 3; perspective: 1100px;
+    transform-style: preserve-3d; touch-action: pan-y;
+  }
+  .card {
+    --d: var(--i); /* without JavaScript the pile simply follows list order */
+    position: absolute; inset: 0; margin: 0; cursor: pointer;
+    border-radius: 14px; overflow: hidden; background: var(--surface-raised); border: 1px solid var(--line-strong);
+    box-shadow: var(--shadow-pop);
+    /* Each card sits lower, further back and a little rotated, like albums piled up. */
+    transform:
+      rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--d) * -3deg)) rotateZ(calc(var(--d) * 2.2deg))
+      translate3d(calc(var(--d) * 14px), calc(var(--d) * -12px), calc(var(--d) * -46px));
+    opacity: calc(1 - var(--d) * 0.16);
+    z-index: calc(20 - var(--d));
+    transition: transform 0.45s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.35s;
+  }
+  .card :global(img) { display: block; width: 100%; height: 100%; object-fit: cover; }
+  @media (hover: hover) {
+    .pile:hover .card { transform:
+      rotateX(var(--rx)) rotateY(calc(var(--ry) + var(--d) * -5deg)) rotateZ(calc(var(--d) * 3.2deg))
+      translate3d(calc(var(--d) * 26px), calc(var(--d) * -16px), calc(var(--d) * -46px)); }
+  }
+  .caption { font-size: 15px; color: var(--text-heading); text-align: center; margin: 4px 0 0; min-height: 24px; }
+  .controls { display: flex; flex-wrap: wrap; justify-content: center; gap: 10px; }
+  .controls .btn { min-height: 44px; }
+  .ghost { background: transparent; border: 1px solid var(--line-strong); color: var(--text-heading); }
+  .count { font-size: 13px; color: var(--text-muted); margin: 0; }
+  /* On the wine band the text and ghost buttons switch to the on-wine colours. */
+  :global(.wine) .caption { color: var(--white); }
+  :global(.wine) .count { color: var(--text-on-wine); }
+  :global(.wine) .ghost { border-color: var(--white-line); color: var(--white); }
+  :global(.wine) .card { border-color: var(--white-line); }
+
+  .proof-big { border: 1px solid var(--line-strong); border-radius: 14px; padding: 16px; background: var(--surface); max-width: min(96vw, 1100px); max-height: 94vh; max-height: 94dvh; }
+  .proof-big::backdrop { background: var(--overlay); }
+  .proof-big :global(img) { display: block; max-width: 100%; max-height: calc(94vh - 140px); max-height: calc(94dvh - 140px); width: auto; height: auto; margin: 0 auto; border-radius: 8px; }
+  .proof-big .btn { margin: 0 0 12px; }
+  .big-cap { font-size: 14px; color: var(--text-muted); margin: 10px 0 0; text-align: center; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .card { transition: none; }
+  }
+  @media (max-width: 860px) {
+    .pile { width: min(88%, 340px); margin-right: 8%; }
+    .card { transform:
+      rotateY(calc(var(--d) * -3deg)) rotateZ(calc(var(--d) * 2.2deg))
+      translate3d(calc(var(--d) * 10px), calc(var(--d) * -9px), calc(var(--d) * -40px)); }
+  }
+</style>

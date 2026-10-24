@@ -8,7 +8,7 @@ copy-pasted forward (BUILD-PLAN.md section 6).
 |---|---|---|---|---|---|
 | FundedNext | prop firm (CFD/MT5 and futures) | yes | AAYUSH, 10% off | https://fundednext.com/?fpr=AAYUSH via `/go/fundednext` | 2026-10-02 |
 | Apex Trader Funding | prop firm (futures) | **no**, plain link | none | https://apextraderfunding.com (direct, no `/go`) | n/a |
-| MRKT (Market Edge AI) | tool | yes | none | https://www.mrktedge.ai/?ref=aayush via `/go/mrkt` | 2026-09-27 |
+| MRKT (Market Edge AI) | tool | yes | AAYUSH, 10% off (main affiliate) | https://www.mrktedge.ai/?ref=aayush via `/go/mrkt` | 2026-10-24 |
 
 ## Rules
 - Affiliate links go through `/go/<slug>` with `rel="sponsored nofollow noopener"`.

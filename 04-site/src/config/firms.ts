@@ -17,6 +17,20 @@ export type Firm = {
 };
 
 export const firms: Firm[] = [
+  // MRKT is first on purpose: it is Aayush's main affiliate. The Disclosure page lists firms in this order.
+  {
+    slug: 'mrkt',
+    name: 'MRKT (Market Edge AI)',
+    fit: 'Macro terminal I use to see what is priced in',
+    code: 'AAYUSH',
+    discount: '10% off',
+    url: 'https://www.mrktedge.ai/?ref=aayush',
+    pros: [],
+    cons: [],
+    lastVerified: '2026-10-24',
+    isAffiliate: true,
+    active: true,
+  },
   {
     slug: 'fundednext',
     name: 'FundedNext',
@@ -42,19 +56,6 @@ export const firms: Firm[] = [
     lastVerified: null,
     isAffiliate: false,
     active: false, // false keeps it out of the /go redirects. The home page links to url directly.
-  },
-  {
-    slug: 'mrkt',
-    name: 'MRKT (Market Edge AI)',
-    fit: 'Macro terminal I use to see what is priced in',
-    code: null,
-    discount: null,
-    url: 'https://www.mrktedge.ai/?ref=aayush',
-    pros: [],
-    cons: [],
-    lastVerified: '2026-09-27',
-    isAffiliate: true,
-    active: true,
   },
 ];
 

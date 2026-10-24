@@ -6,10 +6,7 @@ import MoreBox from '../components/MoreBox.astro';
 import PayoutTable from '../components/PayoutTable.astro';
 import { site, person, social } from '../config/site';
 import { paidShort, asOf } from '../config/payouts';
-import apex1446 from '../assets/proof/apex-payout-2026-08-12.png';
-import apex1366 from '../assets/proof/apex-1366-payout-2026-09-02.png';
-import apex596 from '../assets/proof/apex-596-payout-2026-08-26.png';
-import alpha3006 from '../assets/proof/alpha-capital-lifetime-2025-02-14.png';
+import { certificates } from '../config/certificates';
 
 // Copy follows Aayush's own notes (4 Oct 2026): a real trader, payouts as proof not a brag,
 // macro for direction, the model on the 1 minute chart, no jargon, affiliate links only.
@@ -44,14 +41,7 @@ const jsonLd = {
 
   <StatChips chips={[`${paidShort} paid out`, 'Apex and Alpha Capital', `As of ${asOf}`]} />
 
-  <ProofGrid
-    items={[
-      { id: 'proof-apex-1446', src: apex1446, alt: 'Apex Trader Funding rewards certificate for Aayush Namdev, $1,446, approved 12 August 2026', caption: 'Apex, $1,446, approved 12 Aug 2026' },
-      { id: 'proof-apex-1366', src: apex1366, alt: 'Apex Trader Funding rewards certificate for Aayush Namdev, $1,366, approved 2 September 2026', caption: 'Apex, $1,366, approved 2 Sep 2026' },
-      { id: 'proof-apex-596', src: apex596, alt: 'Apex Trader Funding rewards certificate for Aayush Namdev, $596, approved 26 August 2026', caption: 'Apex, $596, approved 26 Aug 2026' },
-      { id: 'proof-alpha-3006', src: alpha3006, alt: 'Alpha Capital lifetime payouts certificate for Aayush Namdev, $3,006, dated 14 February 2025', caption: 'Alpha Capital, $3,006 lifetime, 14 Feb 2025' },
-    ]}
-  />
+  <ProofGrid items={certificates} />
 
   <MoreBox title="See every payout">
     <PayoutTable />
