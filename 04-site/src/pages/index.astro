@@ -1,7 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Band from '../components/Band.astro';
-import TermTip from '../components/TermTip.astro';
 import SideCard from '../components/SideCard.astro';
 import GapCards from '../components/GapCards.astro';
 import NumberFlip from '../components/NumberFlip.astro';
@@ -31,7 +30,7 @@ const stackItems = [...certs.slice(0, 2), ...igPhotos, ...certs.slice(2)];
 
 const jsonLd = [
   { '@context': 'https://schema.org', '@type': 'WebSite', name: site.name, url: `${site.url}/`, description: site.tagline, inLanguage: 'en-IN', publisher: { '@id': person['@id'] } },
-  { '@context': 'https://schema.org', ...person, description: 'Trades Nasdaq futures from India and writes about what the market has already priced in.' },
+  { '@context': 'https://schema.org', ...person, description: `Trades Nasdaq futures from India. ${paidShort} paid out, with proof. Explains the market in plain words.` },
 ];
 
 // The home page stays short. The long read is /start-here.
@@ -40,7 +39,7 @@ const jsonLd = [
 ---
 <BaseLayout
   title="Aayush Namdev, Nasdaq futures from India"
-  description="I trade Nasdaq futures from India. I write what the market has already priced in, and the one number that can change it."
+  description={`I trade Nasdaq futures from India. ${paidShort} paid out, with proof. I explain the market in plain words.`}
   showFooterSignup={false}
   jsonLd={jsonLd}
 >
@@ -49,13 +48,14 @@ const jsonLd = [
     <div class="hero">
       <div class="stack left">
         <div class="label">Macro · Futures · From India</div>
-        <h1 class="h-hero">Know what's priced in. Trade what changes.</h1>
+        <h1 class="h-hero">I'm Aayush. I trade Nasdaq futures from India.</h1>
         <p class="lead">
-          I'm Aayush. I trade Nasdaq futures from India. Before every big number, I know what the market already expects, so it's already{' '}
-          <TermTip title="Priced in" text="Priced in means the market already expects it. The expected number does not move price. The surprise does.">priced in</TermTip>.
-          When the number surprises, I trade it.
+          <span class="n">{paidShort}</span> paid out so far. Every payout is here, with the proof. I explain the market in plain words.
         </p>
-        <p><a class="btn ghost" href="/about">About me →</a></p>
+        <div class="cta">
+          <a class="btn" href="/about">About me</a>
+          <a class="btn ghost" href="/start-here">Start here</a>
+        </div>
       </div>
       <div class="stack right">
         {portrait ? (
@@ -83,7 +83,7 @@ const jsonLd = [
 
   <!-- 1b. Proof: the payout stack. Total and certificates come from config, so they stay in sync. -->
   <Band variant="wine">
-    <div class="proofband">
+    <div class="proofband" id="proof">
       <div class="stack proofcopy">
         <div class="label">The proof</div>
         <h2 class="h-sec"><span class="n">{paidShort}</span> paid out so far.</h2>
@@ -179,10 +179,8 @@ const jsonLd = [
         tiles={[
           { title: 'Start here', icon: 'flag', text: 'One real night, and how to trade futures from India with prop firms.', href: '/start-here' },
           { title: 'Learn', icon: 'book', text: 'Guides on prop firms and payouts, with the numbers worked out.', href: '/learn' },
-          { title: 'Journal', icon: 'pencil', text: 'My own story, and the trades I took, in my own words.', href: '/journal' },
           { title: 'MRKT', icon: 'screen', text: 'The macro terminal I open every morning. My code AAYUSH gives you 10% off.', href: '/start-here#mrkt' },
           { title: 'Sunday email', icon: 'mail', text: 'What is priced in for the week ahead. Scenarios written before the number.', href: '#email-home' },
-          { title: 'Instagram', icon: 'camera', text: 'Briefings before and after every big release.', href: 'https://www.instagram.com/aayush_ict/' },
         ]}
       />
     </div>
@@ -229,6 +227,8 @@ const jsonLd = [
   .proofband { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 500px); gap: clamp(32px, 5vw, 64px); align-items: center; }
   .soon { display: grid; grid-template-columns: minmax(0, 1fr) minmax(300px, 460px); gap: clamp(32px, 5vw, 64px); align-items: center; }
   .soontxt { gap: 16px; }
+  .proofband { scroll-margin-top: 40px; }
+  .cta { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 14px; }
   .proofcopy { gap: 16px; }
   .proofcopy .fine { font-size: 14px; color: var(--text-on-wine); }
   .proofcopy .fine a { color: var(--white); }
@@ -246,7 +246,9 @@ const jsonLd = [
     .punch { font-size: 21px; }
     .split, .halves, .proofband, .soon { grid-template-columns: 1fr; gap: 32px; }
     .right { order: -1; } /* on phone the photo comes first, it is the personal part */
-    .pframe { width: 200px; --ry: -5deg; }
+    .pframe { width: 168px; --ry: -5deg; }
+    .pname { display: none; } /* the headline already says the name */
+    .left :global(.h-hero) { font-size: 36px; }
     .right { overflow-x: clip; padding-right: 16px; }
   }
 </style>
