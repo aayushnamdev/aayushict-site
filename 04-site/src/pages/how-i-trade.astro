@@ -2,47 +2,59 @@
 import PostLayout from '../layouts/PostLayout.astro';
 import Icon from '../components/Icon.astro';
 import SessionsArc from '../components/SessionsArc.astro';
-import Timeframes from '../components/Timeframes.astro';
+import DayRoutine from '../components/DayRoutine.astro';
+import TradeGate from '../components/TradeGate.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import { site, person } from '../config/site';
 
-// Teaser for the next post. Copy is built from what Aayush said out loud (24 Oct 2026). No results, no numbers
-// beyond "about 95%", which he approved. Lines marked PLACEHOLDER are loose wording he has not read yet.
+// A preview, not the model. Shown: the order of my day, the skip rules, one trade a day. Sealed: the entry model,
+// exits, stop, risk, what I do after a loss. Sealed parts get a locked card and one teaser line, nothing more.
+// Brief and the shown/sealed line: 00-strategy/homepage-spec-2026-10.md. Draft copy: 03-content/drafts/model-preview.md
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'WebPage',
-  name: 'How I trade, every day (coming soon)',
+  name: 'My model, a preview',
   url: `${site.url}/how-i-trade/`,
   inLanguage: 'en-IN',
   author: { '@id': person['@id'] },
 };
 const sealed = [
-  { icon: 'chart', title: 'The first model', line: 'The model behind about 95% of my trades.' },
-  { icon: 'screen', title: 'The technicals', line: 'The technicals and the strategy, all of it.' },
-  { icon: 'clock', title: 'What time I trade', line: 'I will show you the times.' },
-  { icon: 'layers', title: 'What I look for', line: 'Which PD arrays I look for.' },
-  { icon: 'globe', title: 'Every session', line: 'It repeats in Asia, London and New York. I trade them when they move.' },
-  { icon: 'target', title: 'The timeframes', line: 'The daily, 1 hour, 5 minute and 1 minute, all together.' },
-  { icon: 'pin', title: 'Where I trade most', line: 'New York AM, mostly.' },
+  { icon: 'chart', title: 'The entry model', line: 'The setup I look for on the 1 minute.' },
+  { icon: 'target', title: 'Where I exit', line: 'How I decide I am done.' },
+  { icon: 'pin', title: 'My stop', line: 'Where I am wrong, and how far.' },
+  { icon: 'layers', title: 'How I size risk', line: 'How much I put on, and when that changes.' },
+  { icon: 'clock', title: 'After a loss', line: 'What I do the next day.' },
 ] as const;
 ---
 <PostLayout
-  title="How I trade, every day"
-  subtitle="The model behind about 95% of my trades. I will show all of it."
-  description="Coming soon: how I trade every day. The first model, the technicals, my times and what I look for. Join the list to get it first."
-  meta="Aayush Namdev · Coming soon"
+  title="My model, a preview"
+  subtitle="The model behind about 95% of my trades. Here is how my day runs."
+  description="A preview of how I trade Nasdaq futures. My day in order, and the two checks that decide if I trade. The entry model comes next. Join the list to get it first."
+  meta="Aayush Namdev · Preview"
   image="/og-how-i-trade-v3.jpg"
   imageAlt="How I trade. Coming soon. Aayush Namdev."
   jsonLd={jsonLd}
   signup={false}
+  footerSignup={false}
 >
-  <!-- Copy follows what Aayush said out loud (24 Oct 2026). New York AM and the timeframes were his corrections. -->
-  <p>This is how I trade, every single day.</p>
-  <p>The real model, not a vague idea. I will show the whole thing.</p>
+  <p>All my payouts came from 20 to 30 minutes a day.</p>
+  <p>Not hours of charting. Here is how my day runs.</p>
+
+  <h2>My day</h2>
+  <DayRoutine />
+
+  <p>Two checks decide if I trade at all. Try them.</p>
+
+  <h2>Would I trade today?</h2>
+  <TradeGate />
+
+  <p>The model works best when the market is moving. That is why I trade the New York morning mostly.</p>
+  <p>But it repeats in every session. If London or Asia has good ranges, I trade them too.</p>
 
   <SessionsArc />
 
-  <h2>What I will show you</h2>
+  <h2>Coming next</h2>
+  <p>These parts stay locked for now. Email subscribers get them first.</p>
   <ul class="sealed">
     {sealed.map((s) => (
       <li>
@@ -57,18 +69,10 @@ const sealed = [
     ))}
   </ul>
 
-  <p>The model works best when the market is volatile and moving. That is why I trade the New York AM session mostly.</p>
-  <p>But it repeats in every session. If London or Asia is moving, with good ranges, I trade them too. They can be amazing sessions.</p>
-
-  <h2>How I read the chart</h2>
-  <p>I look at the daily, the 1 hour, the 5 minute and the 1 minute, all together.</p>
-  <p>The 1 hour gives me direction. The 1 minute is for my entry.</p>
-
-  <Timeframes />
-
   <div class="getit">
     <h2 class="ui">Get it first</h2>
-    <EmailSignup variant="band" id="email-teaser" source="how-i-trade" prompt="Join the list. I email you the day it goes live." />
+    <p class="close">Preview, then more. The entry model comes next. Email gets it first.</p>
+    <EmailSignup variant="band" id="email-teaser" source="how-i-trade" prompt="" />
   </div>
 </PostLayout>
 
@@ -84,7 +88,8 @@ const sealed = [
   .bars i:last-child { width: 56%; }
   .lock { position: absolute; top: 14px; right: 14px; display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-muted); }
   .getit { background: var(--surface); border: 1px solid var(--line-strong); border-bottom: 3px solid var(--wine); border-radius: var(--radius-card); padding: 22px 20px; }
-  .getit h2 { font-size: 22px; margin: 0 0 14px; }
+  .getit h2 { font-size: 22px; margin: 0 0 8px; }
+  .close { font-size: 16px; line-height: 1.5; color: var(--text-soft); margin: 0 0 14px; }
   .sealed li:last-child:nth-child(odd) { grid-column: 1 / -1; }
   @media (max-width: 700px) { .sealed { grid-template-columns: 1fr; } }
 </style>

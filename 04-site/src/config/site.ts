@@ -23,12 +23,15 @@ export const site = {
   signOff: 'Not advice. Stop loss on.',
   footerLine: 'Not a signal service. Not advice. Stop loss on.',
   // Lean launch: only pages that are real. Add Macro, Learn, Journal, Watch back when each has content.
-  nav: [
+  // Header: About only, plus the Follow button. The rest live in the footer (brief: 00-strategy/homepage-spec-2026-10.md).
+  nav: [{ label: 'About', href: '/about' }],
+  footerNav: [
+    { label: 'Start here', href: '/start-here' },
+    { label: 'About', href: '/about' },
     { label: 'Learn', href: '/learn' },
     { label: 'Journal', href: '/journal' },
-    { label: 'About', href: '/about' },
+    { label: 'How I trade', href: '/how-i-trade' },
   ],
-  cta: { label: 'Start here', href: '/start-here' },
   // Paths of pages that exist but are not ready. They get noindex and stay out of the sitemap.
   // Add a path while building a new page, remove it when the page is real. /confirmed stays here on purpose.
   pending: ['/confirmed'] as string[], // /confirmed is real but noindex: it is only for people who just confirmed

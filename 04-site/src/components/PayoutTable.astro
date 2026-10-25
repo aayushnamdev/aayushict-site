@@ -1,8 +1,6 @@
 ---
 // Plain table of every payout. Real HTML table, so screen readers and AI search can read it.
-import { payouts, paidTotal, pendingTotal, asOf, money } from '../config/payouts';
-const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-const fmt = (d: string) => { const [y, m, day] = d.split('-').map(Number); return `${day} ${months[m - 1]} ${y}`; };
+import { payouts, paidTotal, pendingTotal, asOf, money, shortDate as fmt } from '../config/payouts';
 ---
 <div class="wrap-table" role="region" aria-label="Payout table" tabindex="0">
   <table>
@@ -14,7 +12,7 @@ const fmt = (d: string) => { const [y, m, day] = d.split('-').map(Number); retur
           <td class="mono">{fmt(p.date)}</td>
           <td>{p.firm}</td>
           <td class="mono r">{money(p.amount)}</td>
-          <td>{p.status === 'paid' ? 'Paid' : 'Approved'}{p.note && <span class="note"> · {p.note}</span>}{p.proof && <> <button class="view" type="button" data-proof-open={p.proof}>View proof</button></>}</td>
+          <td>{p.status === 'paid' ? 'Paid' : 'Approved'}{p.note && <span class="note"> · {p.note}</span>}<> <button class="view" type="button" data-proof-open={p.id}>View proof</button></></td>
         </tr>
       ))}
     </tbody>

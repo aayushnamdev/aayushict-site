@@ -8,10 +8,10 @@ import ArticleMeta from '../components/ArticleMeta.astro';
 import Toc from '../components/Toc.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import RelatedReading from '../components/RelatedReading.astro';
-interface Props { type?: 'website' | 'article'; jsonLd?: Record<string, unknown>; title: string; subtitle?: string; description?: string; route?: string[]; meta?: string; progress?: boolean; signup?: boolean; signOff?: boolean; image?: string; imageAlt?: string; article?: { date: Date; minutes: number }; headings?: { depth: number; slug: string; text: string }[]; current?: string }
-const { type = 'website', jsonLd, title, subtitle, description = subtitle, route = [], meta, progress = false, signup = true, signOff = true, image, imageAlt, article, headings = [], current = '' } = Astro.props;
+interface Props { type?: 'website' | 'article'; jsonLd?: Record<string, unknown>; title: string; subtitle?: string; description?: string; route?: string[]; meta?: string; progress?: boolean; signup?: boolean; footerSignup?: boolean; source?: string; signOff?: boolean; image?: string; imageAlt?: string; article?: { date: Date; minutes: number }; headings?: { depth: number; slug: string; text: string }[]; current?: string }
+const { type = 'website', jsonLd, title, subtitle, description = subtitle, route = [], meta, progress = false, signup = true, footerSignup = true, source = 'website', signOff = true, image, imageAlt, article, headings = [], current = '' } = Astro.props;
 ---
-<BaseLayout title={title} description={description} narrow type={type} jsonLd={jsonLd} image={image} imageAlt={imageAlt}>
+<BaseLayout title={title} description={description} showFooterSignup={footerSignup && !signup} narrow type={type} jsonLd={jsonLd} image={image} imageAlt={imageAlt}>
   {progress && <ScrollProgress />}
   <article class="article col">
     {route.length > 0 && (
@@ -23,7 +23,7 @@ const { type = 'website', jsonLd, title, subtitle, description = subtitle, route
     {article && <Toc headings={headings} title="In this post" />}
     <div class="prose"><slot /></div>
     {signOff && <p class="signoff">{site.signOff}</p>}
-    {signup && <div class="end"><EmailSignup variant="band" id="email-post" /></div>}
+    {signup && <div class="end"><EmailSignup variant="band" id="email-post" source={source} /></div>}
     {article && <div class="end"><AuthorCard /></div>}
     {article && current && <RelatedReading current={current} />}
   </article>

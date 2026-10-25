@@ -11,7 +11,7 @@ import { categoryLabels } from '../lib/categories';
 interface Props { type?: 'website' | 'article'; jsonLd?: Record<string, unknown>; title: string; subtitle?: string; route?: string[]; updated?: Date; category?: string; readMinutes?: number; headings?: { depth: number; slug: string; text: string }[]; current?: string }
 const { type = 'website', jsonLd, title, subtitle, route = [], updated, category, readMinutes, headings = [], current = '' } = Astro.props;
 ---
-<BaseLayout title={title} description={subtitle} narrow type={type} jsonLd={jsonLd}>
+<BaseLayout title={title} description={subtitle} showFooterSignup={false} narrow type={type} jsonLd={jsonLd}>
   <ScrollProgress />
   <article class="article col">
     {route.length > 0 && (

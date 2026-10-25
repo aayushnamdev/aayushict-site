@@ -9,6 +9,7 @@ import StatChips from '../components/StatChips.astro';
 import PullLine from '../components/PullLine.astro';
 import FirmFitPicker from '../components/FirmFitPicker.astro';
 import FirmCard from '../components/FirmCard.astro';
+import FollowButton from '../components/FollowButton.astro';
 import { getFirm } from '../config/firms';
 import calendarShot from '../assets/proof/nfp-calendar-2026-08-07.png';
 import fvgShot from '../assets/proof/mnq-fvg-entry-2026-08-07.png';
@@ -36,6 +37,7 @@ const mrkt = getFirm('mrkt')!;
 const apex = getFirm('apex')!;
 ---
 <PostLayout
+  source="start-here"
   title="Start here"
   subtitle="One real Friday night, why it was rare, and how I trade US futures from India."
   route={['Weak ADP', 'Hike odds fall', 'NFP misses', 'NQ and gold up']}
@@ -178,10 +180,12 @@ const apex = getFirm('apex')!;
   <p>There is no best. There is what fits you. Open the picker above.</p>
 
   <p>Before every big number, I write my scenarios. Same as I did on 7 August. I share them on Instagram and in the Sunday email.</p>
-  <p><a class="btn" href="https://www.instagram.com/aayush_ict/" rel="me noopener" target="_blank">Follow on Instagram</a></p>
+  <p class="followrow"><FollowButton size="large" cta="start-here" class="onpage" /></p>
 </PostLayout>
 
 <style>
+  .followrow :global(.follow) { background: var(--wine); color: var(--white) !important; }
+  .followrow :global(.follow .handle) { color: var(--text-on-wine); }
   .mrkt { background: var(--white); border-radius: var(--radius-white-card); padding: 28px 32px; }
   @media (max-width: 860px) { .mrkt { padding: 22px 20px; } }
 </style>

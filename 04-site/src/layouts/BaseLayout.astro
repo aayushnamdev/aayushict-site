@@ -9,14 +9,15 @@ import SocialRail from '../components/SocialRail.astro';
 interface Props {
   title?: string;
   description?: string;
-  showFooterSignup?: boolean; // false on the home page
+  showFooterSignup?: boolean; // false on pages that carry their own form
+  hideRail?: boolean; // home page: the sticky Follow bar replaces the social pill on phones
   narrow?: boolean; // reading pages: header lines up with the 760px text column
   type?: 'website' | 'article'; // og:type
   image?: string; // og:image path, defaults to the shared card
   imageAlt?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[]; // structured data, rendered as JSON-LD
 }
-const { title, description = site.tagline, showFooterSignup = true, narrow = false, type = 'website', jsonLd, image = '/og-default-v5.jpg', imageAlt = site.ogAlt } = Astro.props;
+const { title, description = site.tagline, showFooterSignup = true, hideRail = false, narrow = false, type = 'website', jsonLd, image = '/og-default-v5.jpg', imageAlt = site.ogAlt } = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.tagline}`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';
@@ -70,13 +71,14 @@ const ogImage = new URL(image, site.url).href;
     <Header narrow={narrow} />
     <main id="main" tabindex="-1"><slot /></main>
     <Footer showSignup={showFooterSignup} />
-    <SocialRail />
+    <SocialRail hideOnPhone={hideRail} />
     <!-- One live region for confirmations (code copied, signup). Scripts write into it. -->
     <div id="live" class="sr" role="status" aria-live="polite"></div>
     <script>
       // Links that leave the site open in a new tab, so nobody loses this page. In-site links stay in the same tab.
       // /go/ links are our affiliate redirects, so they count as leaving. rel keeps sponsored and nofollow.
       document.querySelectorAll<HTMLAnchorElement>('a[href]').forEach((a) => {
+        if (a.hasAttribute('data-same-tab')) return; // Follow buttons stay in this tab, so Instagram's in-app browser returns to the profile
         if (a.target === '_blank' && a.rel.includes('noopener')) return;
         const href = a.getAttribute('href') ?? '';
         if (!href || href.startsWith('#') || href.startsWith('mailto:') || href.startsWith('tel:')) return;
@@ -93,6 +95,12 @@ const ogImage = new URL(image, site.url).href;
           hint.textContent = ' (opens in a new tab)';
           a.append(hint);
         }
+      });
+      // Analytics: one listener for every element with data-cta.
+      import { trackCta } from '../lib/track';
+      document.addEventListener('click', (e) => {
+        const el = (e.target as Element).closest<HTMLElement>('[data-cta]');
+        if (el?.dataset.cta) trackCta(el.dataset.cta);
       });
     </script>
   </body>

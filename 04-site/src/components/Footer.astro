@@ -9,9 +9,10 @@ const { showSignup = true } = Astro.props;
     <div class="wrap sign"><EmailSignup variant="footer" id="email-footer" /></div>
   )}
   <div class="wrap fine">
-    <span>{site.footerLine}</span>
-    <span>{social.map((x, i) => <>{i > 0 && ' · '}<a href={x.href} rel="me noopener" target="_blank">{x.label}</a></>)}</span>
-    <span>{site.legal.map((l, i) => <>{i > 0 && ' · '}<a href={l.href}>{l.label}</a></>)}</span>
+    <nav class="row pages" aria-label="Pages">{site.footerNav.map((l, i) => <>{i > 0 && ' · '}<a href={l.href}>{l.label}</a></>)}</nav>
+    <span class="row">{social.map((x, i) => <>{i > 0 && ' · '}<a href={x.href} rel="me noopener" target="_blank">{x.label}</a></>)}</span>
+    <span class="row">{site.legal.map((l, i) => <>{i > 0 && ' · '}<a href={l.href}>{l.label}</a></>)}</span>
+    <span class="row line">{site.footerLine}</span>
   </div>
 </footer>
 
@@ -19,10 +20,13 @@ const { showSignup = true } = Astro.props;
   footer { border-top: 1px solid var(--line); padding: 40px 0 48px; background: var(--page-deep); }
   .sign { margin-bottom: 28px; padding-bottom: 28px; border-bottom: 1px solid var(--line); }
   .fine {
-    display: flex; justify-content: space-between; gap: 24px; flex-wrap: wrap;
+    display: flex; flex-direction: column; gap: 4px;
     font-family: var(--font-number); font-size: 13px; color: var(--text-muted); line-height: 1.6;
   }
-  .fine a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0 4px; color: var(--text-muted); text-decoration: none; }
+  .pages { font-size: 14px; }
+  .pages a { color: var(--text-body); }
+  .line { margin-top: 8px; }
+  .fine a { display: inline-flex; align-items: center; justify-content: center; min-height: 44px; min-width: 44px; padding: 0; color: var(--text-muted); text-decoration: none; }
   @media (max-width: 860px) { footer { padding-bottom: calc(48px + 64px + env(safe-area-inset-bottom, 0px)); } }
   @media (hover: hover) { .fine a:hover { color: var(--text-heading); } }
 </style>

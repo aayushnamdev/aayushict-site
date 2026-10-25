@@ -4,6 +4,7 @@ import StatChips from '../components/StatChips.astro';
 import ProofGrid from '../components/ProofGrid.astro';
 import MoreBox from '../components/MoreBox.astro';
 import PayoutTable from '../components/PayoutTable.astro';
+import FollowButton from '../components/FollowButton.astro';
 import { site, person, social } from '../config/site';
 import { paidShort, asOf } from '../config/payouts';
 import { certificates } from '../config/certificates';
@@ -32,6 +33,7 @@ const jsonLd = {
   description="About Aayush Namdev: a funded Nasdaq futures trader from India. Every payout with proof, how I trade, and what this site is for."
   meta={`Aayush Namdev · Updated ${asOf} · 3 min read`}
   type="website"
+  source="about"
   jsonLd={jsonLd}
 >
   <!-- PLACEHOLDER: all copy below is drafted from Aayush's notes, not yet read and edited by him -->
@@ -40,23 +42,31 @@ const jsonLd = {
   <p>I trade funded accounts. Most of my payouts came from Apex Trader Funding. Some came from Alpha Capital.</p>
   <p>These are my payouts so far. I show them for one reason. You should know a real trader is writing this.</p>
 
-  <StatChips chips={[`${paidShort} paid out`, 'Apex and Alpha Capital', `As of ${asOf}`]} />
+  <p class="followrow"><FollowButton size="large" cta="about" /></p>
 
-  <ProofGrid items={certificates} />
+  <section id="payouts" class="payouts">
+    <StatChips chips={[`${paidShort} paid out`, 'Apex and Alpha Capital', `As of ${asOf}`]} />
 
-  <MoreBox title="See every payout">
-    <PayoutTable />
-  </MoreBox>
+    <ProofGrid items={certificates} />
+
+    <MoreBox title="See every payout">
+      <PayoutTable />
+    </MoreBox>
+  </section>
 
   <h2>How I trade</h2>
-  <p>I start with the macro. News like NFP, CPI and the Fed gives me direction and conviction.</p>
-  <p>Then the model takes over. It finds my entry on the 1 minute chart.</p>
+  <p>I trade only NQ. Mostly the New York morning session.</p>
+  <p>I watch gold, the dollar, oil and the Fed. They show me where NQ may go.</p>
+  <p>Then I go down the charts. Daily, 1 hour, 5 minute. The 1 minute is for my entry.</p>
+  <p>If the daily or the 5 minute is choppy, I do not trade.</p>
+  <p>One trade a day. Then I lock the account. It takes me 20 to 30 minutes.</p>
   <p>The news tells me which way. The model tells me where to get in.</p>
+  <p><a class="btn" href="/how-i-trade">See the preview →</a></p>
 
   <h2>What this site is for</h2>
   <p>Wall Street hides behind jargon. Open any CNBC or Bloomberg article and you will see it.</p>
   <p>A normal person cannot follow that. So I strip down every jargon. I focus on the raw thing, and how it is impacting the markets.</p>
-  <p>I do not sell mentorship. I do not sell courses or signals. The only money here comes from affiliate links. Each one is marked where it appears. You can read the <a href="/disclosure">disclosure</a>.</p>
+  <p>I do not sell signals. The only money here comes from affiliate links. Each one is marked where it appears. You can read the <a href="/disclosure">disclosure</a>.</p>
 
   <p>You can find me here.</p>
   <ul class="handles">
@@ -67,6 +77,9 @@ const jsonLd = {
 </PostLayout>
 
 <style>
+  .followrow :global(.follow) { background: var(--wine); color: var(--white) !important; }
+  .followrow :global(.follow .handle) { color: var(--text-on-wine); }
+  .payouts { display: flex; flex-direction: column; gap: var(--prose-gap, 24px); scroll-margin-top: 90px; }
   .handles { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
   .handles a { display: flex; flex-direction: column; justify-content: center; min-height: 64px; padding: 10px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); text-decoration: none; transition: border-color 0.2s; }
   @media (hover: hover) { .handles a:hover { border-color: var(--wine); } }
@@ -74,3 +87,11 @@ const jsonLd = {
   .who { font-family: var(--font-ui); font-size: 16px; color: var(--text-heading); }
   @media (max-width: 860px) { .handles { grid-template-columns: 1fr; } }
 </style>
+
+<script>
+  // /about#payouts opens the full table, so the link from the home page lands on the list.
+  if (location.hash === '#payouts') {
+    const box = document.querySelector<HTMLDetailsElement>('#payouts details');
+    if (box) box.open = true;
+  }
+</script>

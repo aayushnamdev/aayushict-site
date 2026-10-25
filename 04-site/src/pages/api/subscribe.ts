@@ -6,7 +6,7 @@ import type { APIRoute } from 'astro';
 export const prerender = false;
 
 // Where a signup came from. Saved as a Buttondown tag so he can email only the people who asked for a post.
-const sources = ['website', 'how-i-trade'];
+const sources = ['website', 'home', 'start-here', 'about', 'how-i-trade'];
 
 const reply = (request: Request, ok: boolean, message: string, status: number) => {
   if ((request.headers.get('accept') ?? '').includes('application/json')) {

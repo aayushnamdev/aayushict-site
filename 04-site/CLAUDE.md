@@ -37,3 +37,6 @@ Learn guides live at `src/content/learn/<category>/<slug>.mdx`.
 
 ### Commands
 `npm run dev` (run in background), `npm run build`, `npm run check`. Deploy by pushing to `main` (GitHub is connected to Vercel). How to add a post: `PUBLISHING.md`.
+
+### Current brief (Oct 2026 to Jan 2027)
+Goal is Instagram follows first, email second. Read `../00-strategy/homepage-spec-2026-10.md` before touching the homepage, header, footer or email forms. Do not mention a course anywhere.

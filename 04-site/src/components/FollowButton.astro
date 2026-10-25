@@ -1,0 +1,35 @@
+---
+// The one Follow button. Plain profile link, same tab, so Instagram's in-app browser returns to the profile.
+// data-cta names the place for analytics (see src/lib/track.ts and the click listener in BaseLayout).
+import Icon from './Icon.astro';
+import { social } from '../config/site';
+interface Props {
+  size?: 'pill' | 'large';
+  cta: string; // header, home-hero, home-why, home-sticky, start-here, about
+  class?: string;
+}
+const { size = 'large', cta, class: extra } = Astro.props;
+const ig = social.find((s) => s.label === 'Instagram')!;
+---
+{size === 'pill' ? (
+  <a class:list={['follow', 'pill', extra]} href={ig.href} data-cta={cta} data-same-tab aria-label="Follow aayush_ict on Instagram">
+    <Icon name="camera" size={16} /><span>Follow</span>
+  </a>
+) : (
+  <a class:list={['follow', 'large', extra]} href={ig.href} data-cta={cta} data-same-tab>
+    <span class="main"><Icon name="camera" size={20} /><span>Follow the journey on Instagram</span></span>
+    <span class="handle">{ig.handle}</span>
+  </a>
+)}
+
+<style>
+  .follow { background: var(--white); color: var(--wine) !important; text-decoration: none; font-family: var(--font-ui); font-weight: 600; border-radius: var(--radius-button); }
+  .follow :global(svg) { stroke-width: 1.8; flex: none; }
+  .pill { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 14px; font-size: 14px; }
+  .large { display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; min-height: 56px; padding: 10px 22px; }
+  .main { display: inline-flex; align-items: center; gap: 8px; font-size: 16px; line-height: 1.25; text-align: center; }
+  .handle { font-family: var(--font-number); font-size: 13px; font-weight: 400; color: var(--ink-muted); }
+  @media (max-width: 520px) { .large { width: 100%; } }
+  @media (hover: hover) { .follow:hover { background: var(--surface-raised); color: var(--white) !important; } .follow:hover .handle { color: var(--text-soft); } }
+  .follow:focus-visible { outline: 2px solid var(--rose); outline-offset: 3px; }
+</style>

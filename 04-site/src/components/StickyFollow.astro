@@ -1,0 +1,60 @@
+---
+// Phone-only bar at the bottom of the home page. Shows once the hero button (About me) has scrolled away, and hides
+// again while the "why follow" button, the email section or the footer is on screen, so two Follow buttons
+// never show together. Hides while an input has focus, so it never covers the email field or the keyboard.
+import { Image } from 'astro:assets';
+import FollowButton from './FollowButton.astro';
+import { social } from '../config/site';
+interface Props { thumb: ImageMetadata }
+const { thumb } = Astro.props;
+const ig = social.find((s) => s.label === 'Instagram')!;
+---
+<div class="sticky" data-sticky-follow aria-hidden="true" inert>
+  <Image src={thumb} alt="" width={72} height={72} widths={[72, 144]} sizes="36px" loading="lazy" class="thumb" />
+  <span class="who">{ig.handle}</span>
+  <FollowButton size="pill" cta="home-sticky" />
+</div>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-sticky-follow]');
+  if (bar) {
+    const hero = document.querySelector('[data-cta="home-hero"]');
+    const watched = [document.querySelector('[data-cta="home-why"]'), document.getElementById('email-home'), document.querySelector('footer')];
+    const seen = new Map<Element, boolean>();
+    let heroSeen = true;
+    let typing = false;
+    const paint = () => {
+      const show = !heroSeen && !typing && ![...seen.values()].some(Boolean);
+      bar.classList.toggle('on', show);
+      bar.toggleAttribute('inert', !show);
+      bar.setAttribute('aria-hidden', String(!show));
+    };
+    const io = new IntersectionObserver((entries) => {
+      for (const e of entries) {
+        if (e.target === hero) heroSeen = e.isIntersecting;
+        else seen.set(e.target, e.isIntersecting);
+      }
+      paint();
+    });
+    if (hero) io.observe(hero);
+    watched.forEach((el) => el && io.observe(el));
+    document.addEventListener('focusin', (e) => { if ((e.target as HTMLElement).matches('input, textarea')) { typing = true; paint(); } });
+    document.addEventListener('focusout', () => { typing = false; paint(); });
+  }
+</script>
+
+<style>
+  .sticky {
+    position: fixed; left: 0; right: 0; bottom: 0; z-index: 45;
+    display: none; align-items: center; gap: 12px;
+    padding: 8px var(--phone-padding) calc(8px + env(safe-area-inset-bottom, 0px));
+    background: var(--header-bg); -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+    border-top: 1px solid var(--line-strong);
+    transform: translateY(110%); transition: transform 0.25s ease-out;
+  }
+  .sticky.on { transform: none; }
+  .sticky :global(.thumb) { width: 36px; height: 36px; border-radius: 50%; object-fit: cover; flex: none; }
+  .who { flex: 1; font-family: var(--font-ui); font-weight: 600; font-size: 15px; color: var(--text-heading); }
+  @media (max-width: 860px) { .sticky { display: flex; } }
+  @media (prefers-reduced-motion: reduce) { .sticky { transition: none; } }
+</style>

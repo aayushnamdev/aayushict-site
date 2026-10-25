@@ -1,0 +1,110 @@
+---
+// "My day": three times, then the steps in order. Each open step is a native <details>, so it works by touch and keyboard.
+// The 1 minute step is locked on purpose: that is where the entry model lives, and it stays sealed.
+// Times are New York first. India time is filled in by the script from today's date, because the US clocks change
+// (9:30 AM New York is 7 PM IST in summer and 8 PM IST in winter). Without JavaScript the note under the strip says so.
+import Icon from './Icon.astro';
+const times = [
+  { ny: '9:30', label: 'The market opens. I start watching.' },
+  { ny: '9:40', label: 'I look again.' },
+  { ny: '9:45', label: 'I start trading.' },
+] as const;
+const steps = [
+  { title: 'At the open', text: 'I look at the daily first. I want good ranges. If the daily is going nowhere, I stay out.' },
+  { title: '1 hour', text: 'This gives me direction. Which way is price leaning?' },
+  { title: '5 minute', text: 'Is it moving with range, or chopping? If it is chopping, I wait for it to break.' },
+  { title: 'The 15 minute wait', text: 'The first 15 minutes are wild. Many moves are false and stops get hit fast. I let it cool, then I join.' },
+] as const;
+const after = [
+  { title: 'One trade', text: 'One trade a day. Win or loss, same rule.' },
+  { title: 'Lock the account', text: 'Tradovate lets me lock it. I do. Then I go and do something else.' },
+] as const;
+---
+<figure class="day" data-day>
+  <ol class="times" aria-label="My morning, New York time">
+    {times.map((t) => (
+      <li>
+        <span class="ny mono">{t.ny} AM</span>
+        <span class="ist mono" data-ny={t.ny}></span>
+        <span class="what ui">{t.label}</span>
+      </li>
+    ))}
+  </ol>
+  <p class="note ui">New York time. India time moves by one hour when the US clocks change: 7 PM IST in summer, 8 PM in winter.</p>
+
+  <ol class="steps">
+    {steps.map((s, i) => (
+      <li>
+        <details>
+          <summary><span class="n mono">{i + 1}</span><span class="t ui">{s.title}</span></summary>
+          <p>{s.text}</p>
+        </details>
+      </li>
+    ))}
+    <li class="locked">
+      <div class="lk" aria-label="Locked. This step is kept for the email list.">
+        <span class="n mono">5</span><span class="t ui">1 minute</span>
+        <span class="lock mono"><Icon name="lock" size={14} /> Soon</span>
+        <span class="bars" aria-hidden="true"><i></i><i></i></span>
+      </div>
+    </li>
+    {after.map((s, i) => (
+      <li>
+        <details>
+          <summary><span class="n mono">{i + 6}</span><span class="t ui">{s.title}</span></summary>
+          <p>{s.text}</p>
+        </details>
+      </li>
+    ))}
+  </ol>
+</figure>
+
+<script>
+  // Turns "9:30 AM" in New York into the matching IST time for today, so the note never goes out of date.
+  const offsetHours = (zone: string) => {
+    const part = new Intl.DateTimeFormat('en-US', { timeZone: zone, timeZoneName: 'longOffset' }).formatToParts(new Date()).find((p) => p.type === 'timeZoneName')?.value ?? 'GMT';
+    const m = part.match(/GMT([+-])(\d{2}):?(\d{2})?/);
+    return m ? (m[1] === '-' ? -1 : 1) * (Number(m[2]) + Number(m[3] ?? 0) / 60) : 0;
+  };
+  try {
+    const diff = offsetHours('Asia/Kolkata') - offsetHours('America/New_York'); // hours India is ahead of New York
+    document.querySelectorAll<HTMLElement>('[data-day] [data-ny]').forEach((el) => {
+      const [h, m] = (el.dataset.ny ?? '').split(':').map(Number);
+      const total = Math.round(h * 60 + m + diff * 60) % (24 * 60);
+      const hh = Math.floor(total / 60) % 24;
+      const mm = String(total % 60).padStart(2, '0');
+      el.textContent = `${hh % 12 || 12}:${mm} ${hh >= 12 ? 'PM' : 'AM'} IST`;
+    });
+  } catch { /* the static note under the strip still says it */ }
+</script>
+
+<style>
+  .day { margin: 0; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 18px 16px 8px; }
+  .times { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; }
+  .times li { display: flex; flex-direction: column; gap: 2px; padding: 12px; background: var(--page); border: 1px solid var(--line); border-radius: 10px; }
+  .ny { font-size: 17px; color: var(--text-heading); }
+  .ist { font-size: 12px; color: var(--text-muted); min-height: 16px; }
+  .what { font-size: 14px; line-height: 1.4; color: var(--text-soft); margin-top: 4px; }
+  .note { font-size: 13px; line-height: 1.5; color: var(--text-muted); margin: 12px 0 14px; }
+  .steps { list-style: none; margin: 0; padding: 0; counter-reset: s; }
+  .steps li { border-top: 1px solid var(--line); }
+  summary, .lk { display: flex; align-items: center; gap: 12px; min-height: 52px; padding: 6px 0; cursor: pointer; list-style: none; }
+  summary::-webkit-details-marker { display: none; }
+  summary::after { content: '+'; margin-left: auto; font-family: var(--font-number); font-size: 20px; color: var(--rose-text); }
+  details[open] summary::after { content: '−'; }
+  summary:focus-visible { outline: 2px solid var(--rose); outline-offset: 2px; border-radius: 6px; }
+  .n { flex: none; width: 26px; height: 26px; display: inline-flex; align-items: center; justify-content: center; border-radius: 50%; border: 1px solid var(--line-strong); font-size: 13px; color: var(--text-muted); }
+  .t { font-size: 17px; color: var(--text-heading); }
+  details p { margin: 0 0 14px 38px; font-size: 16px; line-height: 1.55; color: var(--text-soft); }
+  .locked .lk { position: relative; cursor: default; flex-wrap: wrap; row-gap: 6px; padding: 10px 0 12px; }
+  .lock { margin-left: auto; display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--text-muted); }
+  .bars { flex-basis: 100%; display: flex; flex-direction: column; gap: 6px; padding-left: 38px; }
+  .bars i { display: block; height: 8px; border-radius: 4px; background: var(--line-strong); filter: blur(2.5px); }
+  .bars i:first-child { width: 80%; }
+  .bars i:last-child { width: 50%; }
+  @media (max-width: 520px) {
+    .times { grid-template-columns: 1fr; }
+    .times li { flex-direction: row; align-items: baseline; flex-wrap: wrap; gap: 4px 10px; }
+    .what { flex-basis: 100%; margin-top: 0; }
+  }
+</style>

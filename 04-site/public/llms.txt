@@ -10,7 +10,7 @@
 - [Learn](https://aayushict.space/learn/): guides on prop firms and payouts, with the numbers worked out.
 - [Your account is charging you for profit you never took](https://aayushict.space/learn/prop-firms/apex-intraday-trailing-drawdown/): how an intraday trailing drawdown (Apex 50K, $2,000) charges you for profit you never took, and when end of day fits better.
 - [Journal](https://aayushict.space/journal/): his own story and the trades he took, in his own words.
-- [How I trade](https://aayushict.space/how-i-trade/): coming soon. The model behind about 95% of his trades, read on the daily, 1 hour, 5 minute and 1 minute together, mostly in the New York AM session.
+- [How I trade](https://aayushict.space/how-i-trade/): a preview of the model behind about 95% of his trades. His day in order (daily, 1 hour, 5 minute, then the 1 minute entry), the two checks that decide if he trades, one trade a day, 20 to 30 minutes, mostly in the New York morning session. The entry model itself is not published.
 - [Disclosure](https://aayushict.space/disclosure/): how the site earns, which links are affiliate links, and which are not.
 - [Disclaimer](https://aayushict.space/disclaimer/): not advice, not a signal service, trading is risky.
 - [Privacy](https://aayushict.space/privacy/): no cookies, cookieless visit counts through Vercel Analytics, email stored at Buttondown.

@@ -1,0 +1,64 @@
+---
+// "Would I trade today?" Two checks decide it: the daily and the 5 minute. Shows the skip rules, never the entry.
+// Real radio buttons styled as chips, so it works by touch and keyboard. The result is announced politely.
+const groups = [
+  { name: 'daily', label: 'Daily', options: [{ v: 'good', t: 'Good ranges' }, { v: 'bad', t: 'Choppy' }] },
+  { name: 'five', label: '5 minute', options: [{ v: 'good', t: 'Displacing' }, { v: 'bad', t: 'Chopping' }] },
+] as const;
+---
+<div class="gate" data-gate>
+  {groups.map((g) => (
+    <fieldset>
+      <legend class="ui">{g.label}</legend>
+      <div class="chips">
+        {g.options.map((o, i) => (
+          <label>
+            <input type="radio" name={g.name} value={o.v} checked={i === 0} />
+            <span class="ui">{o.t}</span>
+          </label>
+        ))}
+      </div>
+    </fieldset>
+  ))}
+  <p class="result" data-result role="status" aria-live="polite">
+    <strong class="ui">Go to the 1 minute.</strong>
+    <span>That is where my entry model lives.</span>
+  </p>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-gate]');
+  if (root) {
+    const out = root.querySelector<HTMLElement>('[data-result]')!;
+    const value = (name: string) => root.querySelector<HTMLInputElement>(`input[name="${name}"]:checked`)?.value;
+    const paint = () => {
+      const [head, body] =
+        value('daily') === 'bad' ? ['No trade today.', 'The daily is not going anywhere.']
+        : value('five') === 'bad' ? ['Wait.', 'I do nothing until the 5 minute range breaks.']
+        : ['Go to the 1 minute.', 'That is where my entry model lives.'];
+      out.dataset.state = value('daily') === 'bad' ? 'no' : value('five') === 'bad' ? 'wait' : 'go';
+      out.querySelector('strong')!.textContent = head;
+      out.querySelector('span')!.textContent = body;
+    };
+    root.addEventListener('change', paint);
+    paint();
+  }
+</script>
+
+<style>
+  .gate { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px 16px; background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius-card); padding: 18px 16px; }
+  fieldset { border: 0; margin: 0; padding: 0; min-width: 0; }
+  legend { font-size: 14px; color: var(--text-muted); padding: 0; margin-bottom: 8px; }
+  .chips { display: flex; flex-direction: column; gap: 8px; }
+  label { position: relative; display: block; }
+  input { position: absolute; opacity: 0; inset: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+  label span { display: flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 10px; font-size: 15px; text-align: center; color: var(--text-body); background: var(--page); border: 1px solid var(--line-strong); border-radius: var(--radius-button); }
+  input:checked + span { background: var(--white); color: var(--wine); border-color: var(--white); font-weight: 600; }
+  input:focus-visible + span { outline: 2px solid var(--rose); outline-offset: 2px; }
+  .result { grid-column: 1 / -1; margin: 4px 0 0; padding: 14px 16px; border-radius: 10px; background: var(--page); border: 1px solid var(--line-strong); border-left: 3px solid var(--wine); display: flex; flex-direction: column; gap: 2px; }
+  .result strong { font-size: 18px; color: var(--text-heading); }
+  .result span { font-family: var(--font-body); font-size: 16px; line-height: 1.5; color: var(--text-soft); }
+  .result[data-state='no'] { border-left-color: var(--rose); }
+  .result[data-state='wait'] { border-left-color: var(--rose-text); }
+  @media (max-width: 420px) { .gate { padding: 14px 12px; gap: 12px; } label span { font-size: 14px; } }
+</style>

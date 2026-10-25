@@ -6,6 +6,7 @@ export const email = {
   action: '/api/subscribe' as string | null,
   prompt: 'Get the week ahead every Sunday. One email, plus big release briefings.',
   footerPrompt: 'The week ahead, every Sunday.',
+  fine: 'One email on Sunday. Unsubscribe anytime.',
   thanks: 'Check your inbox and tap the link to confirm.',
   error: 'That did not go through. Please try again in a moment.',
 };

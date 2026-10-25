@@ -4,11 +4,13 @@
 // scrolls to the signup form on the page. Tap areas are 44px, the icons are small on purpose.
 import Icon from './Icon.astro';
 import { social } from '../config/site';
+interface Props { hideOnPhone?: boolean }
+const { hideOnPhone = false } = Astro.props;
 const icons = { Instagram: 'camera', X: 'x', Substack: 'substack' } as const;
 // Home shows on every page except the home page. In-site link, so it opens in the same tab.
 const showHome = (Astro.url.pathname.replace(/\/$/, '') || '/') !== '/';
 ---
-<nav class="rail" aria-label="Follow Aayush">
+<nav class:list={['rail', { nophone: hideOnPhone }]} aria-label="Follow Aayush">
   {showHome && (
     <>
       <a class="home" href="/" aria-label="Home"><Icon name="home" size={18} /><span class="tag ui" aria-hidden="true">Home</span></a>
@@ -62,6 +64,7 @@ const showHome = (Astro.url.pathname.replace(/\/$/, '') || '/') !== '/';
   /* Phone: small dark glass pill. It is mostly opaque on purpose: a see-through dark pill looks muddy grey over
      the white bands. The blur, a light top edge and a soft shadow keep the glass feel on black, white and wine. */
   @media (max-width: 860px) {
+    .rail.nophone { display: none; }
     .rail {
       left: 50%; bottom: calc(10px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%);
       gap: 2px; padding: 3px 10px; border-radius: 999px;
