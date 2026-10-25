@@ -226,3 +226,12 @@ Three steps, each a little deeper:
 Shown: NQ only, mostly New York AM, macro for correlation, the order daily then 1 hour then 5 minute then 1 minute entry, the skip rules (choppy daily, chopping 5 minute), one trade a day then lock the account, 20 to 30 minutes a day.
 
 Sealed (locked, blurred card with a one line teaser only): the entry model, exits, stop, risk sizing, what he does after a loss, and any number that points at them. Details live only in local memory, never in this public repo.
+
+## Addendum 25 Oct 2026: Buttondown confirm page and email
+
+The Buttondown page and email that visitors see after signing up are Buttondown's own. On the current plan, custom CSS and custom confirmation emails are blocked (Standard plan needed).
+
+Done in the account: icon replaced (the old Substack link was dead), tint colour changed from Substack orange to wine `#6E1A33`, icon alt text `aayushict`.
+
+Open choice for Aayush: upgrade to Standard and apply a dark wine theme plus a written confirmation email, confirm on his own site, skip the confirm step, or leave it as it is.
+

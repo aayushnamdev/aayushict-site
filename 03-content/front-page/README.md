@@ -3,6 +3,8 @@
 Single place to resume work on the aayushict.space front page. Written 2 Oct 2026 at the end of the first planning session.
 
 ## Status
+**Updated 25 Oct 2026 (live):** the home page is now the Follow-first version for Instagram visitors: photo first, About me as the main button, proof pile, why follow, email, phone-only sticky Follow bar. The earlier sections described below (the gap, one real night, the honest part) now live on `/start-here`. `/how-i-trade` is a model preview. Brief: `../../00-strategy/homepage-spec-2026-10.md`.
+
 Direction approved by Aayush. Copy and widget spec are drafted. **Updated 3 Oct 2026:** the home page is short, like the original reference design (hero, the gap, a short night band, the honest part, what you get, email). The long read is `/start-here`: the 7 Aug night with all screenshots and widgets, the firm picker, MRKT and a short FAQ. Both are in `04-site/src/pages/`. Unrewritten lines are listed in `placeholders.md`. Apex is a plain non-affiliate link.
 
 | What | Where |

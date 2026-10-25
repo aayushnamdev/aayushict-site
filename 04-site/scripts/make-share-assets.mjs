@@ -39,8 +39,8 @@ const withPhoto = async (svg, file) => sharp(Buffer.from(svg)).composite([{ inpu
 const paidTotal = [...readFileSync('src/config/payouts.ts', 'utf8').matchAll(/amount: (\d+), status: 'paid'/g)].reduce((n, m) => n + Number(m[1]), 0);
 const paidShort = `$${(paidTotal / 1000).toFixed(1)}K`;
 await withPhoto(card([{ text: "I'm Aayush.", size: 70 }, { text: 'I trade Nasdaq futures', size: 62 }, { text: 'from India.', size: 62, fill: rose }], `${paidShort} paid out, with proof`, { y0: 260, step: 86 }), 'public/og-default-v5.jpg');
-await withPhoto(card([{ text: 'How I trade.', size: 84 }, { text: 'Coming soon.', size: 84, fill: rose }], 'The model behind about 95% of my trades'), 'public/og-how-i-trade-v3.jpg');
-console.log('wrote og-default-v5.jpg, og-how-i-trade-v3.jpg');
+await withPhoto(card([{ text: 'How I trade.', size: 84 }, { text: 'A preview.', size: 84, fill: rose }], 'The model behind about 95% of my trades'), 'public/og-how-i-trade-v4.jpg');
+console.log('wrote og-default-v5.jpg, og-how-i-trade-v4.jpg');
 
 // favicon.ico: one 48x48 PNG inside an ICO container (valid for every current browser).
 const png = await sharp(readFileSync('public/favicon.svg'), { density: 384 }).resize(48, 48).png().toBuffer();

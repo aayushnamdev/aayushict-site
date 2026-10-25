@@ -45,3 +45,11 @@ Source wording: `../drafts/start-from-zero.md`.
 - Start here: new "The tool I open every morning" section (MRKT, code AAYUSH) before the prop firm picker. Lines are built from his earlier MRKT text and are not yet in his own words. MRKT is the main affiliate: code AAYUSH, 10% off.
 - Privacy page already mentions Vercel Analytics. It now also says signups pass through the site's server to Buttondown.
 - Email signup now goes through `/api/subscribe`. The Buttondown key must be set in Vercel (BUTTONDOWN_API_KEY) or signup fails on the live site.
+
+## 25 Oct 2026, model preview and Follow-first home (drafted from his voice notes, he has not read them yet)
+- Home: the proof band line "Each one came from 20 to 30 minutes of trading a day. One trade, then I lock the account." and its link. The email band copy "My model, a preview."
+- About: the six lines under "How I trade" (NQ only, macro, chart order, skip when choppy, one trade a day) and the "See the preview" button.
+- /how-i-trade, all copy: opening lines, the day routine steps (times, the 15 minute wait), the "Would I trade today?" result lines, the five locked card teasers, the closing line "Preview, then more."
+- Rule for all of it: the entry model, exits, stop, risk and numbers stay sealed. See the shown and sealed table in `00-strategy/homepage-spec-2026-10.md`.
+- Home hero: the two lines under the headline now sit below the About me button on phones, so the $16.5K figure is on the second screen. His call, check how it feels.
+
