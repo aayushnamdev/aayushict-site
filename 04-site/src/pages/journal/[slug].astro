@@ -22,7 +22,8 @@ const description = d.description ?? site.tagline;
   headings={headings}
   current={`journal/${entry.id}`}
   progress
-  signOff={d.kind !== 'story'}
+  signOff={d.signOff ?? d.kind !== 'story'}
+  image={d.og}
   type="article"
   jsonLd={articleLd({ title: d.title, description, path: `/journal/${entry.id}/`, published: d.date })}
 >

@@ -44,13 +44,16 @@ const learn = defineCollection({
 // Losing calls are never hidden: status 'invalidated' is a first class value.
 const journal = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/journal' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     description: z.string().optional(), // one line for search and link previews
     kind: z.enum(['call', 'trading-day', 'story']),
     date: z.coerce.date(),
     readMinutes: z.number().optional(), // worked out from the word count when left out
     draft: z.boolean().default(false),
+    cover: image().optional(), // chart or photo shown on the home page card
+    og: z.string().optional(), // own link preview image in /public, falls back to the shared card
+    signOff: z.boolean().optional(), // false when the post ends with his own lines
     // Calls only
     asset: z.literal('NQ').optional(),
     direction: z.enum(['long', 'short']).optional(),

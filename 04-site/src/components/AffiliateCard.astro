@@ -1,0 +1,20 @@
+---
+// Affiliate card for the end of a post: the white box from /start-here around FirmCard.
+// Name, code, discount, disclosure and verified date all come from config/firms.ts.
+import FirmCard from './FirmCard.astro';
+import { getFirm } from '../config/firms';
+interface Props { slug: string; ctaLabel: string }
+const { slug, ctaLabel } = Astro.props;
+const firm = getFirm(slug);
+if (!firm || !firm.active || !firm.url) throw new Error(`AffiliateCard: no active firm "${slug}"`);
+---
+<aside class="aff" aria-label={`${firm.name}, affiliate`}>
+  <FirmCard firm={firm} href={`/go/${firm.slug}`} ctaLabel={ctaLabel}>
+    <slot />
+  </FirmCard>
+</aside>
+
+<style>
+  .aff { background: var(--white); border-radius: var(--radius-white-card); padding: 28px 32px; margin: 40px 0; }
+  @media (max-width: 860px) { .aff { padding: 22px 20px; } }
+</style>

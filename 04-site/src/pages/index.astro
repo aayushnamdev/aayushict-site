@@ -5,6 +5,7 @@ import EmailSignup from '../components/EmailSignup.astro';
 import ProofStack from '../components/ProofStack.astro';
 import FollowButton from '../components/FollowButton.astro';
 import StickyFollow from '../components/StickyFollow.astro';
+import LatestJournal from '../components/LatestJournal.astro';
 import { Image } from 'astro:assets';
 import { site, person } from '../config/site';
 import { certificates, paidShort, asOf, apex2026Count } from '../config/payouts';
@@ -87,7 +88,12 @@ const jsonLd = [
     </div>
   </Band>
 
-  <!-- 3. Why follow -->
+  <!-- 3. Latest journal post. Shows the newest post with a cover image. -->
+  <Band>
+    <LatestJournal />
+  </Band>
+
+  <!-- 4. Why follow -->
   <Band variant="white">
     <div class="stack why">
       <h2 class="h-sec">What you get by following</h2>
@@ -103,7 +109,7 @@ const jsonLd = [
     </div>
   </Band>
 
-  <!-- 4. Email. Coming soon teaser merged in. -->
+  <!-- 5. Email. Coming soon teaser merged in. -->
   <Band variant="wine">
     <div class="stack soon" id="email-home">
       <div class="label">Coming soon</div>

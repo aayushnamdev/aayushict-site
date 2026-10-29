@@ -1,13 +1,18 @@
 ---
 // Chart or screenshot frame with a caption. Tap opens it large in a dialog.
-import { Image } from 'astro:assets';
-interface Props { src: ImageMetadata; alt: string; caption: string; id: string; tall?: boolean }
-const { src, alt, caption, id, tall = false } = Astro.props;
+import { Image, getImage } from 'astro:assets';
+// `mobile` is an optional crop of the part that matters. Phones show it inline at full width, the dialog still opens the full image.
+interface Props { src: ImageMetadata; alt: string; caption: string; id: string; tall?: boolean; mobile?: ImageMetadata }
+const { src, alt, caption, id, tall = false, mobile } = Astro.props;
+const crop = mobile ? await getImage({ src: mobile, widths: [480, 800, 1000], format: 'webp' }) : undefined;
 ---
-<figure class:list={['shot', { tall }]}>
+<figure class:list={['shot', { tall, cropped: !!mobile }]}>
   <button class="frame" type="button" data-shot-open={id} aria-label={`Enlarge: ${caption.split('.')[0]}`}>
-    <Image src={src} alt={alt} widths={[480, 960]} sizes="(max-width: 860px) 100vw, 760px" />
-    <span class="hint ui">Tap to enlarge</span>
+    <picture>
+      {crop && <source media="(max-width: 860px)" srcset={crop.srcSet.attribute} sizes="100vw" type="image/webp" width={mobile!.width} height={mobile!.height} />}
+      <Image src={src} alt={alt} widths={[480, 960]} sizes="(max-width: 860px) 100vw, 760px" />
+    </picture>
+    <span class="hint ui">{mobile ? 'Tap for the full chart' : 'Tap to enlarge'}</span>
   </button>
   <figcaption class="cap ui">{caption}</figcaption>
 </figure>
@@ -42,5 +47,11 @@ const { src, alt, caption, id, tall = false } = Astro.props;
   .big-shot::backdrop { background: var(--overlay); }
   .big-shot :global(img) { display: block; max-width: 100%; max-height: calc(94vh - 100px); max-height: calc(94dvh - 100px); width: auto; height: auto; margin: 0 auto; border-radius: 8px; }
   .big-shot .btn { margin: 0 0 12px; }
-  @media (max-width: 860px) { .frame { height: 220px; } .tall .frame { height: 360px; } }
+  .frame :global(picture) { display: contents; }
+  @media (max-width: 860px) {
+    .frame { height: 220px; } .tall .frame { height: 360px; }
+    /* With a phone crop the frame takes the crop's own shape, no empty bars around it. */
+    .cropped .frame { height: auto; }
+    .cropped .frame :global(img) { height: auto; object-fit: initial; }
+  }
 </style>

@@ -1,0 +1,36 @@
+---
+// Home page card for the newest journal post that has a cover image.
+import { Image } from 'astro:assets';
+import { published, formatDate } from '../lib/content';
+const entries = (await published('journal')).filter((e) => e.data.cover).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+const e = entries[0];
+---
+{e && (
+  <a class="card" href={`/journal/${e.id}`} data-cta="home-journal">
+    <div class="shot">
+      <Image src={e.data.cover!} alt="" widths={[480, 800, 1200]} sizes="(max-width: 860px) 100vw, 520px" />
+    </div>
+    <div class="text">
+      <span class="label">From my journal · {formatDate(e.data.date)}</span>
+      <h2 class="h-sec">{e.data.title}</h2>
+      {e.data.description && <p class="desc">{e.data.description}</p>}
+      <span class="go ui">Read the night →</span>
+    </div>
+  </a>
+)}
+
+<style>
+  .card { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 48px); align-items: center; text-decoration: none; color: inherit; }
+  .shot { border: 1px solid var(--line-strong); border-bottom: 3px solid var(--wine); border-radius: var(--radius-card); overflow: hidden; background: var(--surface); }
+  .shot :global(img) { display: block; width: 100%; height: auto; }
+  .text { display: flex; flex-direction: column; gap: 14px; align-items: flex-start; }
+  .text h2 { margin: 0; }
+  .desc { margin: 0; font-size: 18px; line-height: 1.5; color: var(--text-soft); }
+  .go { display: inline-flex; align-items: center; min-height: 44px; color: var(--rose-text); font-size: 17px; font-weight: 600; }
+  @media (hover: hover) { .card:hover .shot { border-color: var(--wine); } .card:hover .go { text-decoration: underline; } }
+  @media (max-width: 860px) {
+    .card { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .text { gap: 10px; }
+    .desc { font-size: 17px; }
+  }
+</style>
