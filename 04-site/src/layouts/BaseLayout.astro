@@ -17,7 +17,7 @@ interface Props {
   imageAlt?: string;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[]; // structured data, rendered as JSON-LD
 }
-const { title, description = site.tagline, showFooterSignup = true, hideRail = false, narrow = false, type = 'website', jsonLd, image = '/og-default-v5.jpg', imageAlt = site.ogAlt } = Astro.props;
+const { title, description = site.tagline, showFooterSignup = true, hideRail = false, narrow = false, type = 'website', jsonLd, image = '/og-default-v6.jpg', imageAlt = site.ogAlt } = Astro.props;
 const fullTitle = title ? `${title} · ${site.name}` : `${site.name} · ${site.tagline}`;
 const canonical = new URL(Astro.url.pathname, site.url).href;
 const path = Astro.url.pathname.replace(/\/$/, '') || '/';

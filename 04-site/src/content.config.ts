@@ -6,7 +6,7 @@ import { z } from 'astro/zod';
 
 const macro = defineCollection({
   loader: glob({ pattern: '**/*.{md,mdx}', base: './src/content/macro' }),
-  schema: z.object({
+  schema: ({ image }) => z.object({
     title: z.string(),
     subtitle: z.string(),
     kind: z.enum(['week-ahead', 'briefing', 'review']),
@@ -17,6 +17,8 @@ const macro = defineCollection({
     route: z.array(z.string()).default([]),
     readMinutes: z.number(),
     relatedJournal: reference('journal').optional(),
+    og: z.string().optional(), // own link preview image in /public, falls back to the shared card
+    cover: image().optional(), // chart shown on the home page card
     draft: z.boolean().default(false), // true hides the post on the live site
   }),
 });

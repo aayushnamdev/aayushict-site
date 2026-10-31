@@ -2,6 +2,7 @@
 // the About table, the total and the "as of" date. Update this file when a new payout is paid, nothing else.
 // Dates are the certificate dates (approved date). Rows with no certificate use the dashboard date.
 // Amounts in US dollars. Newest first.
+import apex2329 from '../assets/proof/apex-2329-payout-2026-10-29.jpg';
 import apex1051 from '../assets/proof/apex-1051-payout-2026-10-20.png';
 import apex1534 from '../assets/proof/apex-1534-payout-2026-10-09.png';
 import apex1500oct from '../assets/proof/apex-1500-payout-2026-09-30.png';
@@ -29,6 +30,7 @@ export type Payout = {
 };
 
 export const payouts: Payout[] = [
+  { id: 'proof-apex-2329', date: '2026-10-29', firm: 'Apex Trader Funding', amount: 2329, status: 'paid', src: apex2329 },
   { id: 'proof-apex-1051', date: '2026-10-20', firm: 'Apex Trader Funding', amount: 1051, status: 'paid', src: apex1051 },
   { id: 'proof-apex-1534', date: '2026-10-09', firm: 'Apex Trader Funding', amount: 1534, status: 'paid', src: apex1534 },
   { id: 'proof-apex-1500-oct', date: '2026-09-30', firm: 'Apex Trader Funding', amount: 1500, status: 'paid', src: apex1500oct },
@@ -58,7 +60,7 @@ export const payouts: Payout[] = [
   },
 ];
 
-export const asOf = '24 Oct 2026';
+export const asOf = '31 Oct 2026';
 export const paidTotal = payouts.filter((p) => p.status === 'paid').reduce((sum, p) => sum + p.amount, 0);
 export const pendingTotal = payouts.filter((p) => p.status === 'approved').reduce((sum, p) => sum + p.amount, 0);
 export const paidShort = `$${(paidTotal / 1000).toFixed(1)}K`; // 16476 becomes $16.5K

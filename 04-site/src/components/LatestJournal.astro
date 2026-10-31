@@ -1,10 +1,14 @@
 ---
-// Home page card for the newest journal post that has a cover image.
+// Home page card for the newest journal post that has a cover image,
+// with a smaller row under it for the newest macro post (week ahead) that has a cover.
 import { Image } from 'astro:assets';
 import { published, formatDate } from '../lib/content';
-const entries = (await published('journal')).filter((e) => e.data.cover).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
-const e = entries[0];
+const newest = <T extends { data: { date: Date; cover?: unknown } }>(list: T[]) =>
+  list.filter((x) => x.data.cover).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
+const e = newest(await published('journal'));
+const m = newest(await published('macro'));
 ---
+<div class="pair">
 {e && (
   <a class="card" href={`/journal/${e.id}`} data-cta="home-journal">
     <div class="shot">
@@ -18,8 +22,26 @@ const e = entries[0];
     </div>
   </a>
 )}
+{m && (
+  <a class="row" href={`/macro/${m.id}`} data-cta="home-macro">
+    <div class="shot">
+      <Image src={m.data.cover!} alt="" widths={[320, 480]} sizes="(max-width: 860px) 100vw, 280px" />
+    </div>
+    <div class="text">
+      <span class="label">Week ahead · {formatDate(m.data.date)}</span>
+      <h3 class="row-title">{m.data.title}</h3>
+      <p class="desc">{m.data.subtitle}</p>
+      <span class="go ui">Read the map →</span>
+    </div>
+  </a>
+)}
+</div>
 
 <style>
+  .pair { display: flex; flex-direction: column; gap: clamp(28px, 4vw, 44px); }
+  .row { display: grid; grid-template-columns: minmax(0, 280px) minmax(0, 1fr); gap: clamp(20px, 3vw, 32px); align-items: center; text-decoration: none; color: inherit; padding-top: clamp(28px, 4vw, 44px); border-top: 1px solid var(--line); }
+  .row-title { margin: 0; font-family: var(--font-heading); font-size: 24px; line-height: 1.2; color: var(--text-heading); }
+  .row .desc { font-size: 17px; }
   .card { display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); gap: clamp(24px, 4vw, 48px); align-items: center; text-decoration: none; color: inherit; }
   .shot { border: 1px solid var(--line-strong); border-bottom: 3px solid var(--wine); border-radius: var(--radius-card); overflow: hidden; background: var(--surface); }
   .shot :global(img) { display: block; width: 100%; height: auto; }
@@ -27,9 +49,9 @@ const e = entries[0];
   .text h2 { margin: 0; }
   .desc { margin: 0; font-size: 18px; line-height: 1.5; color: var(--text-soft); }
   .go { display: inline-flex; align-items: center; min-height: 44px; color: var(--rose-text); font-size: 17px; font-weight: 600; }
-  @media (hover: hover) { .card:hover .shot { border-color: var(--wine); } .card:hover .go { text-decoration: underline; } }
+  @media (hover: hover) { .card:hover .shot, .row:hover .shot { border-color: var(--wine); } .card:hover .go, .row:hover .go { text-decoration: underline; } }
   @media (max-width: 860px) {
-    .card { grid-template-columns: minmax(0, 1fr); gap: 18px; }
+    .card, .row { grid-template-columns: minmax(0, 1fr); gap: 18px; }
     .text { gap: 10px; }
     .desc { font-size: 17px; }
   }
