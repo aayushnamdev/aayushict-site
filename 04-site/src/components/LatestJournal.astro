@@ -7,6 +7,9 @@ const newest = <T extends { data: { date: Date; cover?: unknown } }>(list: T[]) 
   list.filter((x) => x.data.cover).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())[0];
 const e = newest(await published('journal'));
 const m = newest(await published('macro'));
+// The row label follows the post kind, so a review is not called "Week ahead".
+const rowText = { 'week-ahead': ['Week ahead', 'Read the map →'], review: ['Review', 'Read the review →'], briefing: ['Briefing', 'Read the briefing →'] } as const;
+const [rowLabel, rowGo] = m ? rowText[m.data.kind] : ['', ''];
 ---
 <div class="pair">
 {e && (
@@ -28,10 +31,10 @@ const m = newest(await published('macro'));
       <Image src={m.data.cover!} alt="" widths={[320, 480]} sizes="(max-width: 860px) 100vw, 280px" />
     </div>
     <div class="text">
-      <span class="label">Week ahead · {formatDate(m.data.date)}</span>
+      <span class="label">{rowLabel} · {formatDate(m.data.date)}</span>
       <h3 class="row-title">{m.data.title}</h3>
       <p class="desc">{m.data.subtitle}</p>
-      <span class="go ui">Read the map →</span>
+      <span class="go ui">{rowGo}</span>
     </div>
   </a>
 )}
