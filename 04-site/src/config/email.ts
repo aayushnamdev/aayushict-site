@@ -15,6 +15,10 @@ export const email = {
 // Buttondown calls /api/buttondown-hook on every confirm (webhook set up 21 Nov 2026). That route checks the
 // subscriber's metadata.source and sends the matching email once. Email ids are not secret.
 // Free plan note: Buttondown blocks new tags and automations on the free plan, so this is how we do it for free.
+// Buttondown tag added when the lead magnet is sent (Basic plan, from 21 Nov 2026). Tag names: the API reads and writes names.
+export const leadMagnetTags: Record<string, string> = {
+  'gold-bounce': 'gold-reel', // tag id sub_tag_2n828bxfwg8bqrt0qxh4m1dsgm
+};
 export const leadMagnets: Record<string, string> = {
   'gold-bounce': 'em_113gn291vc908tar1c5cqqzrm8', // Gold bounce checklist, 21 Nov 2026 reel
 };

@@ -3,7 +3,7 @@
 // No shared secret needed: we never trust the request body. We look the subscriber up in Buttondown ourselves,
 // only send to confirmed subscribers, and mark metadata.sent_<source> so a repeat call sends nothing.
 import type { APIRoute } from 'astro';
-import { leadMagnets, upgradeAlert } from '../../config/email';
+import { leadMagnets, leadMagnetTags, upgradeAlert } from '../../config/email';
 
 export const prerender = false;
 
@@ -51,7 +51,10 @@ export const POST: APIRoute = async ({ request }) => {
   const mark = await fetch(`${api}/subscribers/${encodeURIComponent(id)}`, {
     method: 'PATCH',
     headers,
-    body: JSON.stringify({ metadata: { ...sub.metadata, [flag]: new Date().toISOString() } }),
+    body: JSON.stringify({
+      metadata: { ...sub.metadata, [flag]: new Date().toISOString() },
+      ...(leadMagnetTags[source] ? { tags: [...new Set([...(sub.tags ?? []), leadMagnetTags[source]])] } : {}),
+    }),
   });
   if (!mark.ok) {
     console.error('Buttondown mark failed', mark.status, await mark.text().catch(() => ''));
