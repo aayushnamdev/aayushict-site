@@ -38,6 +38,9 @@ export const POST: APIRoute = async ({ request }) => {
   // Then the page they came from tells us: a referrer on /gold means the gold reel.
   let source = String(sub?.metadata?.source ?? '');
   if (!source && /aayushict\.space\/gold\b/.test(String(sub?.referrer_url ?? ''))) source = 'gold-bounce';
+  // During the gold reel push (until 28 Nov 2026), anyone who signs up on Buttondown's own page
+  // (buttondown.com/aayushict, not through our API) is from the reel, so they get the checklist too.
+  if (!source && sub?.source && sub.source !== 'api' && Date.now() < Date.parse('2026-11-28T00:00:00Z')) source = 'gold-bounce';
   const emailId = leadMagnets[source];
   if (!emailId) return ok('no lead magnet for this source');
   if (sub?.type !== 'regular') return ok('not confirmed');
