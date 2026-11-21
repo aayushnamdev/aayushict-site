@@ -6,7 +6,7 @@ import Icon from './Icon.astro';
 import { social } from '../config/site';
 interface Props { hideOnPhone?: boolean }
 const { hideOnPhone = false } = Astro.props;
-const icons = { Instagram: 'camera', X: 'x', Substack: 'substack' } as const;
+const icons = { Instagram: 'camera', X: 'x', Substack: 'substack', Telegram: 'send' } as const;
 // Home shows on every page except the home page. In-site link, so it opens in the same tab.
 const showHome = (Astro.url.pathname.replace(/\/$/, '') || '/') !== '/';
 ---

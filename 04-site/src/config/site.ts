@@ -5,7 +5,7 @@ export const person = {
   name: 'Aayush Namdev',
   url: 'https://aayushict.space',
   image: 'https://aayushict.space/og-default-v2.png',
-  sameAs: ['https://www.instagram.com/aayush_ict/', 'https://x.com/AayushICT', 'https://substack.com/@aayushnamdev'],
+  sameAs: ['https://www.instagram.com/aayush_ict/', 'https://x.com/AayushICT', 'https://substack.com/@aayushnamdev', 'https://t.me/notiltroom'],
 } as const;
 
 // Where to find Aayush. Used by the footer and the About page.
@@ -13,9 +13,10 @@ export const social = [
   { label: 'Instagram', handle: '@aayush_ict', href: 'https://www.instagram.com/aayush_ict/' },
   { label: 'X', handle: '@AayushICT', href: 'https://x.com/AayushICT' },
   { label: 'Substack', handle: '@aayushnamdev', href: 'https://substack.com/@aayushnamdev' },
+  { label: 'Telegram', handle: 'No Tilt Room', href: 'https://t.me/notiltroom' },
 ] as const;
 
-// Telegram channel. Not in the social rail yet: it is linked from /confirmed, /gold and the reel email.
+// Telegram channel. Also in `social` above (rail, footer, about). Used by name on /confirmed, /gold and the reel email.
 export const telegram = { label: 'Telegram', name: 'No Tilt Room', href: 'https://t.me/notiltroom' };
 
 export const site = {
