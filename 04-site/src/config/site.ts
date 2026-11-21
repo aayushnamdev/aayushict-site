@@ -15,6 +15,9 @@ export const social = [
   { label: 'Substack', handle: '@aayushnamdev', href: 'https://substack.com/@aayushnamdev' },
 ] as const;
 
+// Telegram channel. Not in the social rail yet: it is linked from /confirmed, /gold and the reel email.
+export const telegram = { label: 'Telegram', name: 'No Tilt Room', href: 'https://t.me/notiltroom' };
+
 export const site = {
   name: 'aayushict',
   url: 'https://aayushict.space',

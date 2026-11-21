@@ -5,6 +5,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AuthorCard from '../components/AuthorCard.astro';
 import EmailSignup from '../components/EmailSignup.astro';
+import { telegram } from '../config/site';
 
 const inside = [
   'Why gold fell on Friday, in 30 seconds.',
@@ -38,6 +39,7 @@ const inside = [
       {inside.map((line) => <li>{line}</li>)}
     </ul>
     <p>Then before Wednesday's Core PCE, 7 PM India time, my next update comes to the same inbox.</p>
+    <p>Want updates during the week too? <a href={telegram.href} rel="noopener" target="_blank">Join the {telegram.name} on Telegram</a>.</p>
 
     <div class="card"><AuthorCard /></div>
   </div>
