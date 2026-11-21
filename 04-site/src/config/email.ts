@@ -10,3 +10,11 @@ export const email = {
   thanks: 'Check your inbox and tap the link to confirm.',
   error: 'That did not go through. Please try again in a moment.',
 };
+
+// Reel lead magnets. A signup with this source gets this Buttondown email the moment they confirm.
+// Buttondown calls /api/buttondown-hook on every confirm (webhook set up 21 Nov 2026). That route checks the
+// subscriber's metadata.source and sends the matching email once. Email ids are not secret.
+// Free plan note: Buttondown blocks new tags and automations on the free plan, so this is how we do it for free.
+export const leadMagnets: Record<string, string> = {
+  'gold-bounce': 'em_113gn291vc908tar1c5cqqzrm8', // Gold bounce checklist, 21 Nov 2026 reel
+};

@@ -34,7 +34,7 @@ export const site = {
   ],
   // Paths of pages that exist but are not ready. They get noindex and stay out of the sitemap.
   // Add a path while building a new page, remove it when the page is real. /confirmed stays here on purpose.
-  pending: ['/confirmed'] as string[], // /confirmed is real but noindex: it is only for people who just confirmed
+  pending: ['/confirmed', '/gold'] as string[], // /confirmed is real but noindex: it is only for people who just confirmed
   legal: [
     { label: 'Disclosure', href: '/disclosure' },
     { label: 'Disclaimer', href: '/disclaimer' },

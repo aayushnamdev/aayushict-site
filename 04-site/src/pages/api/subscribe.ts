@@ -6,7 +6,11 @@ import type { APIRoute } from 'astro';
 export const prerender = false;
 
 // Where a signup came from. Saved as a Buttondown tag so he can email only the people who asked for a post.
-const sources = ['website', 'home', 'start-here', 'about', 'how-i-trade'];
+// gold-bounce: the gold bounce reel (/gold). A Buttondown automation sends the checklist when they confirm.
+const sources = ['website', 'home', 'start-here', 'about', 'how-i-trade', 'gold-bounce'];
+// Tags that already exist in Buttondown. The free plan cannot create new ones, and an unknown tag fails the signup.
+// Every source is also saved as metadata.source, which works on any plan.
+const tagged = ['home', 'start-here', 'about', 'how-i-trade'];
 
 const reply = (request: Request, ok: boolean, message: string, status: number) => {
   if ((request.headers.get('accept') ?? '').includes('application/json')) {
@@ -37,7 +41,12 @@ export const POST: APIRoute = async ({ request }) => {
       method: 'POST',
       headers: { Authorization: `Token ${key}`, 'Content-Type': 'application/json' },
       // "unactivated" keeps double opt-in: they get a confirmation email first.
-      body: JSON.stringify({ email_address: email, type: 'unactivated', tags: source === 'website' ? ['website'] : ['website', source] }),
+      body: JSON.stringify({
+        email_address: email,
+        type: 'unactivated',
+        tags: tagged.includes(source) ? ['website', source] : ['website'],
+        metadata: { source },
+      }),
     });
     if (res.ok) return reply(request, true, 'ok', 200);
     const body = await res.json().catch(() => ({}));

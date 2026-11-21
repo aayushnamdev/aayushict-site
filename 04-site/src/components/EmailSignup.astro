@@ -9,8 +9,10 @@ interface Props {
   id: string; // unique per page, used to link label and input
   prompt?: string; // overrides the default line above the form
   source?: string; // which page the signup came from, saved as a tag in Buttondown
+  thanks?: string; // overrides the message shown after signing up
+  button?: string; // overrides the button label
 }
-const { variant = 'band', id, prompt, source = 'website' } = Astro.props;
+const { variant = 'band', id, prompt, source = 'website', thanks = email.thanks, button = 'Sign me up' } = Astro.props;
 const text = prompt ?? (variant === 'footer' ? email.footerPrompt : email.prompt);
 ---
 {email.action && (
@@ -21,7 +23,7 @@ const text = prompt ?? (variant === 'footer' ? email.footerPrompt : email.prompt
       data-signup
       action={email.action}
       method="post"
-      data-thanks={email.thanks}
+      data-thanks={thanks}
       data-error={email.error}
     >
       <label class="sr" for={id}>Email</label>
@@ -30,7 +32,7 @@ const text = prompt ?? (variant === 'footer' ? email.footerPrompt : email.prompt
       <input type="hidden" name="source" value={source} />
       <!-- Honeypot: people never see or fill this. Bots often do. -->
       <input class="hp" type="text" name="website" tabindex="-1" autocomplete="off" aria-hidden="true" />
-      <button class:list={['btn', { white: variant === 'wine' }]} type="submit">Sign me up</button>
+      <button class:list={['btn', { white: variant === 'wine' }]} type="submit">{button}</button>
     </form>
     <p class="ui fine">{email.fine}</p>
   </div>
