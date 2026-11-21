@@ -34,7 +34,10 @@ export const POST: APIRoute = async ({ request }) => {
   if (!res.ok) return ok('subscriber not found');
   const sub = await res.json();
 
-  const source = String(sub?.metadata?.source ?? '');
+  // Signups through Buttondown's own form (our fallback when the API limit is hit) may not keep metadata.
+  // Then the page they came from tells us: a referrer on /gold means the gold reel.
+  let source = String(sub?.metadata?.source ?? '');
+  if (!source && /aayushict\.space\/gold\b/.test(String(sub?.referrer_url ?? ''))) source = 'gold-bounce';
   const emailId = leadMagnets[source];
   if (!emailId) return ok('no lead magnet for this source');
   if (sub?.type !== 'regular') return ok('not confirmed');

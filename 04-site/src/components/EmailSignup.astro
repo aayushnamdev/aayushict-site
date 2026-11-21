@@ -76,6 +76,25 @@ const text = prompt ?? (variant === 'footer' ? email.footerPrompt : email.prompt
         const data = new FormData(form);
         data.delete('website');
         const res = await fetch(form.action, { method: 'POST', body: data, headers: { Accept: 'application/json' } });
+        if (res.status >= 500) {
+          // Our API route could not add them (for example Buttondown's 100 a day API limit). Fall back to
+          // Buttondown's own public form, which that limit does not cover. It leaves our site for Buttondown's
+          // "check your inbox" page. The confirm hook spots reel signups by metadata or by the /gold referrer.
+          trackSignup(String(data.get('source') ?? 'website'));
+          const f = document.createElement('form');
+          f.method = 'post';
+          f.action = 'https://buttondown.com/api/emails/embed-subscribe/aayushict';
+          const add = (name: string, value: string) => { const i = document.createElement('input'); i.type = 'hidden'; i.name = name; i.value = value; f.append(i); };
+          add('email', String(data.get('email') ?? ''));
+          add('embed', '1');
+          add('metadata__source', String(data.get('source') ?? 'website'));
+          add('referrer_url', location.href);
+          // Send the full page address as the referrer (default is only the domain), so /gold is visible to Buttondown.
+          const ref = document.createElement('meta'); ref.name = 'referrer'; ref.content = 'no-referrer-when-downgrade'; document.head.append(ref);
+          document.body.append(f);
+          f.submit();
+          return;
+        }
         if (!res.ok) throw new Error(String(res.status));
         trackSignup(String(data.get('source') ?? 'website'));
         done(form.dataset.thanks ?? '', true);
