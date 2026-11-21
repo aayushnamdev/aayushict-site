@@ -18,3 +18,11 @@ export const email = {
 export const leadMagnets: Record<string, string> = {
   'gold-bounce': 'em_113gn291vc908tar1c5cqqzrm8', // Gold bounce checklist, 21 Nov 2026 reel
 };
+
+// Upgrade alert. When confirmed subscribers reach this count, /api/buttondown-hook emails Aayush once
+// (his own subscriber record, so no address is written here). Sent flag: metadata.alert_<threshold> on that record.
+export const upgradeAlert = {
+  threshold: 90,
+  emailId: 'em_5x12fm1q3t8zm8adkpj9c01de7', // "Heads up: 90 confirmed subscribers"
+  ownerSubscriberId: 'sub_5d6m8bq0rw840a4sybv35h40fg',
+};

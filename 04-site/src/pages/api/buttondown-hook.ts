@@ -3,7 +3,7 @@
 // No shared secret needed: we never trust the request body. We look the subscriber up in Buttondown ourselves,
 // only send to confirmed subscribers, and mark metadata.sent_<source> so a repeat call sends nothing.
 import type { APIRoute } from 'astro';
-import { leadMagnets } from '../../config/email';
+import { leadMagnets, upgradeAlert } from '../../config/email';
 
 export const prerender = false;
 
@@ -27,6 +27,9 @@ export const POST: APIRoute = async ({ request }) => {
   if (!id || !/^[\w-]{1,80}$/.test(id)) return ok('no subscriber id');
 
   const headers = { Authorization: `Token ${key}`, 'Content-Type': 'application/json' };
+  // Runs on every confirm, whatever page they came from. Failures here never block the checklist.
+  await checkUpgrade(headers).catch((err) => console.error('Upgrade alert check failed', err));
+
   const res = await fetch(`${api}/subscribers/${encodeURIComponent(id)}`, { headers });
   if (!res.ok) return ok('subscriber not found');
   const sub = await res.json();
@@ -58,3 +61,19 @@ export const POST: APIRoute = async ({ request }) => {
   }
   return ok('sent');
 };
+
+// Emails Aayush once when confirmed subscribers reach the threshold, so he upgrades before the free plan limit.
+async function checkUpgrade(headers: Record<string, string>) {
+  const { threshold, emailId, ownerSubscriberId: owner } = upgradeAlert;
+  const res = await fetch(`${api}/subscribers?type=regular&page_size=1`, { headers });
+  if (!res.ok) return;
+  const count = Number((await res.json())?.count ?? 0);
+  if (count < threshold) return;
+  const me = await fetch(`${api}/subscribers/${owner}`, { headers });
+  if (!me.ok) return;
+  const meta = (await me.json())?.metadata ?? {};
+  const flag = `alert_${threshold}`;
+  if (meta[flag]) return;
+  await fetch(`${api}/subscribers/${owner}`, { method: 'PATCH', headers, body: JSON.stringify({ metadata: { ...meta, [flag]: `${count} on ${new Date().toISOString()}` } }) });
+  await fetch(`${api}/subscribers/${owner}/emails/${emailId}`, { method: 'POST', headers });
+}
