@@ -21,7 +21,7 @@ const tagged = ['home', 'start-here', 'about', 'how-i-trade'];
 // The deep breakdown is written here by Claude from their real answers (or the fixed text for their style if that fails).
 // Every field is capped, and angle brackets are removed. A whole result is about 3 KB. Buttondown took a 40,000 character value in a test.
 const line = (s: string, n: number) => s.replace(/[<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, n);
-type Meta = Record<string, string | string[]>;
+type Meta = Record<string, unknown>;
 async function resultMetadata(token: unknown): Promise<Meta> {
   const secret = import.meta.env.STYLE_TEST_SECRET ?? (globalThis as any).process?.env?.STYLE_TEST_SECRET;
   const p = verifyToken(token, secret);
@@ -33,10 +33,11 @@ async function resultMetadata(token: unknown): Promise<Meta> {
     st_lean: p.lean ? styleName[p.lean] : '',
     st_mismatch_line: p.mismatch && p.current ? `You trade ${styleTitle[p.current]} right now. That might explain a lot.` : '',
     st_name: line(p.name, 24),
-    st_head: deep.head.slice(0, 4).map((b) => line(b, 400)),
-    st_chart: deep.chart.slice(0, 3).map((b) => line(b, 400)),
-    st_work: deep.work.slice(0, 3).map((b) => line(b, 200)),
-    st_question: line(deep.question, 240),
+    // Lists of small objects, read in the email as {% for c in subscriber.metadata.st_concepts %}{{ c.name }}...
+    st_concepts: deep.concepts.slice(0, 2).map((c) => ({ name: line(c.name, 60), school: line(c.school, 100), plain: line(c.plain, 160), inyou: line(c.inyou, 180) })),
+    st_said: deep.said.slice(0, 2).map((x) => ({ quote: line(x.quote, 160), means: line(x.means, 160) })),
+    st_work: deep.work.slice(0, 3).map((b) => line(b, 140)),
+    st_question: line(deep.question, 200),
     st_ai: ai ? 'yes' : why ? `no ${why}` : 'no',
   };
 }
