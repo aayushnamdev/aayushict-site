@@ -1,7 +1,8 @@
 ---
 // Trading style test. Scalper, Intraday or Swing, built from Aayush's psychology training and trading years.
-// One question per screen. Answers go to /api/style-test, which scores them, writes the personal note and logs the row.
-// The share card is drawn in the browser on a canvas (1080 x 1920, story size) with brand tokens.
+// Redesigned 27 Nov 2026 as a story. Three chapter screens, one scene and question per screen, answers as the voice in your head.
+// Answers go to /api/style-test, which scores them, writes short blocks and logs the row.
+// The share card is drawn in the browser on a canvas (1080 x 1920, story size) with brand tokens. It has no name on it.
 import BaseLayout from '../layouts/BaseLayout.astro';
 import EmailSignup from '../components/EmailSignup.astro';
 import Wordmark from '../components/Wordmark.astro';
@@ -17,8 +18,8 @@ const total = questions.length + 1;
   image="/og-style-test-v1.jpg"
   imageAlt="Is your trading style fighting your mind? Trading style test by aayushict. Scalper, intraday or swing."
 >
-  <div class="article col test">
-    <p class="label">Trading style test</p>
+  <div class="article col test" data-phase="intro">
+    <p class="label" data-intro-label>Trading style test</p>
     <h1 class="title">Is your trading style fighting your mind?</h1>
 
     <!-- Intro -->
@@ -26,10 +27,17 @@ const total = questions.length + 1;
       <p class="sub">Some traders lose because of their strategy. Many lose because the style does not fit who they are.</p>
       <p>I traded swing, then intraday, then found my place in scalping. The reason was how I react to losses.</p>
       <p>I built this test from my psychology training. {total} quick questions, about 3 minutes.</p>
-      <label class="ui namelabel" for="st-name">Your first name, for your result card (optional)</label>
+      <label class="ui namelabel" for="st-name">Your first name (optional)</label>
       <input id="st-name" class="name" type="text" maxlength="24" autocomplete="given-name" placeholder="Your name" />
       <button type="button" class="btn start" data-start>Start the test</button>
       <p class="ui fine">Answer for your real money account, not a cheap evaluation.</p>
+    </section>
+
+    <!-- Chapter screen, shown before each part -->
+    <section data-screen="chapter" hidden>
+      <p class="label scene" data-chapter-title></p>
+      <h2 class="chapterline" data-chapter-line tabindex="-1"></h2>
+      <button type="button" class="btn start" data-continue>Continue</button>
     </section>
 
     <!-- Questions -->
@@ -38,28 +46,36 @@ const total = questions.length + 1;
         <span data-count></span>
         <div class="track"><div class="fill" data-fill></div></div>
       </div>
+      <p class="label scene" data-scene></p>
       <h2 class="q" data-q tabindex="-1"></h2>
       <div class="opts" data-opts role="group"></div>
       <button type="button" class="back ui" data-back>← Back</button>
     </section>
 
-    <!-- Loading -->
+    <!-- Loading. The lines change every 2 seconds. Only the first is announced. -->
     <section data-screen="loading" hidden>
-      <p class="loading ui">Reading your answers...</p>
+      <p class="loading ui" data-loading></p>
     </section>
 
     <!-- Result -->
     <section data-screen="result" hidden>
-      <p class="label">Your result</p>
       <h2 class="style" data-style tabindex="-1"></h2>
       <p class="lean" data-lean hidden></p>
       <p class="mismatch ui" data-mismatch hidden></p>
 
+      <div class="strip" data-strip role="img" aria-label="Trade length, from seconds to days">
+        <div class="stripends ui" aria-hidden="true"><span>SECONDS</span><span>HOURS</span><span>DAYS</span></div>
+        <div class="stripline" aria-hidden="true"><span class="mark" data-mark></span></div>
+        <div class="striplabel ui" data-striplabel></div>
+      </div>
       <div class="bars" data-bars></div>
 
       <div class="note" data-note></div>
-      <h3>Work on this</h3>
-      <ol class="tips" data-tips></ol>
+
+      <aside class="goldbox">
+        <p class="label">On a gold chart</p>
+        <p data-gold></p>
+      </aside>
 
       <div class="share">
         <img data-card alt="Your trading style result card" width="1080" height="1920" />
@@ -71,13 +87,13 @@ const total = questions.length + 1;
       </div>
 
       <div class="emailbox">
-        <h3>Want more like this?</h3>
+        <h3>Why is your mind like this?</h3>
         <EmailSignup
           id="st-email"
           source="style-test"
-          prompt="Get your result in your inbox, plus my week ahead every Sunday."
-          button="Email me my result"
-          thanks="Almost there. Open your inbox and tap confirm. Your result arrives right after."
+          prompt="The psychology behind your result, and how to work on it. In your inbox."
+          button="Send me the deep breakdown"
+          thanks="Almost there. Open your inbox and tap confirm. Your deep breakdown arrives right after."
         />
       </div>
 
@@ -86,28 +102,53 @@ const total = questions.length + 1;
       <p class="ui fine">A short test I built from my psychology training. Not a clinical diagnosis. Not advice.</p>
     </section>
 
-    <div class="mark" aria-hidden="true"><Wordmark size={18} /></div>
+    <div class="mark-brand" aria-hidden="true"><Wordmark size={18} /></div>
   </div>
 </BaseLayout>
 
 <script>
-  import { current, questions, score, styleCopy, styleName, type Style } from '../lib/styletest';
+  import { chapters, current, cardLine, fallbackBlocks, questions, score, styleCopy, styleName, styleTitle, stripAt, type Style } from '../lib/styletest';
 
   const all = [current, ...questions];
   const $ = <T extends HTMLElement>(s: string) => document.querySelector<T>(s)!;
+  const root = $('.test');
   const screens = document.querySelectorAll<HTMLElement>('[data-screen]');
-  const show = (name: string) => screens.forEach((s) => (s.hidden = s.dataset.screen !== name));
+  const show = (name: string) => {
+    screens.forEach((s) => (s.hidden = s.dataset.screen !== name));
+    root.dataset.phase = name; // the CSS shrinks the h1 to a small label after the intro
+  };
   const live = (msg: string) => { const r = document.getElementById('live'); if (r) { r.textContent = ''; setTimeout(() => (r.textContent = msg), 50); } };
   const source = new URLSearchParams(location.search).get('src') ?? '';
+  const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
   let answers: number[] = [];
   let step = 0;
   let name = '';
+  let seen = new Set<string>(); // chapter screens already shown
+
+  // Go to question `i`. A chapter screen comes first if one starts here and it has not been shown yet.
+  function go(i: number) {
+    step = i;
+    const ch = chapters.find((c) => c.before === all[i].id);
+    if (ch && !seen.has(ch.before)) {
+      seen.add(ch.before);
+      show('chapter');
+      $('[data-chapter-title]').textContent = ch.title.toUpperCase();
+      const h = $('[data-chapter-line]');
+      h.textContent = ch.line;
+      h.focus({ preventScroll: true });
+      window.scrollTo({ top: 0 });
+      return;
+    }
+    show('quiz');
+    renderQuestion();
+  }
 
   function renderQuestion() {
     const q = all[step];
     $('[data-count]').textContent = `${step + 1} of ${all.length}`;
     $('[data-fill]').style.width = `${(step / all.length) * 100}%`;
+    $('[data-scene]').textContent = q.scene;
     const h = $('[data-q]');
     h.textContent = q.text;
     const box = $('[data-opts]');
@@ -117,7 +158,7 @@ const total = questions.length + 1;
       const b = document.createElement('button');
       b.type = 'button';
       b.className = 'opt';
-      b.textContent = o.label;
+      b.textContent = q.voice ? `\u201C${o.label}\u201D` : o.label; // the voice in their head, in quotes
       b.setAttribute('aria-pressed', String(answers[step] === i));
       b.addEventListener('click', () => pick(i, b));
       box.appendChild(b);
@@ -131,27 +172,45 @@ const total = questions.length + 1;
     answers[step] = i;
     b.setAttribute('aria-pressed', 'true');
     setTimeout(() => {
-      if (step < all.length - 1) { step++; renderQuestion(); }
+      if (step < all.length - 1) go(step + 1);
       else finish();
     }, 180);
   }
 
+  // Calm lines while the result is written. They change every 2 seconds. Only the first one goes to the #live region.
+  const loadingLines = [
+    'Take a breath. You just looked at yourself honestly.',
+    'Matching your answers to the three styles...',
+    'Writing your result. Just a few seconds.',
+  ];
+
   async function finish() {
     show('loading');
-    live('Reading your answers.');
+    const el = $('[data-loading]');
+    let n = 0;
+    el.textContent = loadingLines[0];
+    live(loadingLines[0]);
+    const timer = setInterval(() => { if (n < loadingLines.length - 1) el.textContent = loadingLines[++n]; }, 2000);
+    window.scrollTo({ top: 0 });
+
     const local = score(answers)!;
-    let data: any = null;
-    try {
-      const res = await fetch('/api/style-test', {
-        method: 'POST',
-        headers: { 'content-type': 'application/json' },
-        body: JSON.stringify({ answers, name, source }),
-      });
-      if (res.ok) data = await res.json();
-    } catch { /* fall back to the fixed note below */ }
+    const request = (async () => {
+      try {
+        const res = await fetch('/api/style-test', {
+          method: 'POST',
+          headers: { 'content-type': 'application/json' },
+          body: JSON.stringify({ answers, name, source }),
+        });
+        return res.ok ? await res.json() : null;
+      } catch { return null; /* fall back to the fixed blocks below */ }
+    })();
+    // Show the first line for a moment even when the answer is fast.
+    const [fromServer] = await Promise.all([request, sleep(2200)]);
+    clearInterval(timer);
+
+    let data: any = fromServer;
     if (!data?.ok) {
-      const c = styleCopy[local.style];
-      data = { ...local, styleName: styleName[local.style], leanName: local.lean ? styleName[local.lean] : null, line: c.line, note: c.note, tips: c.tips };
+      data = { ...local, styleName: styleName[local.style], leanName: local.lean ? styleName[local.lean] : null, blocks: fallbackBlocks(local.style, local.current, local.mismatch), gold: styleCopy[local.style].gold };
     }
     renderResult(data);
   }
@@ -173,30 +232,37 @@ const total = questions.length + 1;
   function renderResult(d: any) {
     show('result');
     setToken(d.token);
+    const style = d.style as Style;
     const head = $('[data-style]');
-    head.textContent = name ? `${name}, your mind fits ${d.styleName}` : `Your mind fits ${d.styleName}`;
+    head.textContent = `Your mind fits ${styleTitle[style]}.`;
     const lean = $('[data-lean]');
     lean.hidden = !d.leanName;
     lean.textContent = d.leanName ? `With a strong ${d.leanName} side. It was close.` : '';
     const mm = $('[data-mismatch]');
     mm.hidden = !d.mismatch;
-    mm.textContent = d.mismatch ? `Mismatch found. You trade ${styleName[d.current as Style]} now, but your answers fit ${d.styleName}.` : '';
+    mm.textContent = d.mismatch ? `You trade ${styleTitle[d.current as Style]} right now. That might explain a lot.` : '';
+
+    // Trade length strip: SECONDS to DAYS, with a marker and a word label (never colour alone).
+    const at = stripAt[style];
+    $('[data-mark]').style.left = `${at}%`;
+    const label = $('[data-striplabel]');
+    label.textContent = styleTitle[style];
+    label.style.left = `${at}%`;
+    label.style.transform = `translateX(-${at}%)`;
 
     const bars = $('[data-bars]');
     bars.innerHTML = '';
     (['S', 'I', 'W'] as Style[]).forEach((k) => {
       const row = document.createElement('div');
-      row.className = 'bar' + (k === d.style ? ' top' : '');
-      row.innerHTML = `<span class="ui">${styleName[k]}</span><div class="btrack"><div class="bfill" style="width:${d.percent[k]}%"></div></div><span class="num">${d.percent[k]}%</span>`;
+      row.className = 'bar' + (k === style ? ' top' : '');
+      row.innerHTML = `<span class="ui">${styleTitle[k]}</span><div class="btrack"><div class="bfill" style="width:${d.percent[k]}%"></div></div><span class="num">${d.percent[k]}%</span>`;
       bars.appendChild(row);
     });
 
     const note = $('[data-note]');
     note.innerHTML = '';
-    String(d.note).split(/\n\s*\n/).forEach((para) => { const p = document.createElement('p'); p.textContent = para.trim(); note.appendChild(p); });
-    const tips = $('[data-tips]');
-    tips.innerHTML = '';
-    (d.tips as string[]).forEach((t) => { const li = document.createElement('li'); li.textContent = t; tips.appendChild(li); });
+    (d.blocks as string[]).forEach((b) => { const p = document.createElement('p'); p.textContent = b; note.appendChild(p); });
+    $('[data-gold]').textContent = d.gold ?? styleCopy[style].gold;
 
     head.focus({ preventScroll: true });
     window.scrollTo({ top: 0 });
@@ -204,68 +270,54 @@ const total = questions.length + 1;
     drawCard(d).catch((e) => console.error('Card failed', e));
   }
 
-  // Share card, 1080 x 1920. Colours and fonts come from the page's CSS tokens.
+  // Share card, 1080 x 1920. Written as the person talking to their own followers. No name on it.
+  // Colours and fonts come from the page's CSS tokens.
   let cardBlob: Blob | null = null;
   async function drawCard(d: any) {
     const css = getComputedStyle(document.documentElement);
     const v = (n: string) => css.getPropertyValue(n).trim();
     const fHead = v('--font-heading'), fUi = v('--font-ui'), fNum = v('--font-number'), fBody = v('--font-body');
     await Promise.all([
-      document.fonts.load(`700 80px ${fHead}`), document.fonts.load(`500 40px ${fUi}`),
+      document.fonts.load(`800 80px ${fHead}`), document.fonts.load(`500 40px ${fUi}`),
       document.fonts.load(`400 30px ${fNum}`), document.fonts.load(`400 44px ${fBody}`),
     ]).catch(() => {});
 
+    const style = d.style as Style;
     const W = 1080, H = 1920, pad = 96;
     const c = document.createElement('canvas');
     c.width = W; c.height = H;
     const x = c.getContext('2d')!;
     x.fillStyle = v('--page'); x.fillRect(0, 0, W, H);
-
-    // Wordmark
     x.textBaseline = 'alphabetic';
-    x.font = `700 64px ${fHead}`;
-    x.fillStyle = v('--text-heading');
-    x.fillText('aayush', pad, 220);
-    const aw = x.measureText('aayush').width;
-    x.fillStyle = v('--rose'); x.fillText('ict', pad + aw, 220);
 
-    x.font = `500 30px ${fNum}`;
+    // Top small line
+    x.font = `500 42px ${fUi}`;
     x.fillStyle = v('--rose-text');
-    x.fillText('TRADING STYLE TEST', pad, 300);
+    x.fillText('I took a trading style test', pad, 240);
 
-    // Headline
-    x.font = `400 50px ${fBody}`;
+    // Headline: "My mind fits" and the style in big letters
+    x.font = `400 56px ${fBody}`;
     x.fillStyle = v('--text-soft');
-    x.fillText(name ? `${name}'s mind fits` : 'My mind fits', pad, 620);
-    let size = 190;
+    x.fillText('My mind fits', pad, 500);
+    const title = styleTitle[style].toUpperCase();
+    let size = 200;
     x.font = `800 ${size}px ${fHead}`;
-    while (x.measureText(d.styleName.toUpperCase()).width > W - pad * 2 && size > 100) { size -= 10; x.font = `800 ${size}px ${fHead}`; }
+    while (x.measureText(title).width > W - pad * 2 && size > 100) { size -= 10; x.font = `800 ${size}px ${fHead}`; }
     x.fillStyle = v('--text-heading');
-    x.fillText(d.styleName.toUpperCase(), pad - 6, 800);
+    x.fillText(title, pad - 6, 500 + size * 0.95);
 
-    // Line under it
-    x.font = `400 46px ${fBody}`;
+    // The one light bulb line
+    x.font = `400 52px ${fBody}`;
     x.fillStyle = v('--text-body');
-    let y = wrap(x, d.line, pad, 900, W - pad * 2, 62);
-
-    // Mismatch pill
-    if (d.mismatch) {
-      y += 50;
-      x.font = `600 38px ${fUi}`;
-      const t = `I trade ${styleName[d.current as Style]}. My mind says ${d.styleName}.`;
-      const tw = Math.min(x.measureText(t).width, W - pad * 2 - 64);
-      roundRect(x, pad, y, tw + 64, 92, 46); x.fillStyle = v('--wine'); x.fill();
-      x.fillStyle = v('--white'); x.fillText(t, pad + 32, y + 60, W - pad * 2 - 64);
-      y += 92;
-    }
+    const y = wrap(x, cardLine(style, d.current as Style | null, !!d.mismatch), pad, 500 + size * 0.95 + 110, W - pad * 2, 70);
 
     // Bars, each with its name and number, so colour is never the only signal
-    let by = Math.max(y + 110, 1240);
+    let by = Math.max(y + 130, 1180);
     (['S', 'I', 'W'] as Style[]).forEach((k) => {
-      const topRow = k === d.style;
+      const topRow = k === style;
       x.font = `600 40px ${fUi}`;
       x.fillStyle = topRow ? v('--text-heading') : v('--text-soft');
-      x.fillText(styleName[k], pad, by);
+      x.fillText(styleTitle[k], pad, by);
       x.font = `500 40px ${fNum}`;
       const n = `${d.percent[k]}%`;
       x.fillText(n, W - pad - x.measureText(n).width, by);
@@ -279,10 +331,10 @@ const total = questions.length + 1;
     x.fillStyle = v('--wine'); x.fillRect(0, H - 250, W, 250);
     x.font = `600 44px ${fUi}`;
     x.fillStyle = v('--white');
-    x.fillText('Take the test: aayushict.space/test', pad, H - 140);
+    x.fillText('Find your style: aayushict.space/test', pad, H - 140);
     x.font = `500 38px ${fUi}`;
     x.fillStyle = v('--rose-on-wine');
-    x.fillText('@aayush_ict', pad, H - 80);
+    x.fillText('Test by @aayush_ict', pad, H - 80);
 
     cardBlob = await new Promise<Blob | null>((r) => c.toBlob(r, 'image/png'));
     if (!cardBlob) return;
@@ -308,8 +360,8 @@ const total = questions.length + 1;
   }
 
   $('[data-share]').addEventListener('click', async () => {
-    const styleText = $('[data-style]').textContent ?? '';
-    const text = `I took Aayush's trading style test. ${styleText}. Take yours: https://aayushict.space/test`;
+    const styleText = $('[data-style]').textContent?.replace(/^Your mind fits /, '').replace(/\.$/, '') ?? '';
+    const text = `Took a trading style test. My mind fits ${styleText}. Find yours: https://aayushict.space/test`;
     if (cardBlob) {
       const file = new File([cardBlob], 'my-trading-style.png', { type: 'image/png' });
       if (navigator.canShare?.({ files: [file] })) {
@@ -321,13 +373,15 @@ const total = questions.length + 1;
     live('Image saved. Post it on your story and tag @aayush_ict.');
   });
 
+  const begin = () => { answers = []; seen = new Set(); go(0); };
   $('[data-start]').addEventListener('click', () => {
     name = $<HTMLInputElement>('#st-name').value.replace(/[^\p{L}\p{M} .']/gu, '').trim().slice(0, 24);
-    answers = []; step = 0;
-    show('quiz'); renderQuestion();
+    begin();
   });
-  $('[data-back]').addEventListener('click', () => { if (step > 0) { step--; renderQuestion(); } });
-  $('[data-retake]').addEventListener('click', () => { answers = []; step = 0; show('quiz'); renderQuestion(); });
+  $('[data-continue]').addEventListener('click', () => { show('quiz'); renderQuestion(); });
+  // Back goes to the question before, and skips the chapter screen.
+  $('[data-back]').addEventListener('click', () => { if (step > 0) { step--; show('quiz'); renderQuestion(); } });
+  $('[data-retake]').addEventListener('click', begin);
 </script>
 
 <style is:global>
@@ -337,14 +391,22 @@ const total = questions.length + 1;
   .test [hidden] { display: none !important; }
   .test section { margin-top: 28px; }
 
+  /* After the intro the question owns the screen: the h1 becomes the small label (it stays the only h1). */
+  .test:not([data-phase='intro']) .title { font-family: var(--font-number); font-size: 13px; font-weight: 400; letter-spacing: 0.1em; text-transform: uppercase; color: var(--rose-text); line-height: 1.4; margin: 0; }
+  .test:not([data-phase='intro']) [data-intro-label] { display: none; }
+  .test:not([data-phase='intro']) section { margin-top: 20px; }
+  .test .scene { margin: 22px 0 0; font-size: 13px; line-height: 1.4; }
+  .test .scene, .test .goldbox .label { color: var(--rose-text); }
+
   .test .namelabel { display: block; font-size: 15px; color: var(--text-soft); margin: 22px 0 8px; }
   .test .name { width: 100%; max-width: 360px; min-height: 48px; padding: 10px 14px; border-radius: var(--radius-button); border: 1px solid var(--line-strong); background: var(--surface); color: var(--text-heading); font-family: var(--font-ui); font-size: 16px; }
   .test .start { display: flex; margin-top: 20px; min-height: 52px; padding: 14px 28px; font-size: 17px; font-weight: 600; }
 
+  .test .chapterline { font-size: 28px; line-height: 1.3; margin: 14px 0 8px; outline: none; }
   .test .progress { display: flex; align-items: center; gap: 14px; font-size: 14px; color: var(--text-muted); }
   .test .track { flex: 1; height: 6px; border-radius: 3px; background: var(--surface-raised); overflow: hidden; }
   .test .fill { height: 100%; background: var(--rose); transition: width 0.25s ease; }
-  .test .q { font-size: 26px; line-height: 1.3; margin: 26px 0 20px; outline: none; }
+  .test .q { font-size: 26px; line-height: 1.3; margin: 10px 0 20px; outline: none; }
   .test .opts { display: flex; flex-direction: column; gap: 12px; }
   .test .opt { min-height: 60px; padding: 14px 18px; text-align: left; border: 2px solid transparent; border-radius: var(--radius-card); background: var(--white); color: var(--ink); font-family: var(--font-ui); font-size: 17px; font-weight: 500; line-height: 1.35; cursor: pointer; }
   .test .opt[aria-pressed='true'] { background: var(--wine); color: var(--white); }
@@ -352,22 +414,31 @@ const total = questions.length + 1;
   .test .opt:focus-visible { outline: 3px solid var(--rose); outline-offset: 2px; }
   .test .back { margin-top: 22px; min-height: 44px; padding: 10px 4px; background: none; border: none; color: var(--rose-text); font-size: 15px; cursor: pointer; }
 
-  .test .loading { font-size: 20px; color: var(--text-soft); padding: 60px 0; }
+  .test .loading { font-size: 22px; line-height: 1.5; color: var(--text-soft); padding: 60px 0; min-height: 190px; }
 
   .test .style { font-size: 34px; line-height: 1.2; margin: 4px 0 10px; outline: none; }
   .test .lean { color: var(--text-soft) !important; }
   .test .mismatch { background: var(--wine); color: var(--text-on-wine); padding: 14px 18px; border-radius: var(--radius-card); font-size: 16px; line-height: 1.5; margin: 12px 0 8px; }
-  .test .bars { display: flex; flex-direction: column; gap: 12px; margin: 24px 0 28px; }
+
+  /* Trade length strip: SECONDS, HOURS, DAYS, with a marker and a word label under it. */
+  .test .strip { position: relative; margin: 26px 0 6px; min-height: 96px; }
+  .test .stripends { display: flex; justify-content: space-between; font-size: 12px; letter-spacing: 0.1em; color: var(--text-muted); }
+  .test .stripline { position: relative; height: 6px; margin: 8px 0 0; border-radius: 3px; background: var(--surface-raised); }
+  .test .mark { position: absolute; top: 10px; width: 0; height: 0; margin-left: -9px; border-left: 9px solid transparent; border-right: 9px solid transparent; border-bottom: 12px solid var(--rose); }
+  .test .striplabel { position: absolute; left: 0; top: 52px; font-size: 15px; font-weight: 600; color: var(--text-heading); white-space: nowrap; }
+  .test .bars { display: flex; flex-direction: column; gap: 12px; margin: 14px 0 28px; }
   .test .bar { display: grid; grid-template-columns: 90px 1fr 48px; align-items: center; gap: 12px; font-size: 15px; color: var(--text-soft); }
   .test .bar.top { color: var(--text-heading); font-weight: 600; }
   .test .btrack { height: 10px; border-radius: 5px; background: var(--surface-raised); overflow: hidden; }
   .test .bfill { height: 100%; background: var(--wine); }
   .test .bar.top .bfill { background: var(--rose); }
   .test .num { font-family: var(--font-number); text-align: right; color: var(--text-number); }
-  .test .note p { margin-bottom: 14px; }
+  .test .note p { margin-bottom: 16px; }
   .test h3 { font-size: 21px; margin: 28px 0 10px; }
-  .test .tips { padding-left: 1.3em; margin: 0 0 8px; }
-  .test .tips li { font-size: var(--read-body); line-height: 1.6; color: var(--text-body); margin-bottom: 8px; }
+
+  .test .goldbox { margin: 26px 0 8px; padding: 18px 20px; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--line); }
+  .test .goldbox .label { margin: 0 0 8px; }
+  .test .goldbox p:last-child { margin: 0; }
 
   .test .share { margin: 34px 0 10px; }
   .test .share img { display: block; width: 100%; max-width: 300px; height: auto; border-radius: var(--radius-card); border: 1px solid var(--line); background: var(--surface); }
@@ -375,10 +446,11 @@ const total = questions.length + 1;
   .test .sharebtns .btn { min-height: 50px; padding: 12px 22px; font-size: 16px; }
   .test .emailbox { margin: 34px 0 24px; padding: 22px; border-radius: var(--radius-card); background: var(--surface); border: 1px solid var(--line); }
   .test .emailbox h3 { margin-top: 0; }
-  .test .mark { margin-top: 40px; opacity: 0.7; }
+  .test .mark-brand { margin-top: 40px; opacity: 0.7; }
 
   @media (max-width: 860px) {
     .test .q { font-size: 22px; }
+    .test .chapterline { font-size: 24px; }
     .test .style { font-size: 28px; }
     .test .opt { font-size: 16px; }
   }

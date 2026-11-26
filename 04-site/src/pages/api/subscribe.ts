@@ -3,7 +3,8 @@
 // Works with JavaScript (replies with JSON) and without it (redirects back to the page).
 import type { APIRoute } from 'astro';
 import { leadMagnets, leadMagnetNeeds } from '../../config/email';
-import { styleName } from '../../lib/styletest';
+import { styleName, styleTitle } from '../../lib/styletest';
+import { deepBreakdown } from '../../lib/deepbreakdown';
 import { verifyToken } from '../../lib/styletoken';
 
 export const prerender = false;
@@ -16,21 +17,39 @@ const sources = ['website', 'home', 'start-here', 'about', 'how-i-trade', 'gold-
 const tagged = ['home', 'start-here', 'about', 'how-i-trade'];
 
 // The style test result, saved on the subscriber so the confirm email can show it (Buttondown metadata, used as
-// {{ subscriber.metadata.st_style }} in the email). Only saved when the signed token checks out. Every field is capped.
+// {{ subscriber.metadata.st_title }} and so on in the email). Only saved when the signed token checks out.
+// The deep breakdown is written here by Claude from their real answers (or the fixed text for their style if that fails).
+// Every field is capped, and angle brackets are removed. A whole result is about 3 KB. Buttondown took a 40,000 character value in a test.
 const line = (s: string, n: number) => s.replace(/[<>]/g, '').replace(/\s+/g, ' ').trim().slice(0, n);
-const paragraphs = (s: string, n: number) => s.replace(/[<>]/g, '').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim().slice(0, n);
-function resultMetadata(token: unknown): Record<string, string | string[]> {
+type Meta = Record<string, string | string[]>;
+async function resultMetadata(token: unknown): Promise<Meta> {
   const secret = import.meta.env.STYLE_TEST_SECRET ?? (globalThis as any).process?.env?.STYLE_TEST_SECRET;
   const p = verifyToken(token, secret);
   if (!p) return {};
+  const { deep, ai, why } = await deepBreakdown(p);
   return {
     st_style: styleName[p.style],
+    st_title: styleTitle[p.style],
     st_lean: p.lean ? styleName[p.lean] : '',
-    st_mismatch_line: p.mismatch && p.current ? line(`You trade ${styleName[p.current]} now, but your answers fit ${styleName[p.style]}.`, 160) : '',
-    st_note: paragraphs(p.note, 900),
-    st_tips: p.tips.slice(0, 3).map((t) => line(t, 160)).filter(Boolean),
+    st_mismatch_line: p.mismatch && p.current ? `You trade ${styleTitle[p.current]} right now. That might explain a lot.` : '',
     st_name: line(p.name, 24),
+    st_head: deep.head.slice(0, 4).map((b) => line(b, 400)),
+    st_chart: deep.chart.slice(0, 3).map((b) => line(b, 400)),
+    st_work: deep.work.slice(0, 3).map((b) => line(b, 200)),
+    st_question: line(deep.question, 240),
+    st_ai: ai ? 'yes' : why ? `no ${why}` : 'no',
   };
+}
+
+// Writing the breakdown costs an AI call, so signups that carry a result are limited per IP (in memory, per server instance).
+const hits = new Map<string, number[]>();
+function limited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < 10 * 60 * 1000);
+  if (recent.length >= 5) { hits.set(ip, recent); return true; }
+  recent.push(now);
+  hits.set(ip, recent);
+  return false;
 }
 
 const reply = (request: Request, ok: boolean, message: string, status: number) => {
@@ -55,7 +74,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   const source = sources.includes(asked) ? asked : 'website';
 
   // A bad or missing token just means no result is saved. The signup goes ahead.
-  const result = source === 'style-test' ? resultMetadata(form.get('token')) : {};
+  const fwdFor = (request.headers.get('x-forwarded-for') ?? '').split(',')[0].trim() || clientAddress || 'unknown';
+  const result: Meta = source === 'style-test' && form.get('token') && !limited(fwdFor) ? await resultMetadata(form.get('token')) : {};
 
   const key = import.meta.env.BUTTONDOWN_API_KEY;
   if (!key) return reply(request, false, 'Signup is not set up yet.', 500);
@@ -96,7 +116,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
 };
 
 const api = 'https://api.buttondown.com/v1';
-async function existing(key: string, email: string, source: string, result: Record<string, string | string[]>) {
+async function existing(key: string, email: string, source: string, result: Meta) {
   const headers = { Authorization: `Token ${key}`, 'Content-Type': 'application/json' };
   const res = await fetch(`${api}/subscribers/${encodeURIComponent(email)}`, { headers });
   if (!res.ok) return;

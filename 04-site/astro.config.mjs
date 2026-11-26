@@ -19,7 +19,8 @@ const google = fontProviders.google();
 export default defineConfig({
   site: 'https://aayushict.space',
   output: 'static',
-  adapter: vercel({ webAnalytics: { enabled: true } }),
+  // maxDuration: the style test signup asks Claude to write the deep breakdown, which can take 10 to 20 seconds.
+  adapter: vercel({ webAnalytics: { enabled: true }, maxDuration: 30 }),
   integrations: [
     mdx(),
     sitemap({

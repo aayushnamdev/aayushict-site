@@ -1,20 +1,19 @@
 // Trading style test result. The page posts the answers here.
 // 1. Code scores them (src/lib/styletest.ts). The style is decided here, never by the AI.
-// 2. Claude writes a short personal note from their exact answers.
+// 2. Claude writes a few short blocks from their exact answers (src/lib/claude.ts).
 // 3. The response is logged to a Google Sheet through an Apps Script webhook.
+// 4. The result is signed (STYLE_TEST_SECRET) so the email signup can trust it later.
 // Keys live in Vercel's environment settings only: ANTHROPIC_API_KEY, SHEET_WEBHOOK_URL, STYLE_TEST_SECRET, optional STYLE_TEST_MODEL.
-// If the AI or the sheet fails, the person still gets their result with the fixed note.
+// If the AI or the sheet fails, the person still gets their result with fixed blocks.
 import type { APIRoute } from 'astro';
-import { current, questions, score, styleCopy, styleName, type Result } from '../../lib/styletest';
+import { current, fallbackBlocks, questions, score, styleCopy, styleName, styleTitle, type Result } from '../../lib/styletest';
 import { signToken } from '../../lib/styletoken';
+import { askJson, askWithRetry, cleanText, env, wordCount } from '../../lib/claude';
 
 export const prerender = false;
 
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers: { 'content-type': 'application/json' } });
-
-const env = (k: string): string | undefined =>
-  (import.meta.env as Record<string, string | undefined>)[k] ?? (globalThis as any).process?.env?.[k];
 
 const flagText: Record<string, string> = {
   revenge: 'After losing days they feel they must win it back (revenge trading risk).',
@@ -35,77 +34,36 @@ If warning signs are listed, name the most important one gently.
 No em dashes, no hyphens as connectors, no emoji, no hashtags, no markdown. No trade calls, no promises of profit. Not a diagnosis.
 Every sentence must make sense on its own. No vague lines like 'your change is worth watching'. Say exactly what to do or notice.
 
-Return ONLY JSON: {"note": string, "tips": [string, string, string]}
-"note": 2 short paragraphs separated by a blank line, 70 to 95 words in total.
-"tips": 2 or 3 practical things to work on, each under 16 words.
-Whole result must stay under 150 words.`;
+Return ONLY JSON: {"blocks": [string, string, string, string]}
+4 to 6 blocks. Each block is 1 or 2 short sentences. About 80 to 100 words in total.
+Order: first, what this style means for them. Then why, pointing to 2 or 3 of their real answers. If they trade a different style now, the last block explains the mismatch.
+No tips. No advice section.`;
 
-// `why` receives a short failure reason (an HTTP status or a word). It goes in the Sheet's ai column, never to the visitor.
-async function tryNote(r: Result, labels: string[], name: string, why: { v: string }) {
-  why.v = '';
-  const key = env('ANTHROPIC_API_KEY');
-  if (!key) { why.v = 'nokey'; return null; }
-  const model = env('STYLE_TEST_MODEL') || 'claude-haiku-5-5';
+// One try. Returns the blocks, or null with a short reason in `why.v`.
+async function tryBlocks(r: Result, labels: string[], name: string, why: { v: string }): Promise<string[] | null> {
   const lines = [
     name ? `Name: ${name}` : 'Name: not given',
-    `Main style (decided): ${styleName[r.style]}${r.lean ? `, close second: ${styleName[r.lean]}` : ''}`,
-    `Scores: Scalper ${r.percent.S}%, Intraday ${r.percent.I}%, Swing ${r.percent.W}%`,
-    `Trades now: ${labels[0]}${r.mismatch ? ' (MISMATCH with their result)' : ''}`,
-    'Their answers:',
-    ...questions.map((q, i) => `- ${q.text} -> ${labels[i + 1]}`),
+    `Main style (decided): ${styleTitle[r.style]}${r.lean ? `, close second: ${styleTitle[r.lean]}` : ''}`,
+    `Scores: Scalping ${r.percent.S}%, Intraday ${r.percent.I}%, Swing ${r.percent.W}%`,
+    `Trades now: ${r.current ? styleTitle[r.current] : 'not sure yet'} (${labels[0]})${r.mismatch ? ' (MISMATCH with their result)' : ''}`,
+    'Their answers (the voice in their head):',
+    ...questions.map((q, i) => `- ${q.scene}. ${q.text} -> ${labels[i + 1]}`),
     'Warning signs: ' + (r.flags.length ? r.flags.map((f) => flagText[f]).join(' ') : 'none'),
   ].join('\n');
 
-  const ctrl = new AbortController();
-  const timer = setTimeout(() => ctrl.abort(), 15000);
-  try {
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      signal: ctrl.signal,
-      headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-      body: JSON.stringify({ model, max_tokens: 1500, thinking: { type: 'disabled' }, system, messages: [{ role: 'user', content: lines }] }),
-    });
-    if (!res.ok) {
-      console.error('Style test AI error', res.status, await res.text().catch(() => ''));
-      why.v = String(res.status);
-      return null;
-    }
-    const data = await res.json();
-    const blocks: any[] = Array.isArray(data?.content) ? data.content : [];
-    const text: string = blocks.filter((c) => c.type === 'text').map((c) => String(c.text ?? '')).join('\n');
-    const match = text.match(/\{[\s\S]*\}/);
-    if (!match) { why.v = `noparse ${data?.stop_reason ?? ''} ${blocks.map((c) => c.type).join('+')}`.trim(); return null; }
-    const out = JSON.parse(match[0]);
-    // Clean up anything that breaks the house style.
-    const clean = (s: unknown) => String(s ?? '').replace(/\s*[—–]\s*/g, ', ').replace(/[*#]/g, '').trim();
-    const note = clean(out.note);
-    const tips = Array.isArray(out.tips) ? out.tips.map(clean).filter(Boolean).slice(0, 3) : [];
-    // The note must be 65 to 100 words (the prompt asks for 70 to 95), with 2 or 3 tips.
-    const words = note.split(/\s+/).filter(Boolean).length;
-    if (words < 65) { why.v = 'short'; return null; }
-    if (words > 100) { why.v = 'long'; return null; }
-    if (tips.length < 2) { why.v = 'tips'; return null; }
-    return { note, tips };
-  } catch (err) {
-    console.error('Style test AI failed', err);
-    why.v = 'exception';
-    return null;
-  } finally {
-    clearTimeout(timer);
-  }
+  const out = await askJson(system, lines, why, 12000, 1500);
+  if (!out) return null;
+  const blocks: string[] = Array.isArray(out.blocks) ? out.blocks.map(cleanText).filter(Boolean) : [];
+  // 4 to 6 blocks, each 1 or 2 short sentences (about 45 words at most), 70 to 110 words in all.
+  const total = wordCount(blocks.join(' '));
+  if (blocks.length < 4 || blocks.length > 6 || blocks.some((b) => wordCount(b) > 45)) { why.v = 'shape'; return null; }
+  if (total < 70) { why.v = 'short'; return null; }
+  if (total > 110) { why.v = 'long'; return null; }
+  return blocks;
 }
 
-// Asks for the note, and asks once more if the first reply is the wrong length or unreadable (and there is time left).
-// A key or model problem (401, 404, 400, no key) is not retried. If both tries fail, the caller uses the fixed note.
-async function writeNote(r: Result, labels: string[], name: string, why: { v: string }) {
-  const started = Date.now();
-  for (let attempt = 0; attempt < 2; attempt++) {
-    const out = await tryNote(r, labels, name, why);
-    if (out) return out;
-    if (!/^(short|long|tips|noparse|exception|429|5\d\d)/.test(why.v) || Date.now() - started > 8000) return null;
-  }
-  return null;
-}
+const writeBlocks = (r: Result, labels: string[], name: string, why: { v: string }) =>
+  askWithRetry(() => tryBlocks(r, labels, name, why), why, 8000);
 
 async function logRow(row: Record<string, unknown>) {
   const url = env('SHEET_WEBHOOK_URL');
@@ -156,10 +114,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   const labels = [current.options[answers[0]].label, ...questions.map((q, i) => q.options[answers[i + 1]].label)];
 
   const why = { v: '' };
-  const ai = await writeNote(result, labels, name, why);
-  const copy = styleCopy[result.style];
-  const note = ai?.note ?? copy.note;
-  const tips = ai?.tips ?? copy.tips;
+  const ai = await writeBlocks(result, labels, name, why);
+  const blocks = ai ?? fallbackBlocks(result.style, result.current, result.mismatch);
 
   await logRow({
     time: new Date().toISOString(),
@@ -174,13 +130,15 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     flags: result.flags.join(' '),
     ai: ai ? 'yes' : why.v ? `no ${why.v}` : 'no',
     answers: labels.slice(1).join(' | '),
-    note,
+    note: blocks.join('\n\n'),
     source: String(body?.source ?? '').slice(0, 30),
   });
 
-  // Signed copy of this result. The email signup sends it back so /api/subscribe can trust it.
+  // Signed copy of this result, with their answers. The email signup sends it back so /api/subscribe can trust it.
   const secret = env('STYLE_TEST_SECRET');
-  const token = secret ? signToken({ style: result.style, lean: result.lean, current: result.current, mismatch: result.mismatch, percent: result.percent, note, tips, name }, secret) : undefined;
+  const token = secret
+    ? signToken({ style: result.style, lean: result.lean, current: result.current, mismatch: result.mismatch, percent: result.percent, flags: result.flags, labels, name }, secret)
+    : undefined;
 
-  return json({ ok: true, ...result, token, styleName: styleName[result.style], leanName: result.lean ? styleName[result.lean] : null, line: copy.line, note, tips });
+  return json({ ok: true, ...result, token, styleName: styleName[result.style], leanName: result.lean ? styleName[result.lean] : null, blocks, gold: styleCopy[result.style].gold });
 };
