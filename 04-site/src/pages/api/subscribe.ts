@@ -114,8 +114,18 @@ async function existing(key: string, email: string, source: string, result: Reco
     const need = leadMagnetNeeds[source];
     const next: Record<string, unknown> = { ...meta, ...result };
     const send = !!emailId && !meta[`sent_${source}`] && (!need || !!next[need]);
-    if (send) next[`sent_${source}`] = new Date().toISOString();
+    const flag = `sent_${source}`;
+    const before = { ...meta, ...result };
+    if (send) next[flag] = new Date().toISOString();
+    // Mark first, so two calls at once cannot both send.
     if (send || Object.keys(result).length) await fetch(`${api}/subscribers/${sub.id}`, { method: 'PATCH', headers, body: JSON.stringify({ metadata: next }) });
-    if (send) await fetch(`${api}/subscribers/${sub.id}/emails/${emailId}`, { method: 'POST', headers });
+    if (send) {
+      const res = await fetch(`${api}/subscribers/${sub.id}/emails/${emailId}`, { method: 'POST', headers });
+      if (!res.ok) {
+        // Same as the confirm hook: if the send failed, take the sent flag off so a later try can send it.
+        console.error('Buttondown send failed', res.status, await res.text().catch(() => ''));
+        await fetch(`${api}/subscribers/${sub.id}`, { method: 'PATCH', headers, body: JSON.stringify({ metadata: before }) });
+      }
+    }
   }
 }
