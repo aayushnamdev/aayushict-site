@@ -30,6 +30,7 @@ The code has ALREADY decided their style. Never change it.
 
 Voice: Aayush talking to a friend. Speak to "you". Simple words, short sentences of about 9 to 13 words. Warm, direct, never preachy.
 Write in SHORT BLOCKS. Each block is 1 or 2 short sentences. No long paragraphs.
+Start with the point. No filler opening such as "Let me tell you what I see". Do not say a block is not a flaw or a pattern. Do not repeat the same answer twice. Write "stop loss" with no hyphen.
 No em dashes, no hyphens as connectors, no emoji, no hashtags, no markdown, no lists inside a block. No trade calls, no promises of profit.
 Never diagnose. Never invent a study, a statistic, a percentage, a number of people or a quote.
 
@@ -54,15 +55,20 @@ function validate(o: any, why: { v: string }): Deep | null {
   const head = list(o?.head), chart = list(o?.chart), work = list(o?.work);
   const question = cleanText(o?.question);
   const all = [...head, ...chart, ...work, question].join(' ');
-  if (head.length < 2 || head.length > 4 || chart.length < 2 || chart.length > 3 || work.length !== 3 || !question) { why.v = 'shape'; return null; }
-  if ([...head, ...chart].some((b) => wordCount(b) > 40) || work.some((w) => wordCount(w) > 20) || wordCount(question) > 30) { why.v = 'shape'; return null; }
+  // A little room on the counts: up to 5 head blocks and 4 chart blocks are fine, and a 4th work point is dropped.
+  if (head.length < 2 || head.length > 5) { why.v = `shape head${head.length}`; return null; }
+  if (chart.length < 2 || chart.length > 4) { why.v = `shape chart${chart.length}`; return null; }
+  if (work.length < 3 || work.length > 4) { why.v = `shape work${work.length}`; return null; }
+  if (!question) { why.v = 'shape question'; return null; }
+  if ([...head, ...chart].some((b) => wordCount(b) > 55)) { why.v = 'shape blockwords'; return null; }
+  if (work.some((w) => wordCount(w) > 24) || wordCount(question) > 32) { why.v = 'shape workwords'; return null; }
   const total = wordCount(all);
   if (total < 150) { why.v = 'short'; return null; }
-  if (total > 340) { why.v = 'long'; return null; }
+  if (total > 380) { why.v = 'long'; return null; }
   if (!CONCEPTS.some((c) => head.join(' ').toLowerCase().includes(c))) { why.v = 'concept'; return null; }
   // No invented science: no percentages, studies or surveys.
   if (/%|\bpercent\b|\bstud(y|ies)\b|\bsurveys?\b|\bresearch(ers)? (show|found|says|suggests)\b/i.test(all)) { why.v = 'claim'; return null; }
-  return { head, chart, work, question };
+  return { head, chart, work: work.slice(0, 3), question };
 }
 
 async function tryOnce(p: TokenPayload, why: { v: string }): Promise<Deep | null> {
@@ -139,5 +145,11 @@ export const deepFallback: Record<Style, Deep> = {
 export async function deepBreakdown(p: TokenPayload): Promise<{ deep: Deep; ai: boolean; why: string }> {
   const why = { v: '' };
   const out = await askWithRetry(() => tryOnce(p, why), why, 14000);
-  return out ? { deep: out, ai: true, why: '' } : { deep: deepFallback[p.style], ai: false, why: why.v };
+  if (out) return { deep: out, ai: true, why: '' };
+  // The fixed text, plus one block about the mismatch when they trade a different style now.
+  const fixed = deepFallback[p.style];
+  const deep: Deep = p.mismatch && p.current
+    ? { ...fixed, chart: [...fixed.chart, `You trade ${styleTitle[p.current].toLowerCase()} now, but your answers fit ${styleTitle[p.style].toLowerCase()}. That gap is the first thing to look at.`] }
+    : fixed;
+  return { deep, ai: false, why: why.v };
 }

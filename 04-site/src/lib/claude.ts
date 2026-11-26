@@ -8,6 +8,7 @@ export const env = (k: string): string | undefined =>
 export const cleanText = (s: unknown) =>
   String(s ?? '')
     .replace(/\s*[—–]\s*/g, ', ')
+    .replace(/(\p{L})-(\p{L})/gu, '$1 $2') // no hyphens in words: "stop-loss" becomes "stop loss"
     .replace(/[*#`_<>]/g, '')
     .replace(/[ \t]+/g, ' ')
     .trim();
