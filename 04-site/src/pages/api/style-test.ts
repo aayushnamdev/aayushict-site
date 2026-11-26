@@ -60,7 +60,7 @@ async function writeNote(r: Result, labels: string[], name: string, why: { v: st
       method: 'POST',
       signal: ctrl.signal,
       headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-      body: JSON.stringify({ model, max_tokens: 500, system, messages: [{ role: 'user', content: lines }] }),
+      body: JSON.stringify({ model, max_tokens: 1500, system, messages: [{ role: 'user', content: lines }] }),
     });
     if (!res.ok) {
       console.error('Style test AI error', res.status, await res.text().catch(() => ''));
@@ -68,9 +68,10 @@ async function writeNote(r: Result, labels: string[], name: string, why: { v: st
       return null;
     }
     const data = await res.json();
-    const text: string = data?.content?.find((c: any) => c.type === 'text')?.text ?? '';
+    const blocks: any[] = Array.isArray(data?.content) ? data.content : [];
+    const text: string = blocks.filter((c) => c.type === 'text').map((c) => String(c.text ?? '')).join('\n');
     const match = text.match(/\{[\s\S]*\}/);
-    if (!match) { why.v = 'noparse'; return null; }
+    if (!match) { why.v = `noparse ${data?.stop_reason ?? ''} ${blocks.map((c) => c.type).join('+')}`.trim(); return null; }
     const out = JSON.parse(match[0]);
     // Clean up anything that breaks the house style.
     const clean = (s: unknown) => String(s ?? '').replace(/\s*[—–]\s*/g, ', ').replace(/[*#]/g, '').trim();
