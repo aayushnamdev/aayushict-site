@@ -60,7 +60,7 @@ async function writeNote(r: Result, labels: string[], name: string, why: { v: st
       method: 'POST',
       signal: ctrl.signal,
       headers: { 'x-api-key': key, 'anthropic-version': '2023-06-01', 'content-type': 'application/json' },
-      body: JSON.stringify({ model, max_tokens: 1500, system, messages: [{ role: 'user', content: lines }] }),
+      body: JSON.stringify({ model, max_tokens: 1500, thinking: { type: 'disabled' }, system, messages: [{ role: 'user', content: lines }] }),
     });
     if (!res.ok) {
       console.error('Style test AI error', res.status, await res.text().catch(() => ''));
