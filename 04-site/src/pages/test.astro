@@ -75,9 +75,9 @@ const total = questions.length + 1;
         <EmailSignup
           id="st-email"
           source="style-test"
-          prompt="Get my week ahead every Sunday, plus notes on trading psychology."
-          button="Send me the notes"
-          thanks="Almost there. Open your inbox and tap confirm."
+          prompt="Get your result in your inbox, plus my week ahead every Sunday."
+          button="Email me my result"
+          thanks="Almost there. Open your inbox and tap confirm. Your result arrives right after."
         />
       </div>
 
@@ -156,8 +156,23 @@ const total = questions.length + 1;
     renderResult(data);
   }
 
+  // The signed result goes to the email form as a hidden field, so the signup can save this exact result.
+  // No token (for example the server could not sign, or the page used the offline fallback): the signup still works, without the result.
+  function setToken(token: unknown) {
+    const form = document.getElementById('st-email')?.closest('form');
+    if (!form) return;
+    form.querySelector('input[name="token"]')?.remove();
+    if (typeof token !== 'string' || !token) return;
+    const input = document.createElement('input');
+    input.type = 'hidden';
+    input.name = 'token';
+    input.value = token;
+    form.appendChild(input);
+  }
+
   function renderResult(d: any) {
     show('result');
+    setToken(d.token);
     const head = $('[data-style]');
     head.textContent = name ? `${name}, your mind fits ${d.styleName}` : `Your mind fits ${d.styleName}`;
     const lean = $('[data-lean]');

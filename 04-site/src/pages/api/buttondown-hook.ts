@@ -3,7 +3,7 @@
 // No shared secret needed: we never trust the request body. We look the subscriber up in Buttondown ourselves,
 // only send to confirmed subscribers, and mark metadata.sent_<source> so a repeat call sends nothing.
 import type { APIRoute } from 'astro';
-import { leadMagnets, leadMagnetTags, upgradeAlert } from '../../config/email';
+import { leadMagnets, leadMagnetNeeds, leadMagnetTags, upgradeAlert } from '../../config/email';
 
 export const prerender = false;
 
@@ -44,6 +44,9 @@ export const POST: APIRoute = async ({ request }) => {
   const emailId = leadMagnets[source];
   if (!emailId) return ok('no lead magnet for this source');
   if (sub?.type !== 'regular') return ok('not confirmed');
+  // The style test email is made from the saved result. Signed up without one: nothing to send.
+  const need = leadMagnetNeeds[source];
+  if (need && !sub?.metadata?.[need]) return ok('no result saved');
   const flag = `sent_${source}`;
   if (sub?.metadata?.[flag]) return ok('already sent');
 

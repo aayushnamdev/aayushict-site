@@ -19,8 +19,14 @@ export const email = {
 export const leadMagnetTags: Record<string, string> = {
   'gold-bounce': 'gold-reel', // tag id sub_tag_2n828bxfwg8bqrt0qxh4m1dsgm
 };
+// A lead magnet that needs data saved on the subscriber (metadata key) is only sent when that key is there.
+// style-test: the result email is built from the saved result, so no result means no email.
+export const leadMagnetNeeds: Record<string, string> = {
+  'style-test': 'st_style',
+};
 export const leadMagnets: Record<string, string> = {
   'gold-bounce': 'em_113gn291vc908tar1c5cqqzrm8', // Gold bounce checklist, 21 Nov 2026 reel
+  'style-test': 'em_03tmhza14r94k8vc7tc90189sp', // Your trading style result. Built from the metadata the test saves (st_style, st_note, st_tips, ...).
 };
 
 // Upgrade alert. When confirmed subscribers reach this count, /api/buttondown-hook emails Aayush once

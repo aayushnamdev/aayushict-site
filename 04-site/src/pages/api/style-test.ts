@@ -2,10 +2,11 @@
 // 1. Code scores them (src/lib/styletest.ts). The style is decided here, never by the AI.
 // 2. Claude writes a short personal note from their exact answers.
 // 3. The response is logged to a Google Sheet through an Apps Script webhook.
-// Keys live in Vercel's environment settings only: ANTHROPIC_API_KEY, SHEET_WEBHOOK_URL, optional STYLE_TEST_MODEL.
+// Keys live in Vercel's environment settings only: ANTHROPIC_API_KEY, SHEET_WEBHOOK_URL, STYLE_TEST_SECRET, optional STYLE_TEST_MODEL.
 // If the AI or the sheet fails, the person still gets their result with the fixed note.
 import type { APIRoute } from 'astro';
 import { current, questions, score, styleCopy, styleName, type Result } from '../../lib/styletest';
+import { signToken } from '../../lib/styletoken';
 
 export const prerender = false;
 
@@ -32,6 +33,7 @@ Refer to 2 or 3 of their actual answers so it feels personal. Do not quote the q
 If they trade a different style now, explain the mismatch kindly: what in their answers clashes with how they trade now.
 If warning signs are listed, name the most important one gently.
 No em dashes, no hyphens as connectors, no emoji, no hashtags, no markdown. No trade calls, no promises of profit. Not a diagnosis.
+Every sentence must make sense on its own. No vague lines like 'your change is worth watching'. Say exactly what to do or notice.
 
 Return ONLY JSON: {"note": string, "tips": [string, string, string]}
 "note": 2 short paragraphs separated by a blank line, 70 to 95 words in total.
@@ -39,7 +41,8 @@ Return ONLY JSON: {"note": string, "tips": [string, string, string]}
 Whole result must stay under 150 words.`;
 
 // `why` receives a short failure reason (an HTTP status or a word). It goes in the Sheet's ai column, never to the visitor.
-async function writeNote(r: Result, labels: string[], name: string, why: { v: string }) {
+async function tryNote(r: Result, labels: string[], name: string, why: { v: string }) {
+  why.v = '';
   const key = env('ANTHROPIC_API_KEY');
   if (!key) { why.v = 'nokey'; return null; }
   const model = env('STYLE_TEST_MODEL') || 'claude-haiku-5-5';
@@ -77,7 +80,11 @@ async function writeNote(r: Result, labels: string[], name: string, why: { v: st
     const clean = (s: unknown) => String(s ?? '').replace(/\s*[—–]\s*/g, ', ').replace(/[*#]/g, '').trim();
     const note = clean(out.note);
     const tips = Array.isArray(out.tips) ? out.tips.map(clean).filter(Boolean).slice(0, 3) : [];
-    if (note.split(/\s+/).length < 30 || tips.length < 2) { why.v = 'short'; return null; }
+    // The note must be 65 to 100 words (the prompt asks for 70 to 95), with 2 or 3 tips.
+    const words = note.split(/\s+/).filter(Boolean).length;
+    if (words < 65) { why.v = 'short'; return null; }
+    if (words > 100) { why.v = 'long'; return null; }
+    if (tips.length < 2) { why.v = 'tips'; return null; }
     return { note, tips };
   } catch (err) {
     console.error('Style test AI failed', err);
@@ -86,6 +93,18 @@ async function writeNote(r: Result, labels: string[], name: string, why: { v: st
   } finally {
     clearTimeout(timer);
   }
+}
+
+// Asks for the note, and asks once more if the first reply is the wrong length or unreadable (and there is time left).
+// A key or model problem (401, 404, 400, no key) is not retried. If both tries fail, the caller uses the fixed note.
+async function writeNote(r: Result, labels: string[], name: string, why: { v: string }) {
+  const started = Date.now();
+  for (let attempt = 0; attempt < 2; attempt++) {
+    const out = await tryNote(r, labels, name, why);
+    if (out) return out;
+    if (!/^(short|long|tips|noparse|exception|429|5\d\d)/.test(why.v) || Date.now() - started > 8000) return null;
+  }
+  return null;
 }
 
 async function logRow(row: Record<string, unknown>) {
@@ -159,5 +178,9 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     source: String(body?.source ?? '').slice(0, 30),
   });
 
-  return json({ ok: true, ...result, styleName: styleName[result.style], leanName: result.lean ? styleName[result.lean] : null, line: copy.line, note, tips });
+  // Signed copy of this result. The email signup sends it back so /api/subscribe can trust it.
+  const secret = env('STYLE_TEST_SECRET');
+  const token = secret ? signToken({ style: result.style, lean: result.lean, current: result.current, mismatch: result.mismatch, percent: result.percent, note, tips, name }, secret) : undefined;
+
+  return json({ ok: true, ...result, token, styleName: styleName[result.style], leanName: result.lean ? styleName[result.lean] : null, line: copy.line, note, tips });
 };
