@@ -38,9 +38,10 @@ Return ONLY JSON: {"note": string, "tips": [string, string, string]}
 "tips": 2 or 3 practical things to work on, each under 16 words.
 Whole result must stay under 150 words.`;
 
-async function writeNote(r: Result, labels: string[], name: string) {
+// `why` receives a short failure reason (an HTTP status or a word). It goes in the Sheet's ai column, never to the visitor.
+async function writeNote(r: Result, labels: string[], name: string, why: { v: string }) {
   const key = env('ANTHROPIC_API_KEY');
-  if (!key) return null;
+  if (!key) { why.v = 'nokey'; return null; }
   const model = env('STYLE_TEST_MODEL') || 'claude-haiku-5-5';
   const lines = [
     name ? `Name: ${name}` : 'Name: not given',
@@ -63,21 +64,23 @@ async function writeNote(r: Result, labels: string[], name: string) {
     });
     if (!res.ok) {
       console.error('Style test AI error', res.status, await res.text().catch(() => ''));
+      why.v = String(res.status);
       return null;
     }
     const data = await res.json();
     const text: string = data?.content?.find((c: any) => c.type === 'text')?.text ?? '';
     const match = text.match(/\{[\s\S]*\}/);
-    if (!match) return null;
+    if (!match) { why.v = 'noparse'; return null; }
     const out = JSON.parse(match[0]);
     // Clean up anything that breaks the house style.
     const clean = (s: unknown) => String(s ?? '').replace(/\s*[—–]\s*/g, ', ').replace(/[*#]/g, '').trim();
     const note = clean(out.note);
     const tips = Array.isArray(out.tips) ? out.tips.map(clean).filter(Boolean).slice(0, 3) : [];
-    if (note.split(/\s+/).length < 30 || tips.length < 2) return null;
+    if (note.split(/\s+/).length < 30 || tips.length < 2) { why.v = 'short'; return null; }
     return { note, tips };
   } catch (err) {
     console.error('Style test AI failed', err);
+    why.v = 'exception';
     return null;
   } finally {
     clearTimeout(timer);
@@ -132,7 +135,8 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
   const name = String(body?.name ?? '').replace(/[^\p{L}\p{M} .'’]/gu, '').trim().slice(0, 24);
   const labels = [current.options[answers[0]].label, ...questions.map((q, i) => q.options[answers[i + 1]].label)];
 
-  const ai = await writeNote(result, labels, name);
+  const why = { v: '' };
+  const ai = await writeNote(result, labels, name, why);
   const copy = styleCopy[result.style];
   const note = ai?.note ?? copy.note;
   const tips = ai?.tips ?? copy.tips;
@@ -148,7 +152,7 @@ export const POST: APIRoute = async ({ request, clientAddress }) => {
     current: labels[0],
     mismatch: result.mismatch ? 'yes' : 'no',
     flags: result.flags.join(' '),
-    ai: ai ? 'yes' : 'no',
+    ai: ai ? 'yes' : why.v ? `no ${why.v}` : 'no',
     answers: labels.slice(1).join(' | '),
     note,
     source: String(body?.source ?? '').slice(0, 30),
