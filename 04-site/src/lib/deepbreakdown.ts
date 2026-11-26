@@ -98,11 +98,11 @@ function validate(o: any, p: TokenPayload, why: { v: string }): Deep | null {
     const id = String(s?.q);
     const quote = voiceIds.has(id) ? labelOf(p, id) : undefined;
     const means = text(s?.means);
-    if (!quote || !means) { why.v = 'shape saidq'; return null; }
+    if (!quote || !means) continue; // a pick that is not a quotable answer is skipped, not fatal
     if (wordCount(means) > 20) { why.v = 'shape saidwords'; return null; }
     if (!said.some((x) => x.quote === quote)) said.push({ quote, means });
   }
-  if (said.length < 2) { why.v = 'shape saidrepeat'; return null; }
+  if (said.length < 2) { why.v = 'shape saidq'; return null; }
   if (work.some((w: string) => wordCount(w) > 14) || wordCount(question) > 28) { why.v = 'shape workwords'; return null; }
 
   // The AI's own words only (the quotes are the person's). About 110 to 160 words, with room either side.
@@ -122,8 +122,8 @@ async function tryOnce(p: TokenPayload, why: { v: string }): Promise<Deep | null
     `Main style (decided): ${styleTitle[r.style]}${r.lean ? `, close second: ${styleTitle[r.lean]}` : ''}`,
     `Scores: Scalping ${r.percent.S}%, Intraday ${r.percent.I}%, Swing ${r.percent.W}%`,
     `Trades now: ${r.current ? styleTitle[r.current] : 'not sure yet'} (${p.labels[0] ?? ''})${r.mismatch ? ' (MISMATCH with their result)' : ''}`,
-    'Their answers (the voice in their head). The id in brackets is what you use in "q":',
-    ...questions.map((q, i) => `- [${q.id}] ${q.scene}. ${q.text} -> ${p.labels[i + 1] ?? ''}`),
+    'Their answers (the voice in their head). Only answers with an id in brackets can be used in "q":',
+    ...questions.map((q, i) => `- ${q.voice ? `[${q.id}] ` : ''}${q.scene}. ${q.text} -> ${p.labels[i + 1] ?? ''}`),
     'Warning signs: ' + (r.flags.length ? r.flags.map((f) => flagText[f]).join(' ') : 'none'),
   ].join('\n');
   const out = await askJson(system, user, why, 14000, 1500);
