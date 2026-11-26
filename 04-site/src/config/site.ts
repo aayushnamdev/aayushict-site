@@ -35,6 +35,7 @@ export const site = {
     { label: 'Learn', href: '/learn' },
     { label: 'Journal', href: '/journal' },
     { label: 'How I trade', href: '/how-i-trade' },
+    { label: 'Trading style test', href: '/test' },
   ],
   // Paths of pages that exist but are not ready. They get noindex and stay out of the sitemap.
   // Add a path while building a new page, remove it when the page is real. /confirmed stays here on purpose.

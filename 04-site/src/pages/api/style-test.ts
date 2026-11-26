@@ -99,8 +99,32 @@ async function logRow(row: Record<string, unknown>) {
   }
 }
 
-export const POST: APIRoute = async ({ request }) => {
-  const body = await request.json().catch(() => null);
+// Abuse guard. At most 10 requests per IP per 10 minutes, and bodies over 2 KB are refused.
+// Kept in memory, so each server instance counts on its own. Good enough to stop a script from running up the AI bill.
+const LIMIT = 10;
+const WINDOW_MS = 10 * 60 * 1000;
+const MAX_BODY = 2048;
+const hits = new Map<string, number[]>();
+
+function limited(ip: string): boolean {
+  const now = Date.now();
+  const recent = (hits.get(ip) ?? []).filter((t) => now - t < WINDOW_MS);
+  if (recent.length >= LIMIT) { hits.set(ip, recent); return true; }
+  recent.push(now);
+  hits.set(ip, recent);
+  if (hits.size > 5000) for (const [k, v] of hits) if (v.every((t) => now - t >= WINDOW_MS)) hits.delete(k);
+  return false;
+}
+
+export const POST: APIRoute = async ({ request, clientAddress }) => {
+  const ip = (request.headers.get('x-forwarded-for')?.split(',')[0] || clientAddress || 'unknown').trim();
+  if (limited(ip)) return json({ ok: false, message: 'Too many tries. Please wait a few minutes.' }, 429);
+
+  if (Number(request.headers.get('content-length') ?? 0) > MAX_BODY) return json({ ok: false, message: 'Request too large.' }, 413);
+  const raw = await request.text().catch(() => '');
+  if (raw.length > MAX_BODY) return json({ ok: false, message: 'Request too large.' }, 413);
+  let body: any = null;
+  try { body = JSON.parse(raw); } catch { /* handled below */ }
   const answers = body?.answers;
   const result = score(answers);
   if (!result) return json({ ok: false, message: 'Please answer every question.' }, 400);
