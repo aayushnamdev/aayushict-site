@@ -30,7 +30,8 @@ export default defineConfig({
       },
     }),
   ],
-  redirects: goRedirects,
+  // /gold (the retired gold reel page) is a permanent redirect, so old reel links and the bio link still land somewhere useful.
+  redirects: { ...goRedirects, '/gold': { status: /** @type {301} */ (301), destination: '/test' } },
   fonts: [
     {
       provider: google,

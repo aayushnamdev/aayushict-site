@@ -10,8 +10,9 @@ import { verifyToken } from '../../lib/styletoken';
 export const prerender = false;
 
 // Where a signup came from. Saved as a Buttondown tag so he can email only the people who asked for a post.
-// gold-bounce: the gold bounce reel (/gold). A Buttondown automation sends the checklist when they confirm.
-const sources = ['website', 'home', 'start-here', 'about', 'how-i-trade', 'gold-bounce', 'style-test'];
+// style-test: the trading style test (/test). The confirm hook sends the result email when they confirm.
+// (gold-bounce was retired on 26 Nov 2026. An old link that still sends it is treated as a plain website signup.)
+const sources = ['website', 'home', 'start-here', 'about', 'how-i-trade', 'style-test'];
 // Tags that already exist in Buttondown. The free plan cannot create new ones, and an unknown tag fails the signup.
 // Every source is also saved as metadata.source, which works on any plan.
 const tagged = ['home', 'start-here', 'about', 'how-i-trade'];
@@ -131,21 +132,16 @@ async function existing(key: string, email: string, source: string, result: Meta
     return;
   }
   if (sub.type === 'regular') {
-    // Already confirmed. Keep their latest result on file, and send the email once if it has not been sent.
+    // Already confirmed, so no confirm event will come. Keep their latest result on file, then send the email.
+    // Buttondown refuses a second send of the same email to the same person, which is the once-only guard.
     const need = leadMagnetNeeds[source];
     const next: Record<string, unknown> = { ...meta, ...result };
-    const send = !!emailId && !meta[`sent_${source}`] && (!need || !!next[need]);
-    const flag = `sent_${source}`;
-    const before = { ...meta, ...result };
-    if (send) next[flag] = new Date().toISOString();
-    // Mark first, so two calls at once cannot both send.
-    if (send || Object.keys(result).length) await fetch(`${api}/subscribers/${sub.id}`, { method: 'PATCH', headers, body: JSON.stringify({ metadata: next }) });
-    if (send) {
-      const res = await fetch(`${api}/subscribers/${sub.id}/emails/${emailId}`, { method: 'POST', headers });
-      if (!res.ok) {
-        // Same as the confirm hook: if the send failed, take the sent flag off so a later try can send it.
-        console.error('Buttondown send failed', res.status, await res.text().catch(() => ''));
-        await fetch(`${api}/subscribers/${sub.id}`, { method: 'PATCH', headers, body: JSON.stringify({ metadata: before }) });
+    if (Object.keys(result).length) await fetch(`${api}/subscribers/${sub.id}`, { method: 'PATCH', headers, body: JSON.stringify({ metadata: next }) });
+    if (emailId && (!need || next[need])) {
+      const sent = await fetch(`${api}/subscribers/${sub.id}/emails/${emailId}`, { method: 'POST', headers });
+      if (!sent.ok) {
+        const text = await sent.text().catch(() => '');
+        if (!(sent.status === 400 && /EMAIL_ALREADY_SENT|already received/i.test(text))) console.error('Buttondown send failed', sent.status, text);
       }
     }
   }

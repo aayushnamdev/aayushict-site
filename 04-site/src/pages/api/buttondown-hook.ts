@@ -1,9 +1,12 @@
 // Buttondown calls this on every "subscriber.confirmed" (webhook made through the API, 21 Nov 2026).
-// If the subscriber came from a reel page (metadata.source is in leadMagnets), we send that reel's email once.
-// No shared secret needed: we never trust the request body. We look the subscriber up in Buttondown ourselves,
-// only send to confirmed subscribers, and mark metadata.sent_<source> so a repeat call sends nothing.
+// If the subscriber's metadata.source is in leadMagnets (today: style-test), we send that email once.
+// No shared secret needed: we never trust the request body. We look the subscriber up in Buttondown ourselves
+// and only send to confirmed subscribers. The source comes only from the subscriber's own metadata, never from a guess
+// (a referrer or a date), so no email can go to the wrong people.
+// Calls per confirm: 2 (read the subscriber, send). Buttondown refuses a second send of the same email to the same
+// person ("EMAIL_ALREADY_SENT"), so that is the once-only guard and a repeat call is safe. No flag has to be written.
 import type { APIRoute } from 'astro';
-import { leadMagnets, leadMagnetNeeds, leadMagnetTags, upgradeAlert } from '../../config/email';
+import { leadMagnets, leadMagnetNeeds, upgradeAlert } from '../../config/email';
 
 export const prerender = false;
 
@@ -27,49 +30,27 @@ export const POST: APIRoute = async ({ request }) => {
   if (!id || !/^[\w-]{1,80}$/.test(id)) return ok('no subscriber id');
 
   const headers = { Authorization: `Token ${key}`, 'Content-Type': 'application/json' };
-  // Runs on every confirm, whatever page they came from. Failures here never block the checklist.
-  await checkUpgrade(headers).catch((err) => console.error('Upgrade alert check failed', err));
+  // The upgrade check costs 2 calls, and the count only has to be roughly right, so it runs on about 1 in 10 confirms.
+  if (Math.random() < 0.1) await checkUpgrade(headers).catch((err) => console.error('Upgrade alert check failed', err));
 
   const res = await fetch(`${api}/subscribers/${encodeURIComponent(id)}`, { headers });
   if (!res.ok) return ok('subscriber not found');
   const sub = await res.json();
 
-  // Signups through Buttondown's own form (our fallback when the API limit is hit) may not keep metadata.
-  // Then the page they came from tells us: a referrer on /gold means the gold reel.
-  let source = String(sub?.metadata?.source ?? '');
-  if (!source && /aayushict\.space\/gold\b/.test(String(sub?.referrer_url ?? ''))) source = 'gold-bounce';
-  // During the gold reel push (until 28 Nov 2026), anyone who signs up on Buttondown's own page
-  // (buttondown.com/aayushict, not through our API) is from the reel, so they get the checklist too.
-  if (!source && sub?.source && sub.source !== 'api' && Date.now() < Date.parse('2026-11-28T00:00:00Z')) source = 'gold-bounce';
+  const source = String(sub?.metadata?.source ?? '');
   const emailId = leadMagnets[source];
   if (!emailId) return ok('no lead magnet for this source');
   if (sub?.type !== 'regular') return ok('not confirmed');
   // The style test email is made from the saved result. Signed up without one: nothing to send.
   const need = leadMagnetNeeds[source];
   if (need && !sub?.metadata?.[need]) return ok('no result saved');
-  const flag = `sent_${source}`;
-  if (sub?.metadata?.[flag]) return ok('already sent');
-
-  // Mark first, so two calls at once cannot both send.
-  const mark = await fetch(`${api}/subscribers/${encodeURIComponent(id)}`, {
-    method: 'PATCH',
-    headers,
-    body: JSON.stringify({
-      metadata: { ...sub.metadata, [flag]: new Date().toISOString() },
-      ...(leadMagnetTags[source] ? { tags: [...new Set([...(sub.tags ?? []), leadMagnetTags[source]])] } : {}),
-    }),
-  });
-  if (!mark.ok) {
-    console.error('Buttondown mark failed', mark.status, await mark.text().catch(() => ''));
-    return new Response('mark failed', { status: 502 }); // non 2xx so Buttondown retries
-  }
 
   const send = await fetch(`${api}/subscribers/${encodeURIComponent(id)}/emails/${emailId}`, { method: 'POST', headers });
   if (!send.ok) {
-    console.error('Buttondown send failed', send.status, await send.text().catch(() => ''));
-    // Undo the mark so a retry can send it.
-    await fetch(`${api}/subscribers/${encodeURIComponent(id)}`, { method: 'PATCH', headers, body: JSON.stringify({ metadata: sub.metadata ?? {} }) });
-    return new Response('send failed', { status: 502 });
+    const text = await send.text().catch(() => '');
+    if (send.status === 400 && /EMAIL_ALREADY_SENT|already received/i.test(text)) return ok('already sent');
+    console.error('Buttondown send failed', send.status, text);
+    return new Response('send failed', { status: 502 }); // non 2xx so Buttondown retries
   }
   return ok('sent');
 };

@@ -79,7 +79,7 @@ const text = prompt ?? (variant === 'footer' ? email.footerPrompt : email.prompt
         if (res.status >= 500) {
           // Our API route could not add them (for example Buttondown's 100 a day API limit). Fall back to
           // Buttondown's own public form, which that limit does not cover. It leaves our site for Buttondown's
-          // "check your inbox" page. The confirm hook spots reel signups by metadata or by the /gold referrer.
+          // "check your inbox" page.
           trackSignup(String(data.get('source') ?? 'website'));
           const f = document.createElement('form');
           f.method = 'post';
@@ -89,8 +89,6 @@ const text = prompt ?? (variant === 'footer' ? email.footerPrompt : email.prompt
           add('embed', '1');
           add('metadata__source', String(data.get('source') ?? 'website'));
           add('referrer_url', location.href);
-          // Send the full page address as the referrer (default is only the domain), so /gold is visible to Buttondown.
-          const ref = document.createElement('meta'); ref.name = 'referrer'; ref.content = 'no-referrer-when-downgrade'; document.head.append(ref);
           document.body.append(f);
           f.submit();
           return;

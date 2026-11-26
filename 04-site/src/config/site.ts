@@ -16,7 +16,7 @@ export const social = [
   { label: 'Telegram', handle: 'No Tilt Room', href: 'https://t.me/notiltroom' },
 ] as const;
 
-// Telegram channel. Also in `social` above (rail, footer, about). Used by name on /confirmed, /gold and the reel email.
+// Telegram channel. Also in `social` above (rail, footer, about). Used by name on /confirmed and in the style test email.
 export const telegram = { label: 'Telegram', name: 'No Tilt Room', href: 'https://t.me/notiltroom' };
 
 export const site = {
@@ -39,7 +39,7 @@ export const site = {
   ],
   // Paths of pages that exist but are not ready. They get noindex and stay out of the sitemap.
   // Add a path while building a new page, remove it when the page is real. /confirmed stays here on purpose.
-  pending: ['/confirmed', '/gold'] as string[], // /confirmed is real but noindex: it is only for people who just confirmed
+  pending: ['/confirmed'] as string[], // /confirmed is real but noindex: it is only for people who just confirmed
   legal: [
     { label: 'Disclosure', href: '/disclosure' },
     { label: 'Disclaimer', href: '/disclaimer' },
