@@ -93,6 +93,16 @@ const jsonLd = [
     <LatestJournal />
   </Band>
 
+  <!-- 3b. Trading style test (26 Nov 2026). -->
+  <Band>
+    <div class="stack styletest">
+      <div class="label">Free test, 3 minutes</div>
+      <h2 class="h-sec">Is your trading style fighting your mind?</h2>
+      <p class="lead">Scalper, intraday or swing. I built this from my psychology training. You get a personal result and a card to share.</p>
+      <a class="btn aboutbtn" href="/test?src=home">Take the test →</a>
+    </div>
+  </Band>
+
   <!-- 4. Why follow -->
   <Band variant="white">
     <div class="stack why">
@@ -125,6 +135,8 @@ const jsonLd = [
 </BaseLayout>
 
 <style>
+  .styletest { display: flex; flex-direction: column; align-items: flex-start; gap: 16px; }
+  .styletest .lead { margin: 0; max-width: 560px; }
   .hero { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); gap: clamp(32px, 5vw, 64px); align-items: start; margin-top: -48px; } /* band padding is 110px, the reference hero starts at 96px */
   .left { gap: 20px; }
   .left .lead { max-width: 560px; margin: 0; }

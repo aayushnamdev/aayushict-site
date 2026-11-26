@@ -8,7 +8,7 @@ export const prerender = false;
 
 // Where a signup came from. Saved as a Buttondown tag so he can email only the people who asked for a post.
 // gold-bounce: the gold bounce reel (/gold). A Buttondown automation sends the checklist when they confirm.
-const sources = ['website', 'home', 'start-here', 'about', 'how-i-trade', 'gold-bounce'];
+const sources = ['website', 'home', 'start-here', 'about', 'how-i-trade', 'gold-bounce', 'style-test'];
 // Tags that already exist in Buttondown. The free plan cannot create new ones, and an unknown tag fails the signup.
 // Every source is also saved as metadata.source, which works on any plan.
 const tagged = ['home', 'start-here', 'about', 'how-i-trade'];
