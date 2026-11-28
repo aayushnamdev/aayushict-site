@@ -1,12 +1,13 @@
 // Buttondown calls this on every "subscriber.confirmed" (webhook made through the API, 21 Nov 2026).
-// If the subscriber's metadata.source is in leadMagnets (today: style-test), we send that email once.
+// The source (see src/lib/leadmagnet.ts) is in leadMagnets (today: style-test, and the reel welcome until 4 Dec), so we send that email once.
 // No shared secret needed: we never trust the request body. We look the subscriber up in Buttondown ourselves
-// and only send to confirmed subscribers. The source comes only from the subscriber's own metadata, never from a guess
-// (a referrer or a date), so no email can go to the wrong people.
+// and only send to confirmed subscribers. The source is the subscriber's own metadata.source. The one exception is a signup on
+// Buttondown's own page that came from the Instagram link, which is the reel welcome. Nothing else is guessed.
 // Calls per confirm: 2 (read the subscriber, send). Buttondown refuses a second send of the same email to the same
 // person ("EMAIL_ALREADY_SENT"), so that is the once-only guard and a repeat call is safe. No flag has to be written.
 import type { APIRoute } from 'astro';
 import { leadMagnets, leadMagnetNeeds, upgradeAlert } from '../../config/email';
+import { sourceFor } from '../../lib/leadmagnet';
 
 export const prerender = false;
 
@@ -37,7 +38,7 @@ export const POST: APIRoute = async ({ request }) => {
   if (!res.ok) return ok('subscriber not found');
   const sub = await res.json();
 
-  const source = String(sub?.metadata?.source ?? '');
+  const source = sourceFor(sub);
   const emailId = leadMagnets[source];
   if (!emailId) return ok('no lead magnet for this source');
   if (sub?.type !== 'regular') return ok('not confirmed');
