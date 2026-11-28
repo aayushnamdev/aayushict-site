@@ -1,8 +1,8 @@
 // Buttondown calls this on every "subscriber.confirmed" (webhook made through the API, 21 Nov 2026).
-// The source (see src/lib/leadmagnet.ts) is in leadMagnets (today: style-test, and the reel welcome until 4 Dec), so we send that email once.
+// One rule (src/lib/leadmagnet.ts): metadata.source "style-test" gets the style test result email, everyone else who confirms gets the
+// reel welcome email until it ends on 4 Dec 2026. We send that email once.
 // No shared secret needed: we never trust the request body. We look the subscriber up in Buttondown ourselves
-// and only send to confirmed subscribers. The source is the subscriber's own metadata.source. The one exception is a signup on
-// Buttondown's own page that came from the Instagram link, which is the reel welcome. Nothing else is guessed.
+// and only send to confirmed subscribers.
 // Calls per confirm: 2 (read the subscriber, send). Buttondown refuses a second send of the same email to the same
 // person ("EMAIL_ALREADY_SENT"), so that is the once-only guard and a repeat call is safe. No flag has to be written.
 import type { APIRoute } from 'astro';

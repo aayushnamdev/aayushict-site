@@ -21,8 +21,8 @@ export const email = {
 export const leadMagnetNeeds: Record<string, string> = {
   'style-test': 'st_style',
 };
-// The reel welcome email (Instagram bio link, Nov 2026). Those people sign up on Buttondown's own page, so they have no
-// metadata.source. The hook (src/lib/leadmagnet.ts) treats a signup on that page that came from the Instagram link as this source.
+// The reel welcome email (Instagram bio link, Nov 2026). Everyone who confirms gets it, except style test signups, who get their own
+// result email (rule in src/lib/leadmagnet.ts).
 // endsAt: the jobs number drops Fri 4 Dec 2026, 7 PM IST (13:30 UTC). After that the email is out of date, so it stops sending by itself.
 export const reelWelcome = {
   source: 'reel-welcome',
