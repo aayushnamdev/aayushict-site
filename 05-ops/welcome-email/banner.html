@@ -1,0 +1,35 @@
+<!doctype html>
+<!-- Welcome email banner for the Instagram reel signups (Nov 2026). 1200 x 400.
+     Colours are copies of src/styles/tokens.css, fonts are the site's (Figtree, Instrument Sans), wordmark follows
+     src/components/Wordmark.astro, the wine bar follows the share images. No new brand look.
+     Render: open in Chromium at 1200 x 400 and screenshot (see welcome-email.md). Fonts come from the @fontsource npm packages. -->
+<meta charset="utf-8">
+<style>
+  @font-face { font-family: 'Figtree'; font-weight: 700; src: url('FONTDIR/figtree-latin-700-normal.woff2'); }
+  @font-face { font-family: 'Figtree'; font-weight: 800; src: url('FONTDIR/figtree-latin-800-normal.woff2'); }
+  @font-face { font-family: 'Instrument Sans'; font-weight: 500; src: url('FONTDIR/instrument-sans-latin-500-normal.woff2'); }
+  :root { --page:#141011; --text-heading:#F6F1EE; --text-soft:#C9BEC1; --rose:#B44C6C; --wine:#6E1A33; }
+  * { margin: 0; box-sizing: border-box; }
+  body { width: 1200px; height: 400px; background: var(--page); position: relative; overflow: hidden; }
+  .wm { position: absolute; left: 56px; top: 50px; font: 700 40px/1 'Figtree', sans-serif; letter-spacing: -0.02em; color: var(--text-heading); }
+  .wm i { font-style: normal; color: var(--rose); }
+  .big { position: absolute; left: 56px; top: 150px; white-space: nowrap; font: 800 60px/1.05 'Figtree', sans-serif; letter-spacing: -0.02em; color: var(--text-heading); }
+  .small { position: absolute; left: 56px; top: 252px; white-space: nowrap; font: 500 34px/1.2 'Instrument Sans', sans-serif; color: var(--text-soft); }
+  .bar { position: absolute; left: 0; right: 0; bottom: 0; height: 24px; background: var(--wine); }
+</style>
+<div class="wm">aayush<i>ict</i></div>
+<div class="big" id="big">Friday's Jobs Number Breakdown</div>
+<div class="small" id="small">Coming to your inbox Wed or Thu · NFP Fri 4 Dec, 7 PM IST</div>
+<div class="bar"></div>
+<script>
+  // Make each line as large as it can be inside the 56 px margins, so the small line stays readable on a phone.
+  document.fonts.ready.then(() => {
+    for (const [id, max] of [['big', 84], ['small', 40]]) {
+      const el = document.getElementById(id);
+      let size = max;
+      el.style.fontSize = size + 'px';
+      while (el.scrollWidth > 1200 - 112 && size > 20) { size -= 1; el.style.fontSize = size + 'px'; }
+    }
+    document.body.dataset.ready = '1';
+  });
+</script>
